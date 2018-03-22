@@ -27,6 +27,7 @@
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.21.0-GA" />
           <element id="library" level="project" name="Maven: com.google.guava:guava:20.0" />
           <element id="library" level="project" name="Maven: io.swagger:swagger-annotations:1.5.18" />
+          <element id="library" level="project" name="Maven: org.primefaces:primefaces:6.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">

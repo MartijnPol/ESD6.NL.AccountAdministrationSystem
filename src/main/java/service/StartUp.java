@@ -2,6 +2,7 @@ package service;
 
 import domain.Car;
 import domain.Owner;
+import domain.User;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -18,8 +19,12 @@ public class StartUp {
 
     @Inject
     private CarService carService;
+
     @Inject
     private OwnerService ownerService;
+
+    @Inject
+    private UserService userService;
 
     public StartUp() {
 
@@ -35,5 +40,8 @@ public class StartUp {
         car1.setCarTrackerId(1L);
         car2.setCarTrackerId(2L);
         car3.setCarTrackerId(3L);
+
+        User smolders = new User("smolders", "1234", "smolders@gmail.com");
+        userService.create(smolders);
     }
 }

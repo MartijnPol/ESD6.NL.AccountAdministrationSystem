@@ -1,48 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/login/template.xhtml">
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+    <ui:define name="title">Login</ui:define>
 
-<html lang="en">
-<head>
+    <ui:define name="content">
 
-    <meta content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <h:form>
 
-    <title>RekeningRijden | Account Administration System</title>
-
-    <!--  Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
-
-    <!--  Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" />
-
-    <!--  Custom CSS -->
-    <link rel="stylesheet" href="resources/css/stylesheet.css" />
-
-</head>
-
-<body>
-
-    <div class="container h-100">
-
-        <div class="row h-100 justify-content-center align-items-center vertical-center">
-
-            <div class="card login-card justify-content-center">
-                <form action="">
-                    <div class="form-group">
-                        <input class="form-control" id="username" />
+            <div id="content">
+                <div class="container h-100">
+                    <div class="row h-100 justify-content-center align-items-center vertical-center">
+                        <div class="card login-card justify-content-center">
+                            <div class="form-group">
+                                <p:inputText styleClass="form-control" id="username" placeholder="Username" />
+                            </div>
+                            <div class="form-group">
+                                <p:password type="password" styleClass="form-control" id="password" placeholder="Password" />
+                            </div>
+                            <p:commandButton styleClass="btn btn-primary w-100" value="Login"/>
+                            <span id="registerHelper" class="form-text text-muted text-center" style="font-size: small;">Not registered? <strong>Create an account</strong></span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" id="password" />
-                    </div>
-                    <button class="btn btn-primary w-100">Login</button>
-                    <span id="registerHelper" class="form-text text-muted text-center" style="font-size: small;">Not registered? <strong>Create an account</strong></span>
-                </form>
+                </div>
             </div>
 
-        </div>
+        </h:form>
 
-    </div>
-
-</body>
-</html>
+    </ui:define>
+</ui:composition>
