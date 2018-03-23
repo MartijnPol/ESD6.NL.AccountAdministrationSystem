@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/template.xhtml">
+
+    <ui:define name="title">"#{sessionBean.loggedInUser.username}"</ui:define>
+
+    <ui:define name="content">
+
+        <p:outputLabel value="Welcome #{sessionBean.loggedInUser.username}"></p:outputLabel>
+
+        <p:commandButton styleClass="btn btn-primary w-100"
+                         value="Logout"
+                         actionListener="#{sessionBean.logout}"/>
+
+    </ui:define>
+
+</ui:composition>

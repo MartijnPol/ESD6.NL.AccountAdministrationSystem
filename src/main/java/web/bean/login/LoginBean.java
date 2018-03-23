@@ -13,7 +13,7 @@ import java.io.Serializable;
 /**
  * @author Thom van de Pas on 23-3-2018
  */
-@Named
+@Named("loginBean")
 @ViewScoped
 public class LoginBean implements Serializable {
 
@@ -34,7 +34,7 @@ public class LoginBean implements Serializable {
             if (user != null) {
                 sessionBean.setLoggedInUser(user);
                 try {
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("/AccountAdministrationSystem/pages/profile/profile.xhtml");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("profile.xhtml?faces-redirect=true");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
