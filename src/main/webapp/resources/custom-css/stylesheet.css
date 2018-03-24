@@ -95,6 +95,13 @@ input
 #registerHelper
 {
     margin-top: 16px;
+    font-size: small;
+}
+
+.card-title
+{
+    text-align: center;
+    margin-bottom: 24px;
 }
 
 /** UTILS **/
