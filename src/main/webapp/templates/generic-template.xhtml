@@ -17,13 +17,15 @@
 
 <h:body>
 
-    <!-- Bootstrap CSS -->
-    <h:outputStylesheet library="bootstrap" name="css/bootstrap.css"/>
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
 
-    <!-- Custom CSS -->
-    <h:outputStylesheet library="custom-css" name="stylesheet.css"/>
+    <h:outputStylesheet library="css" name="stylesheet.css"/>
 
-    <ui:insert name="header"/>
+    <h:outputScript name="js/jquery-3.3.1.min.js"/>
+
+    <h:outputScript name="bootstrap/js/bootstrap.min.js" />
+
+    <ui:include src="header.xhtml"/>
 
     <ui:insert name="content"/>
 

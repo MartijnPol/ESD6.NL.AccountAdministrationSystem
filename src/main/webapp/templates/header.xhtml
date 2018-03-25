@@ -1,0 +1,46 @@
+<html xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<div class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <a class="navbar-brand" href="#">Rekening Rijden</a>
+    <button class="navbar-toggler" type="button">
+        <span class="navbar-toggler-icon"/>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav mr-auto">
+
+            <!--&lt;!&ndash; Regular Link &ndash;&gt;-->
+            <!--<li class="nav-item">-->
+            <!--<a class="nav-link" href="#">Home</a>-->
+            <!--</li>-->
+
+            <!-- Active Link -->
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Dashboard <span class="sr-only">(current)</span></a>
+            </li>
+
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"><ui:insert name="username"/></a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <div class="dropdown-divider"/>
+                    <a class="dropdown-item" href="#">Logout</a>
+                </div>
+            </li>
+
+        </ul>
+
+        <!-- Search -->
+        <!-- <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form> -->
+
+    </div>
+
+</div>
+
+</html>
