@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Named
 @SessionScoped
-public class SessionBean implements Serializable{
+public class SessionBean implements Serializable {
 
     private User loggedInUser;
 
