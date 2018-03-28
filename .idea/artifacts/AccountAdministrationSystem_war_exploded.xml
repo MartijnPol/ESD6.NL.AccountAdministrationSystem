@@ -30,6 +30,7 @@
           <element id="library" level="project" name="Maven: org.primefaces:primefaces:6.2" />
           <element id="library" level="project" name="Maven: org.jasypt:jasypt:1.9.2" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.11" />
+          <element id="library" level="project" name="Maven: org.omnifaces:omnifaces:3.0" />
           <element id="library" level="project" name="Maven: org.webjars:bootstrap:4.0.0-2" />
           <element id="library" level="project" name="Maven: org.webjars:jquery:3.0.0" />
           <element id="library" level="project" name="Maven: org.webjars:popper.js:1.12.9-1" />

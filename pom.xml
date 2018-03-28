@@ -93,6 +93,13 @@
             <version>1.11</version>
         </dependency>
 
+        <!-- Omnifaces -->
+        <dependency>
+            <groupId>org.omnifaces</groupId>
+            <artifactId>omnifaces</artifactId>
+            <version>3.0</version>
+        </dependency>
+
         <!-- Bootstrap Webjar -->
         <dependency>
             <groupId>org.webjars</groupId>
@@ -103,6 +110,17 @@
     </dependencies>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+
         <finalName>AccountAdministrationSystem</finalName>
     </build>
 

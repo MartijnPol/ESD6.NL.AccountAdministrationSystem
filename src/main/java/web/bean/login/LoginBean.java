@@ -32,7 +32,7 @@ public class LoginBean implements Serializable {
         if (sessionBean.getLoggedInUser() == null) {
             User user = this.userService.login(username, this.password);
             if (user != null) {
-                sessionBean.setLoggedInUser(user);
+                this.sessionBean.setLoggedInUser(user);
                 try {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("profile.xhtml?faces-redirect=true");
                 } catch (IOException e) {
