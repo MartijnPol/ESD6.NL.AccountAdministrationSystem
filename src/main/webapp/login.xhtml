@@ -1,51 +1,66 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/templates/login-template.xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-    <ui:define name="title">Login</ui:define>
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
-    <ui:define name="content">
+<h:head>
 
-        <div class="container h-100">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
-            <h:form>
+    <title>RekeningRijden AAS | Login</title>
 
-                <div class="row h-100 justify-content-center align-items-center vertical-center">
-                    <div class="card login-card justify-content-center">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"/>
 
-                        <h1 class="card-title">RekeningRijden</h1>
+    <!-- Bootstrap JS -->
+    <h:outputScript library="webjars" name="bootstrap/4.0.0-2/js/bootstrap.min.js"/>
 
-                        <div class="form-group">
-                            <p:inputText styleClass="form-control"
-                                         id="username"
-                                         placeholder="Username"
-                                         value="#{loginBean.username}"/>
-                        </div>
+</h:head>
 
-                        <div class="form-group">
-                            <p:password type="password"
-                                        styleClass="form-control"
-                                        id="password"
-                                        placeholder="Password"
-                                        value="#{loginBean.password}"/>
-                        </div>
+<h:body styleClass="login-background">
 
-                        <p:commandButton styleClass="btn btn-primary w-100"
-                                         value="Login"
-                                         actionListener="#{loginBean.login}"/>
+    <!-- Bootstrap CSS -->
+    <h:outputStylesheet library="webjars" name="bootstrap/4.0.0-2/css/bootstrap.min.css"/>
 
-                        <span id="registerHelper"
-                              class="form-text text-muted text-center">Not registered? <strong>Create an account</strong></span>
+    <!-- Custom CSS -->
+    <h:outputStylesheet library="css" name="stylesheet.css"/>
 
+    <div class="container h-100">
+
+        <h:form>
+
+            <div class="row h-100 justify-content-center align-items-center vertical-center">
+                <div class="card login-card justify-content-center">
+
+                    <h1 class="card-title">Rekening Rijden</h1>
+
+                    <div class="form-group">
+                        <p:inputText styleClass="form-control"
+                                     id="username"
+                                     placeholder="Username"
+                                     value="#{loginBean.username}"/>
                     </div>
+
+                    <div class="form-group">
+                        <p:password type="password"
+                                    styleClass="form-control"
+                                    id="password"
+                                    placeholder="Password"
+                                    value="#{loginBean.password}"/>
+                    </div>
+
+                    <p:commandButton styleClass="btn btn-primary w-100"
+                                     value="Login"
+                                     actionListener="#{loginBean.login}"/>
+
                 </div>
+            </div>
 
-            </h:form>
+        </h:form>
 
-        </div>
+    </div>
 
-    </ui:define>
+</h:body>
 
-</ui:composition>
+</html>
