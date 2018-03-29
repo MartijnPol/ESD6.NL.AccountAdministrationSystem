@@ -1,10 +1,8 @@
 package main.service;
 
-import com.mysql.jdbc.StringUtils;
 import main.dao.JPA;
 import main.dao.UserDao;
 import main.domain.User;
-import main.utils.EncryptionHelper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -27,13 +25,6 @@ public class UserService {
         return this.userDao.create(user);
     }
 
-    public User findByCredentials(String username, String password) {
-        if (!StringUtils.isNullOrEmpty(username) && !StringUtils.isNullOrEmpty(password)) {
-            return this.userDao.findByCredentials(username, EncryptionHelper.encryptPassword(username, password));
-        }
-        return null;
-    }
-
     public User update(User user) {
         return this.userDao.update(user);
     }
@@ -54,16 +45,7 @@ public class UserService {
         return this.userDao.findAll();
     }
 
-    public User login(String username, String password) {
-        if (!StringUtils.isNullOrEmpty(username) && !StringUtils.isNullOrEmpty(password)) {
-            String lowerCaseUsername = username.toLowerCase();
-            lowerCaseUsername = lowerCaseUsername.trim();
-
-            User possibleUser = this.findByCredentials(lowerCaseUsername, password);
-
-            if (possibleUser != null) return possibleUser;
-        }
-        return null;
+    public User findbyUsername(String username) {
+        return this.userDao.findByUsername(username);
     }
-
 }

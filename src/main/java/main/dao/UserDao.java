@@ -7,5 +7,5 @@ import main.domain.User;
  **/
 public interface UserDao extends GenericDao<User> {
 
-    public User findByCredentials(String username, String password);
+    User findByUsername(String username);
 }

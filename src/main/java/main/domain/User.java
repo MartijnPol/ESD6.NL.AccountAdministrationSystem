@@ -5,18 +5,20 @@ import main.utils.EncryptionHelper;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Martijn van der Pol on 22-03-18
  **/
 
+@XmlRootElement
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "user.findByCredentials", query = "SELECT u FROM User u " +
-                "WHERE u.username = :username AND u.password = :password")
+        @NamedQuery(name = "user.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
 })
 public class User implements Serializable {
 
@@ -33,42 +35,40 @@ public class User implements Serializable {
     @Email
     private String mailAddress;
 
-    @JoinTable(name = "USERS_GROUPS",
-            joinColumns
-                    = @JoinColumn(name = "USERNAME", referencedColumnName = "username"),
-            inverseJoinColumns
-                    = @JoinColumn(name = "GROUPNAME", referencedColumnName = "groupName")
-    )
-
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    private Collection<Group> group = new ArrayList<Group>();
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "users")
+    private List<UserGroup> userGroups;
 
     /**
      * Empty constructor
      */
     public User() {
-
+        this.userGroups = new ArrayList<UserGroup>();
     }
 
     /**
      * Constructor to create a new user object
+     *
      * @param username
      * @param password
      * @param mailAddress
      */
-    public User(String username, @NotNull String password, @Email String mailAddress) {
+    public User(String username, @Size(min = 6, max = 20) String password, @Email String mailAddress) {
+        this();
         this.username = username;
         this.mailAddress = mailAddress;
 
         try {
-            this.password = EncryptionHelper.encryptPassword(username, password);
-        }
-        catch (Exception ex){
+            this.password = EncryptionHelper.encryptData(password);
+        } catch (Exception ex) {
             System.out.println("exception message = " + ex.getMessage());
         }
-
     }
 
+    public void addUserGroup(UserGroup userGroup) {
+        this.userGroups.add(userGroup);
+    }
+
+    //<editor-fold defaultState=collapsed desc="Getters/Setters">
     public Long getId() {
         return id;
     }
@@ -90,7 +90,11 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        try {
+            this.password = EncryptionHelper.encryptData(password);
+        } catch (Exception ex) {
+            System.out.println("exception message = " + ex.getMessage());
+        }
     }
 
     public String getMailAddress() {
@@ -100,4 +104,10 @@ public class User implements Serializable {
     public void setMailAddress(String mailAddress) {
         this.mailAddress = mailAddress;
     }
+
+    public List<UserGroup> getUserGroups() {
+        return userGroups;
+    }
+
+    //</editor-fold>
 }

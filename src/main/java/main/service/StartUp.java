@@ -3,6 +3,7 @@ package main.service;
 import main.domain.Car;
 import main.domain.Owner;
 import main.domain.User;
+import main.domain.UserGroup;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -19,10 +20,10 @@ public class StartUp {
 
     @Inject
     private CarService carService;
-
     @Inject
     private OwnerService ownerService;
-
+    @Inject
+    private UserGroupService userGroupService;
     @Inject
     private UserService userService;
 
@@ -42,6 +43,10 @@ public class StartUp {
         car3.setCarTrackerId(3L);
 
         User smolders = new User("smolders", "1234", "smolders@gmail.com");
+
+        UserGroup userGroup = new UserGroup("Regular");
+        userGroup.addUser(smolders);
         userService.create(smolders);
+        this.userGroupService.create(userGroup);
     }
 }

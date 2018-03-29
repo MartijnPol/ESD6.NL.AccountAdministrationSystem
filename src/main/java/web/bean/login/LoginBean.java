@@ -3,43 +3,50 @@ package web.bean.login;
 import main.domain.User;
 import main.service.UserService;
 
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 /**
  * @author Thom van de Pas on 23-3-2018
  */
-@Named("loginBean")
+@Named(value = "loginBean")
 @ViewScoped
 public class LoginBean implements Serializable {
 
-
     @Inject
     private UserService userService;
+
     @Inject
     private SessionBean sessionBean;
 
     private String username;
     private String password;
 
-    public void login() {
-        String username = this.username.toLowerCase();
+    public String login() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
-        if (sessionBean.getLoggedInUser() == null) {
-            User user = this.userService.login(username, this.password);
-            if (user != null) {
-                this.sessionBean.setLoggedInUser(user);
-                try {
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("profile.xhtml?faces-redirect=true");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            request.login(this.username, this.password);
+        } catch (ServletException e) {
+            e.printStackTrace();
         }
+
+        User loggedInUser = this.userService.findbyUsername(request.getRemoteUser());
+        this.sessionBean.setLoggedInUser(loggedInUser);
+
+        boolean isRegular = request.isUserInRole("RegularRole");
+
+        if (isRegular) {
+            return "profile.xhtml?faces-redirect=true";
+        }
+        return "";
     }
 
     //<editor-fold desc="Getters/Setters">
