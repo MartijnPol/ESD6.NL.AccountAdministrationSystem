@@ -2,6 +2,7 @@ package web.bean.register;
 
 import main.domain.User;
 import main.domain.UserGroup;
+import main.service.UserGroupService;
 import main.service.UserService;
 import web.core.helper.FrontendHelper;
 
@@ -20,6 +21,8 @@ public class RegistrationBean implements Serializable {
 
     @Inject
     private UserService userService;
+    @Inject
+    private UserGroupService userGroupService;
 
     private String username;
     private String password;
@@ -36,6 +39,7 @@ public class RegistrationBean implements Serializable {
                 }
             }
             this.userService.register(newUser);
+            FrontendHelper.displaySuccessSmallMessage("Succes! Gebruiker: " + newUser.getUsername() + " is toegevoegd!");
         } else {
             FrontendHelper.displayErrorSmallMessage("Er is iets mis gegaan bij het registreren van een nieuwe " +
                     "gebruiker, probeer het opnieuw.");

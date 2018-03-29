@@ -2,8 +2,8 @@ package web.bean.login;
 
 import main.domain.User;
 import main.service.UserService;
+import web.core.helper.RedirectHelper;
 
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -44,7 +44,7 @@ public class LoginBean implements Serializable {
         boolean isRegular = request.isUserInRole("RegularRole");
 
         if (isRegular) {
-            return "profile.xhtml?faces-redirect=true";
+            RedirectHelper.redirect("/profile.xhtml");
         }
         return "";
     }
