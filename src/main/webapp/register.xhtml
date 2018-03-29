@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                template="/templates/template.xhtml">
+
+    <ui:define name="title">#{sessionBean.loggedInUser.username}</ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <div class="container, form-group">
+                <p:inputText id="username"
+                             placeholder="Username"
+                             required="true"
+                             requiredMessage="Vul uw gebruikersnaam in."
+                             styleClass="form-control"
+                             value="#{registrationBean.username}"/>
+
+                <p:inputText id="email"
+                             placeholder="Emailaddress"
+                             required="true"
+                             requiredMessage="Vul uw emailadres in."
+                             styleClass="form-control"
+                             type="email"
+                             value="#{registrationBean.emailAddress}"/>
+
+                <p:password id="password"
+                            placeholder="Password"
+                            required="true"
+                            requiredMessage="Vul uw wachtwoord in."
+                            styleClass="form-control"
+                            type="password"
+                            value="#{registrationBean.password}"/>
+            </div>
+
+            <p:commandButton action="#{registrationBean.register}"
+                             id="register"
+                             value="Register"/>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

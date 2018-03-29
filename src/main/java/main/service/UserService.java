@@ -48,4 +48,12 @@ public class UserService {
     public User findbyUsername(String username) {
         return this.userDao.findByUsername(username);
     }
+
+    public User register(User user) {
+        User foundUser = this.findbyUsername(user.getUsername());
+        if (foundUser == null ) {
+            return this.create(user);
+        }
+        return null;
+    }
 }
