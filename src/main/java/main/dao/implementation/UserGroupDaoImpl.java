@@ -12,9 +12,9 @@ import javax.persistence.TypedQuery;
  */
 @Stateless
 @JPA
-public class UserGroupImpl extends GenericDaoJPAImpl<UserGroup> implements UserGroupDao {
+public class UserGroupDaoImpl extends GenericDaoJPAImpl<UserGroup> implements UserGroupDao {
 
-    public UserGroupImpl() {
+    public UserGroupDaoImpl() {
     }
 
     @Override

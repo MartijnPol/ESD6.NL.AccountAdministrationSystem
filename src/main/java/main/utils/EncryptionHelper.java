@@ -30,6 +30,7 @@ public final class EncryptionHelper {
     public static String encryptData(String data) {
           return DigestUtils.sha256Hex(data);
     }
+
     public static String encryptReversible(String value) {
         return getEncryptor().encrypt(value);
     }
