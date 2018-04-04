@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -29,10 +31,18 @@ public class Car implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     private Owner owner;
 
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+    private List<Ownership> pastOwnerships;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Ownership currentOwnership;
+
     public Car() {
+        this.pastOwnerships = new ArrayList<>();
     }
 
     public Car(String licensePlate, Owner owner) {
+        this();
         this.licensePlate = licensePlate;
         this.owner = owner;
     }
@@ -72,6 +82,22 @@ public class Car implements Serializable {
 
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
+    }
+
+    public List<Ownership> getPastOwnerships() {
+        return pastOwnerships;
+    }
+
+    public void setPastOwnerships(List<Ownership> pastOwnerships) {
+        this.pastOwnerships = pastOwnerships;
+    }
+
+    public Ownership getCurrentOwnership() {
+        return currentOwnership;
+    }
+
+    public void setCurrentOwnership(Ownership currentOwnership) {
+        this.currentOwnership = currentOwnership;
     }
 
     public Owner getOwner() {

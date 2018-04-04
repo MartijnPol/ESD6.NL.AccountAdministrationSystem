@@ -1,6 +1,7 @@
 package main.dao;
 
 import main.dao.implementation.CarDaoImpl;
+import main.domain.Address;
 import main.domain.Car;
 import main.domain.Owner;
 import org.junit.After;
@@ -49,7 +50,7 @@ public class CarDaoTest {
 
         carDao = new CarDaoImpl();
         carDao.setEntityManager(em);
-        owner = new Owner("Herman", "de Schermman", new Date());
+        owner = new Owner("Herman", "de Schermman", new Date(), new Address());
         car = new Car("HT-328-W", owner);
     }
 
@@ -70,7 +71,7 @@ public class CarDaoTest {
 
     @Test
     public void findByOwnerSuccessfulTest() {
-        Owner testOwner = new Owner("Pietje", "Bell", new Date());
+        Owner testOwner = new Owner("Pietje", "Bell", new Date(), new Address());
         Car test = new Car("PT-EI-82", testOwner);
         Car test2 = new Car("SR-206-P", owner);
         tx.begin();

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -26,16 +27,22 @@ public class Owner implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date birthDay;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Car> cars;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Ownership> ownerships;
 
     public Owner() {
+        this.ownerships = new ArrayList<>();
     }
 
-    public Owner(String firstName, String lastName, Date birthDay) {
+    public Owner(String firstName, String lastName, Date birthDay, Address address) {
+        this();
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDay = birthDay;
+        this.address = address;
     }
 
     public String getFullName() {
@@ -51,17 +58,22 @@ public class Owner implements Serializable {
                 .build();
     }
 
-    /**
-     * Adds a car to the owner.
-     * @param car to be added.
-     */
-    public void addCar(Car car) {
-        if (car != null && !cars.contains(car)) {
-            this.cars.add(car);
+    public void addOwnership(Ownership ownership) {
+        if (!ownerships.contains(ownership)) {
+            this.ownerships.add(ownership);
         }
     }
 
     //<editor-fold desc="Getters/Setters">
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -86,13 +98,22 @@ public class Owner implements Serializable {
         this.birthDay = birthDay;
     }
 
-    public List<Car> getCars() {
-        return cars;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setCars(List<Car> cars) {
-        this.cars = cars;
+    public void setAddress(Address address) {
+        this.address = address;
     }
+
+    public List<Ownership> getOwnerships() {
+        return ownerships;
+    }
+
+    public void setOwnerships(List<Ownership> ownerships) {
+        this.ownerships = ownerships;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="equals/hashCode">
@@ -108,5 +129,6 @@ public class Owner implements Serializable {
     public int hashCode() {
         return Objects.hash(id);
     }
+
     //</editor-fold>
 }
