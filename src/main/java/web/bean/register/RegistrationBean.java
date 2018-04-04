@@ -5,6 +5,7 @@ import main.domain.UserGroup;
 import main.service.UserGroupService;
 import main.service.UserService;
 import web.core.helper.FrontendHelper;
+import web.core.helper.RedirectHelper;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -45,7 +46,7 @@ public class RegistrationBean implements Serializable {
                 regularUserGroup.addUser(newUser);
                 this.userGroupService.update(regularUserGroup);
             }
-
+            RedirectHelper.redirect("/pages/profile/profile.xhtml");
             FrontendHelper.displaySuccessSmallMessage("Succes! Gebruiker: " + newUser.getUsername() + " is toegevoegd!");
         } else {
             FrontendHelper.displayErrorSmallMessage("Er is iets mis gegaan bij het registreren van een nieuwe " +

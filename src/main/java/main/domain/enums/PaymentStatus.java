@@ -13,7 +13,7 @@ public enum PaymentStatus implements Serializable {
 
     private final String name;
 
-    private PaymentStatus(String name) {
+    PaymentStatus(String name) {
         this.name = name;
     }
 

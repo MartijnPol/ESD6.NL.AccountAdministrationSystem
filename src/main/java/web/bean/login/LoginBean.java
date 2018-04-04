@@ -44,7 +44,7 @@ public class LoginBean implements Serializable {
         boolean isRegular = request.isUserInRole("RegularRole");
 
         if (isRegular) {
-            RedirectHelper.redirect("/profile.xhtml");
+            RedirectHelper.redirect("/pages/profile/profile.xhtml");
         }
         return "";
     }

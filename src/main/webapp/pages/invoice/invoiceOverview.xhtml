@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui"
+                template="/templates/template.xhtml">
+
+    <ui:define name="title">Factuuroverzicht</ui:define>
+
+    <ui:define name="content">
+        <div id="content">
+            <h:form id="form">
+                <p:dataTable emptyMessage="Er zijn geen factuurs gevonden die voldoen aan de criteria"
+                             filteredValue="#{invoiceBean.filteredInvoices}"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10, 20, 50"
+                             value="#{invoiceBean.invoices}" var="invoice"
+                             widgetVar="invoiceOverviewDataTable">
+                    <p:column headerText="id" filterBy="#{invoice.id}" filterMatchMode="contains">
+                        <h:outputText value="#{invoice.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Betaalstatus">
+                        <h:outputText value="#{invoice.paymentStatus.toString()}"/>
+                    </p:column>
+
+                    <p:column headerText="Eigenaar">
+                        <h:outputText value="#{invoice.ownership.owner.fullName}"/>
+                    </p:column>
+
+                    <p:column headerText="Periode">
+                        <h:outputText value="#{invoice.period}">
+                            <f:convertDateTime pattern="dd-MM-yyyy"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Totaalbedrag">
+                        <h:outputText value="€#{invoice.totalAmount}">
+                            <f:convertNumber maxFractionDigits="2"
+                                             minFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Tracker id">
+                        <h:outputText value="#{invoice.ownership.car.carTrackerId}"/>
+                    </p:column>
+                </p:dataTable>
+
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

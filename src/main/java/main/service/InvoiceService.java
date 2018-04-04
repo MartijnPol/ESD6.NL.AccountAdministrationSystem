@@ -7,6 +7,7 @@ import main.domain.Owner;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * @author Thom van de Pas on 4-4-2018
@@ -20,5 +21,9 @@ public class InvoiceService {
 
     public Invoice create(Invoice invoice) {
         return this.invoiceDao.create(invoice);
+    }
+
+    public List<Invoice> getAll() {
+        return this.invoiceDao.findAll();
     }
 }
