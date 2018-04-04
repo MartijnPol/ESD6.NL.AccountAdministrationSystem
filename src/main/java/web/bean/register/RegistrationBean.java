@@ -33,12 +33,19 @@ public class RegistrationBean implements Serializable {
     public void register() {
         if (!this.username.isEmpty() && !this.password.isEmpty() && !this.emailAddress.isEmpty()) {
             User newUser = new User(this.username, this.password, this.emailAddress);
+            this.userService.register(newUser);
+
             if (this.userGroups != null) {
                 for (UserGroup userGroup : this.userGroups) {
-                    newUser.addUserGroup(userGroup);
+                    userGroup.addUser(newUser);
+                    this.userService.update(newUser);
                 }
+            } else {
+                UserGroup regularUserGroup = this.userGroupService.getRegularUserGroup();
+                regularUserGroup.addUser(newUser);
+                this.userGroupService.update(regularUserGroup);
             }
-            this.userService.register(newUser);
+
             FrontendHelper.displaySuccessSmallMessage("Succes! Gebruiker: " + newUser.getUsername() + " is toegevoegd!");
         } else {
             FrontendHelper.displayErrorSmallMessage("Er is iets mis gegaan bij het registreren van een nieuwe " +
@@ -78,5 +85,10 @@ public class RegistrationBean implements Serializable {
     public void setUserGroups(List<UserGroup> userGroups) {
         this.userGroups = userGroups;
     }
+
+    public List<UserGroup> getAllUserGroups() {
+        return this.userGroupService.getAllUserGroups();
+    }
+
     //</editor-fold>
 }

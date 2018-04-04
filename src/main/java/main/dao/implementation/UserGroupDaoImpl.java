@@ -24,4 +24,11 @@ public class UserGroupDaoImpl extends GenericDaoJPAImpl<UserGroup> implements Us
 
         return oneResult(query);
     }
+
+    @Override
+    public UserGroup getRegularUserGroup() {
+        TypedQuery<UserGroup> query = getEntityManager().createNamedQuery("userGroup.getRegularUserGroup", UserGroup.class);
+
+        return oneResult(query);
+    }
 }

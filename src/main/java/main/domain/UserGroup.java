@@ -12,7 +12,8 @@ import java.util.List;
 @XmlRootElement
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "userGroup.findByGroupName", query = "SELECT ug FROM UserGroup ug WHERE ug.groupName = :groupName")
+        @NamedQuery(name = "userGroup.findByGroupName", query = "SELECT ug FROM UserGroup ug WHERE ug.groupName = :groupName"),
+        @NamedQuery(name = "userGroup.getRegularUserGroup", query = "SELECT ug FROM UserGroup ug WHERE ug.groupName = 'Regular'")
 })
 public class UserGroup implements Serializable {
 
