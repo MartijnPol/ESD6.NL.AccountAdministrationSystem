@@ -38,15 +38,15 @@ a:hover {
 
 /** CUSTOM INPUT **/
 
-input {
-    height: 50px;
-}
-
 .form-control {
     border: none;
     border-radius: 0px;
     background-color: #EFEFEF;
     padding: .375rem .75rem !important;
+}
+
+input {
+    height: 50px;
 }
 
 /** CUSTOM BUTTON **/
@@ -105,10 +105,14 @@ input {
     padding-left: 2px;
 }
 
-/** CREATE NEW USER FORM **/
+.content-container {
+    padding: 28px;
+}
 
-.create-user {
-    margin-top: 1rem;
+/** TABLE FIXES **/
+.table th {
+    padding: .75rem !important;
+
 }
 
 /** UTILS **/
