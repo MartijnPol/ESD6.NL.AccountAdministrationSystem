@@ -7,37 +7,58 @@
     <ui:define name="title">#{sessionBean.loggedInUser.username}</ui:define>
 
     <ui:define name="content">
-        <h:form>
-            <div class="container form-group">
-                <div class="ui-g">
-                    <p:inputText id="username"
-                                 placeholder="Username"
-                                 required="true"
-                                 requiredMessage="Vul uw gebruikersnaam in."
-                                 styleClass="form-control"
-                                 value="#{registrationBean.username}"/>
 
-                    <p:inputText id="email"
-                                 placeholder="Emailaddress"
-                                 required="true"
-                                 requiredMessage="Vul uw emailadres in."
-                                 styleClass="form-control"
-                                 type="email"
-                                 value="#{registrationBean.emailAddress}"/>
+        <div class="container">
 
-                    <p:password id="password"
-                                placeholder="Password"
-                                required="true"
-                                requiredMessage="Vul uw wachtwoord in."
-                                styleClass="form-control"
-                                type="password"
-                                value="#{registrationBean.password}"/>
+            <header class="header">
+                <h1>Nieuwe gebruiker</h1>
+                <h5 class="text-muted">Maak een nieuwe gebruiker aan</h5>
 
-                    <p:commandButton action="#{registrationBean.register}"
-                                     id="register"
-                                     value="Register"/>
+                <div class="create-user">
+
+                    <h:form>
+
+                        <div class="form-group">
+                            <p:inputText id="username"
+                                         placeholder="Gebruikersnaam"
+                                         required="true"
+                                         requiredMessage="Vul uw gebruikersnaam in."
+                                         styleClass="form-control"
+                                         value="#{registrationBean.username}"/>
+                        </div>
+
+                        <div class="form-group">
+                            <p:inputText id="email"
+                                         placeholder="Email"
+                                         required="true"
+                                         requiredMessage="Vul uw emailadres in."
+                                         styleClass="form-control"
+                                         type="email"
+                                         value="#{registrationBean.emailAddress}"/>
+                        </div>
+
+                        <div class="form-group">
+                            <p:password id="password"
+                                        placeholder="Wachtwoord"
+                                        required="true"
+                                        requiredMessage="Vul uw wachtwoord in."
+                                        styleClass="form-control"
+                                        type="password"
+                                        value="#{registrationBean.password}"/>
+                        </div>
+
+                        <p:commandButton action="#{registrationBean.register}"
+                                         id="register"
+                                         value="Registreer"
+                                         styleClass="btn btn-success"/>
+
+                    </h:form>
+
                 </div>
-            </div>
-        </h:form>
+
+            </header>
+
+        </div>
+
     </ui:define>
 </ui:composition>

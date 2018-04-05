@@ -38,18 +38,12 @@ public class StartUp {
     public void initData() {
         Address address = new Address("Nijverheidsweg", "25a", "5071NL", "Udenhout", "Nederland");
         Address address2 = new Address("Tilburgseweg", "12", "5074FK", "Tilburg", "Nederland");
-        Owner owner1 = new Owner("Henk", "van der Pol", new Date(), address);
+        Owner owner1 = ownerService.create(new Owner("Henk", "van der Pol", new Date(), address));
         Owner owner2 = ownerService.create(new Owner("Frits", "Jansen", new Date(), address2));
         Car car1 = carService.create(new Car("FD-83-TT", owner1));
         Car car2 = carService.create(new Car("KO-PX-12", owner2));
-//        Car car3 = carService.create(new Car("FW-739-S", owner1));
-//        car1.setCarTrackerId(1L);
-//        car2.setCarTrackerId(2L);
-//        car3.setCarTrackerId(3L);
 
         User smolders = new User("smolders", "1234", "smolders@gmail.com");
-
-        owner1 = ownerService.create(owner1);
 
         UserGroup userGroup = new UserGroup("Regular");
         userGroup.addUser(smolders);

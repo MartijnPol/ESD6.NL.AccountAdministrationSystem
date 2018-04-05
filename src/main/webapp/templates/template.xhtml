@@ -18,6 +18,12 @@
     <!-- Bootstrap JS -->
     <h:outputScript library="webjars" name="bootstrap/4.0.0-2/js/bootstrap.min.js"/>
 
+    <!-- Bootstrap CSS -->
+    <h:outputStylesheet library="webjars" name="bootstrap/4.0.0-2/css/bootstrap.min.css"/>
+
+    <!-- Custom CSS -->
+    <h:outputStylesheet library="css" name="stylesheet.css"/>
+
 </h:head>
 
 <h:body>
@@ -27,12 +33,6 @@
     <h:form id="defaultForm">
         <p:growl id="growl" showDetail="true"/>
     </h:form>
-
-    <!-- Bootstrap CSS -->
-    <h:outputStylesheet library="webjars" name="bootstrap/4.0.0-2/css/bootstrap.min.css"/>
-
-    <!-- Custom CSS -->
-    <h:outputStylesheet library="css" name="stylesheet.css"/>
 
     <ui:include src="./header.xhtml"/>
 
