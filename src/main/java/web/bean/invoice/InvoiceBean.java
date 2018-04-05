@@ -1,6 +1,7 @@
 package web.bean.invoice;
 
 import main.domain.Invoice;
+import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +35,10 @@ public class InvoiceBean implements Serializable {
         return invoices;
     }
 
+    public PaymentStatus[] getPaymentStatuses() {
+        return PaymentStatus.values();
+    }
+
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
     }
@@ -45,4 +50,6 @@ public class InvoiceBean implements Serializable {
     public void setFilteredInvoices(List<Invoice> filteredInvoices) {
         this.filteredInvoices = filteredInvoices;
     }
+
+
 }

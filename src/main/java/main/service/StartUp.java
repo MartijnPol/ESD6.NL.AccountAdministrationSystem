@@ -37,10 +37,11 @@ public class StartUp {
     @PostConstruct
     public void initData() {
         Address address = new Address("Nijverheidsweg", "25a", "5071NL", "Udenhout", "Nederland");
+        Address address2 = new Address("Tilburgseweg", "12", "5074FK", "Tilburg", "Nederland");
         Owner owner1 = new Owner("Henk", "van der Pol", new Date(), address);
-//        Owner owner2 = ownerService.create(new Owner("Frits", "Jansen", new Date()));
+        Owner owner2 = ownerService.create(new Owner("Frits", "Jansen", new Date(), address2));
         Car car1 = carService.create(new Car("FD-83-TT", owner1));
-//        Car car2 = carService.create(new Car("KO-PX-12", owner2));
+        Car car2 = carService.create(new Car("KO-PX-12", owner2));
 //        Car car3 = carService.create(new Car("FW-739-S", owner1));
 //        car1.setCarTrackerId(1L);
 //        car2.setCarTrackerId(2L);
@@ -60,11 +61,30 @@ public class StartUp {
         ownership.setCar(car1);
         this.ownershipService.create(ownership);
 
+        Ownership ownership2 = new Ownership();
+        ownership2.setOwner(owner2);
+        ownership2.setCar(car2);
+        this.ownershipService.create(ownership2);
+
         Invoice invoice = new Invoice();
         invoice.setPaymentStatus(PaymentStatus.OPEN);
         invoice.setPeriod(new Date());
         invoice.setTotalAmount(new BigDecimal(250.30));
         invoice.setOwnership(ownership);
         this.invoiceService.create(invoice);
+
+        Invoice invoice2 = new Invoice();
+        invoice2.setPaymentStatus(PaymentStatus.PAID);
+        invoice2.setPeriod(new Date());
+        invoice2.setTotalAmount(new BigDecimal(121.12));
+        invoice2.setOwnership(ownership);
+        this.invoiceService.create(invoice2);
+
+        Invoice invoice3 = new Invoice();
+        invoice3.setPaymentStatus(PaymentStatus.OPEN);
+        invoice3.setPeriod(new Date());
+        invoice3.setTotalAmount(new BigDecimal(166.25));
+        invoice3.setOwnership(ownership2);
+        this.invoiceService.create(invoice3);
     }
 }
