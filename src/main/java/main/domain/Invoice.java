@@ -18,6 +18,8 @@ public class Invoice implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long invoiceNr;
+
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
@@ -76,6 +78,14 @@ public class Invoice implements Serializable {
 
     public void setOwnership(Ownership ownership) {
         this.ownership = ownership;
+    }
+
+    public Long getInvoiceNr() {
+        return invoiceNr;
+    }
+
+    public void setInvoiceNr(Long invoiceNr) {
+        this.invoiceNr = invoiceNr;
     }
 
     public String getFilePath() {

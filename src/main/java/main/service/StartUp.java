@@ -40,8 +40,14 @@ public class StartUp {
         Address address2 = new Address("Tilburgseweg", "12", "5074FK", "Tilburg", "Nederland");
         Owner owner1 = ownerService.create(new Owner("Henk", "van der Pol", new Date(), address));
         Owner owner2 = ownerService.create(new Owner("Frits", "Jansen", new Date(), address2));
-        Car car1 = carService.create(new Car("FD-83-TT", owner1));
+        Car car1 = new Car("FD-83-TT", owner1);
         Car car2 = carService.create(new Car("KO-PX-12", owner2));
+//        Car car3 = carService.create(new Car("FW-739-S", owner1));
+        car1.setCarTrackerId(1L);
+        car2.setCarTrackerId(2L);
+//        car3.setCarTrackerId(3L);
+        carService.create(car1);
+        carService.create(car2);
 
         User smolders = new User("smolders", "1234", "smolders@gmail.com");
 
@@ -61,6 +67,7 @@ public class StartUp {
         this.ownershipService.create(ownership2);
 
         Invoice invoice = new Invoice();
+        invoice.setInvoiceNr(20180001L);
         invoice.setPaymentStatus(PaymentStatus.OPEN);
         invoice.setPeriod(new Date());
         invoice.setTotalAmount(new BigDecimal(250.30));
@@ -68,6 +75,7 @@ public class StartUp {
         this.invoiceService.create(invoice);
 
         Invoice invoice2 = new Invoice();
+        invoice2.setInvoiceNr(20180002L);
         invoice2.setPaymentStatus(PaymentStatus.PAID);
         invoice2.setPeriod(new Date());
         invoice2.setTotalAmount(new BigDecimal(121.12));
@@ -75,6 +83,7 @@ public class StartUp {
         this.invoiceService.create(invoice2);
 
         Invoice invoice3 = new Invoice();
+        invoice3.setInvoiceNr(20180003L);
         invoice3.setPaymentStatus(PaymentStatus.OPEN);
         invoice3.setPeriod(new Date());
         invoice3.setTotalAmount(new BigDecimal(166.25));
