@@ -4,9 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class Tariff {
+public class Tariff implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,11 +17,11 @@ public class Tariff {
 
     private boolean ridingDuringRushHour;
 
-    public Tariff(){
+    public Tariff() {
         this.ridingDuringRushHour = false;
     }
 
-    public Tariff(double tariffInEuro, boolean ridingDuringRushHour){
+    public Tariff(double tariffInEuro, boolean ridingDuringRushHour) {
         this.tariffInEuro = tariffInEuro;
         this.ridingDuringRushHour = ridingDuringRushHour;
     }
@@ -43,7 +44,7 @@ public class Tariff {
         this.tariffInEuro = tariffInEuro;
     }
 
-    public boolean getRidingDuringRushHour(){
+    public boolean getRidingDuringRushHour() {
         return ridingDuringRushHour;
     }
 
