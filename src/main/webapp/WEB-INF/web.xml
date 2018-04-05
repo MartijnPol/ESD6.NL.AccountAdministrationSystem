@@ -43,15 +43,16 @@
         <param-value>client</param-value>
     </context-param>
 
-    <!--<security-constraint>-->
-        <!--<web-resource-collection>-->
-            <!--<web-resource-name>Secure Pages</web-resource-name>-->
-            <!--<url-pattern>/*</url-pattern>-->
-        <!--</web-resource-collection>-->
-        <!--<auth-constraint>-->
-            <!--<role-name>RegularRole</role-name>-->
-        <!--</auth-constraint>-->
-    <!--</security-constraint>-->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Secure Pages</web-resource-name>
+            <url-pattern>/pages/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>RegularRole</role-name>
+        </auth-constraint>
+    </security-constraint>
+
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>security_realm</realm-name>
@@ -60,8 +61,10 @@
             <form-error-page>/login.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+
     <security-role>
         <description/>
         <role-name>RegularRole</role-name>
     </security-role>
+
 </web-app>
