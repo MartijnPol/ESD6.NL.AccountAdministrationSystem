@@ -105,8 +105,8 @@ input {
     padding-left: 2px;
 }
 
-.header-container {
-    margin-top: 1rem;
+.content-container {
+    padding: 28px;
 }
 
 /** TABLE FIXES **/

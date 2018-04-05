@@ -13,36 +13,35 @@
             <header class="header">
                 <h1>Auto overzicht</h1>
                 <h5 class="text-muted">Overzicht van alle auto's</h5>
-
-                <div class="header-container">
-
-                    <h:form id="form">
-
-                        <p:dataTable emptyMessage="Er zijn geen auto's gevonden die voldoen aan de criteria"
-                                     filteredValue="#{carBean.filteredCars}"
-                                     paginator="true"
-                                     tableStyleClass="table"
-                                     paginatorPosition="bottom"
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="10, 20, 50"
-                                     value="#{carBean.cars}" var="car"
-                                     widgetVar="carOverviewDataTable">
-
-                            <p:column headerText="Kenteken" filterBy="#{car.licensePlate}" filterMatchMode="contains">
-                                <h:outputText value="#{car.licensePlate}"/>
-                            </p:column>
-
-                            <p:column headerText="Eigenaar" filterBy="#{car.owner.fullName}" filterMatchMode="contains">
-                                <h:outputText value="#{car.owner.fullName}"/>
-                            </p:column>
-
-                        </p:dataTable>
-
-                    </h:form>
-
-                </div>
-
             </header>
+
+            <div class="content-container">
+
+                <h:form>
+
+                    <p:dataTable emptyMessage="Er zijn geen auto's gevonden die voldoen aan de criteria"
+                                 filteredValue="#{carBean.filteredCars}"
+                                 paginator="true"
+                                 tableStyleClass="table"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10, 20, 50"
+                                 value="#{carBean.cars}" var="car"
+                                 widgetVar="carOverviewDataTable">
+
+                        <p:column headerText="Kenteken" filterBy="#{car.licensePlate}" filterMatchMode="contains">
+                            <h:outputText value="#{car.licensePlate}"/>
+                        </p:column>
+
+                        <p:column headerText="Eigenaar" filterBy="#{car.owner.fullName}" filterMatchMode="contains">
+                            <h:outputText value="#{car.owner.fullName}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </h:form>
+
+            </div>
 
         </div>
 

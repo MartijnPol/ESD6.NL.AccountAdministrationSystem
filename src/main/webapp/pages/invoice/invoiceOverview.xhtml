@@ -8,53 +8,72 @@
     <ui:define name="title">Facturen</ui:define>
 
     <ui:define name="content">
-        <div id="content">
-            <h:form id="form">
-                <p:dataTable emptyMessage="Er zijn geen factuurs gevonden die voldoen aan de criteria"
-                             filteredValue="#{invoiceBean.filteredInvoices}"
-                             paginator="true" tableStyleClass="table"
-                             paginatorPosition="bottom"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="10, 20, 50"
-                             value="#{invoiceBean.invoices}" var="invoice"
-                             widgetVar="invoiceOverviewDataTable">
-                    <p:column headerText="Factuurnummer" filterBy="#{invoice.invoiceNr}" filterMatchMode="contains">
-                        <h:outputText value="#{invoice.invoiceNr}"/>
-                    </p:column>
 
-                    <p:column headerText="Betaalstatus" filterBy="#{invoice.paymentStatus}" filterMatchMode="equals">
-                        <f:facet name="filter">
-                            <p:selectOneButton onchange="PF('invoiceOverviewDataTable').filter()">
-                                <f:selectItems value="#{invoiceBean.paymentStatuses}" var="paymentStatusEnum"
-                                               itemValue="#{paymentStatusEnum}"
-                                               itemLabel="#{paymentStatusEnum.toString()}"/>
-                            </p:selectOneButton>
-                        </f:facet>
-                        <h:outputText value="#{invoice.paymentStatus.toString()}"/>
-                    </p:column>
+        <div class="container">
 
-                    <p:column headerText="Eigenaar" filterBy="#{invoice.ownership.owner.fullName}" filterMatchMode="contains">
-                        <h:outputText value="#{invoice.ownership.owner.fullName}"/>
-                    </p:column>
+            <header class="header">
+                <h1>Facturen overzicht</h1>
+                <h5 class="text-muted">Overzicht van alle facturen</h5>
+            </header>
 
-                    <p:column headerText="Periode">
-                        <h:outputText value="#{invoice.period}">
-                            <f:convertDateTime pattern="dd-MM-yyyy"/>
-                        </h:outputText>
-                    </p:column>
+            <div class="content-container">
 
-                    <p:column headerText="Totaalbedrag" filterBy="#{invoice.totalAmount}" filterMatchMode="contains">
-                        <h:outputText value="€#{invoice.totalAmount}" converter="javax.faces.BigDecimal">
-                            <f:convertNumber currencySymbol="€" type="currency"/>
-                        </h:outputText>
-                    </p:column>
+                <h:form>
 
-                    <p:column headerText="Tracker id" filterBy="#{invoice.ownership.car.carTrackerId}" filterMatchMode="contains">
-                        <h:outputText value="#{invoice.ownership.car.carTrackerId}"/>
-                    </p:column>
-                </p:dataTable>
+                    <p:dataTable emptyMessage="Er zijn geen factuurs gevonden die voldoen aan de criteria"
+                                 filteredValue="#{invoiceBean.filteredInvoices}"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10, 20, 50"
+                                 value="#{invoiceBean.invoices}" var="invoice"
+                                 widgetVar="invoiceOverviewDataTable">
 
-            </h:form>
+                        <p:column headerText="Factuurnummer" filterBy="#{invoice.invoiceNr}" filterMatchMode="contains">
+                            <h:outputText value="#{invoice.invoiceNr}"/>
+                        </p:column>
+
+                        <p:column headerText="Betaalstatus" filterBy="#{invoice.paymentStatus}"
+                                  filterMatchMode="equals">
+                            <f:facet name="filter">
+                                <p:selectOneButton onchange="PF('invoiceOverviewDataTable').filter()">
+                                    <f:selectItems value="#{invoiceBean.paymentStatuses}" var="paymentStatusEnum"
+                                                   itemValue="#{paymentStatusEnum}"
+                                                   itemLabel="#{paymentStatusEnum.toString()}"/>
+                                </p:selectOneButton>
+                            </f:facet>
+                            <h:outputText value="#{invoice.paymentStatus.toString()}"/>
+                        </p:column>
+
+                        <p:column headerText="Eigenaar" filterBy="#{invoice.ownership.owner.fullName}"
+                                  filterMatchMode="contains">
+                            <h:outputText value="#{invoice.ownership.owner.fullName}"/>
+                        </p:column>
+
+                        <p:column headerText="Periode">
+                            <h:outputText value="#{invoice.period}">
+                                <f:convertDateTime pattern="dd-MM-yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Totaalbedrag" filterBy="#{invoice.totalAmount}"
+                                  filterMatchMode="contains">
+                            <h:outputText value="€#{invoice.totalAmount}" converter="javax.faces.BigDecimal">
+                                <f:convertNumber currencySymbol="€" type="currency"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Tracker id" filterBy="#{invoice.ownership.car.carTrackerId}"
+                                  filterMatchMode="contains">
+                            <h:outputText value="#{invoice.ownership.car.carTrackerId}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </h:form>
+            </div>
+
         </div>
+
     </ui:define>
 </ui:composition>
