@@ -17,21 +17,22 @@
                              rowsPerPageTemplate="10, 20, 50"
                              value="#{invoiceBean.invoices}" var="invoice"
                              widgetVar="invoiceOverviewDataTable">
-                    <p:column headerText="id" filterBy="#{invoice.id}" filterMatchMode="contains">
-                        <h:outputText value="#{invoice.id}"/>
+                    <p:column headerText="Factuurnummer" filterBy="#{invoice.invoiceNr}" filterMatchMode="contains">
+                        <h:outputText value="#{invoice.invoiceNr}"/>
                     </p:column>
 
                     <p:column headerText="Betaalstatus" filterBy="#{invoice.paymentStatus}" filterMatchMode="equals">
                         <f:facet name="filter">
                             <p:selectOneButton onchange="PF('invoiceOverviewDataTable').filter()">
-                                <f:selectItems value="#{invoiceBean.paymentStatuses}" var="paymentStatus"
-                                               itemValue="#{paymentStatus}" itemLabel="#{paymentStatus.toString()}"/>
+                                <f:selectItems value="#{invoiceBean.paymentStatuses}" var="paymentStatusEnum"
+                                               itemValue="#{paymentStatusEnum}"
+                                               itemLabel="#{paymentStatusEnum.toString()}"/>
                             </p:selectOneButton>
                         </f:facet>
                         <h:outputText value="#{invoice.paymentStatus.toString()}"/>
                     </p:column>
 
-                    <p:column headerText="Eigenaar">
+                    <p:column headerText="Eigenaar" filterBy="#{invoice.ownership.owner.fullName}" filterMatchMode="contains">
                         <h:outputText value="#{invoice.ownership.owner.fullName}"/>
                     </p:column>
 
@@ -41,15 +42,13 @@
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Totaalbedrag">
-                        <h:outputText value="€#{invoice.totalAmount}">
-                            <f:convertNumber maxFractionDigits="2"
-                                             minFractionDigits="2"
-                                             pattern="#0.00"/>
+                    <p:column headerText="Totaalbedrag" filterBy="#{invoice.totalAmount}" filterMatchMode="contains">
+                        <h:outputText value="€#{invoice.totalAmount}" converter="javax.faces.BigDecimal">
+                            <f:convertNumber currencySymbol="€" type="currency"/>
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Tracker id">
+                    <p:column headerText="Tracker id" filterBy="#{invoice.ownership.car.carTrackerId}" filterMatchMode="contains">
                         <h:outputText value="#{invoice.ownership.car.carTrackerId}"/>
                     </p:column>
                 </p:dataTable>
