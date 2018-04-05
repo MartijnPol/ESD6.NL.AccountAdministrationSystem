@@ -12,7 +12,8 @@
             <h:form id="form">
                 <p:dataTable emptyMessage="Er zijn geen factuurs gevonden die voldoen aan de criteria"
                              filteredValue="#{invoiceBean.filteredInvoices}"
-                             paginator="true"
+                             paginator="true" tableStyleClass="table"
+                             paginatorPosition="bottom"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="10, 20, 50"
                              value="#{invoiceBean.invoices}" var="invoice"
