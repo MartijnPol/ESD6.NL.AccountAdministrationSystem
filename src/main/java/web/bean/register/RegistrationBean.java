@@ -46,7 +46,7 @@ public class RegistrationBean implements Serializable {
                 regularUserGroup.addUser(newUser);
                 this.userGroupService.update(regularUserGroup);
             }
-            RedirectHelper.redirect("/pages/profile/profile.xhtml");
+            RedirectHelper.redirect("/pages/profile/dashboard.xhtml");
             FrontendHelper.displaySuccessSmallMessage("Succes! Gebruiker: " + newUser.getUsername() + " is toegevoegd!");
         } else {
             FrontendHelper.displayErrorSmallMessage("Er is iets mis gegaan bij het registreren van een nieuwe " +
