@@ -3,7 +3,6 @@ package main.service;
 import main.dao.InvoiceDao;
 import main.dao.JPA;
 import main.domain.Invoice;
-import main.domain.Owner;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
