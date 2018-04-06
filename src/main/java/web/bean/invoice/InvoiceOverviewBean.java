@@ -9,7 +9,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,18 +16,17 @@ import java.util.List;
  */
 @Named
 @ViewScoped
-public class InvoiceBean implements Serializable {
+public class InvoiceOverviewBean implements Serializable {
 
     @Inject
     private InvoiceService invoiceService;
 
     private List<Invoice> invoices;
     private List<Invoice> filteredInvoices;
-    private Invoice invoice;
 
     @PostConstruct
     public void init() {
-        this.invoices = this.invoiceService.getAll();
+        this.invoices = this.invoiceService.findAll();
     }
 
     public List<Invoice> getInvoices() {
