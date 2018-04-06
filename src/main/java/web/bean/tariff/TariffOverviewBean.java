@@ -28,10 +28,6 @@ public class TariffOverviewBean implements Serializable {
         this.tariffs = this.tariffService.findAll();
     }
 
-    public void create(){
-        RedirectHelper.redirect("/pages/tariff/createTariff.xhtml");
-    }
-
     public void onCellEdit(Tariff tariff) {
         if (tariff.getTariffInEuro() >= 0) {
             Tariff foundTariff = tariffService.findById(tariff.getId());
