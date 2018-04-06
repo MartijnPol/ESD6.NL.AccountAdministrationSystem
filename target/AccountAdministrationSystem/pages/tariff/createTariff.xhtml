@@ -18,31 +18,27 @@
             <div class="content-container">
 
                 <h:form>
-
                     <div class="form-group">
-                        <p:inputText id="username"
+                        <p:inputText id="tariff"
                                      placeholder="0,00"
                                      required="true"
                                      requiredMessage="Vul het tarief in eurocenten in."
                                      styleClass="form-control"
-                                     value=""/>
+                                     value="#{tariffBean.tariffInEuro}"/>
                     </div>
 
-                    <div class="form-group">
-                        <p:inputText id="email"
-                                     placeholder=""
-                                     required="true"
-                                     requiredMessage="Geldt dit tarief tijdens spits uren?"
-                                     styleClass="form-control"
-                                     type="email"
-                                     value=""/>
+                    <div>
+                        <h:outputText value="Geldt dit tarief tijdens spits uren?"/>
+                        <p:selectBooleanCheckbox value="#{tariffBean.ridingDuringRushHour}">
+                            <p:ajax update="defaultForm:growl" listener="#{tariffBean.ridingDuringRushHour}" />
+                        </p:selectBooleanCheckbox>
                     </div>
-
-                    <p:commandButton action=""
-                                     id="register"
-                                     value="Registreer"
-                                     styleClass="btn btn-success"/>
-
+                    <div>
+                        <p:commandButton action="#{tariffBean.create}"
+                                         id="create"
+                                         value="Nieuw"
+                                         styleClass="btn btn-success"/>
+                    </div>
                 </h:form>
 
             </div>

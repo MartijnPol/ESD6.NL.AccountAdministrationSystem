@@ -2,6 +2,8 @@ package web.bean.tariff;
 
 import main.domain.Tariff;
 import main.service.TariffService;
+import org.primefaces.event.CellEditEvent;
+import web.core.helper.FrontendHelper;
 import web.core.helper.RedirectHelper;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +28,23 @@ public class TariffOverviewBean implements Serializable {
         this.tariffs = this.tariffService.findAll();
     }
 
+    public void onCellEdit(Tariff tariff) {
+        if (tariff.getTariffInEuro() >= 0) {
+            Tariff foundTariff = tariffService.findById(tariff.getId());
+            foundTariff.setRidingDuringRushHour(tariff.getRidingDuringRushHour());
+            foundTariff.setTariffInEuro(tariff.getTariffInEuro());
+            tariffService.createOrUpdate(foundTariff);
+        } else {
+            FrontendHelper.displayErrorSmallMessage("Helaas", "Vul een positief tarief in.");
+        }
+        FrontendHelper.displaySuccessSmallMessage("Succes!", "Tarief is succesvol gewijzigd.");
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
+    public List<Tariff> getTariffs() {
+        return tariffs;
+    }
+
     public void setTariffs(List<Tariff> tariffs) {
         this.tariffs = tariffs;
     }
@@ -37,4 +56,5 @@ public class TariffOverviewBean implements Serializable {
     public void setFilteredTariffs(List<Tariff> filteredTariffs) {
         this.filteredTariffs = filteredTariffs;
     }
+    //</editor-fold>
 }

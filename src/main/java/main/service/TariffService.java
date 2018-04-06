@@ -41,4 +41,8 @@ public class TariffService {
      * @return the list of all the tariffs found
      */
     public List<Tariff> findAll() { return this.tariffDao.findAll(); }
+
+    public Tariff findById(Long id) {
+        return this.tariffDao.findById(id);
+    }
 }

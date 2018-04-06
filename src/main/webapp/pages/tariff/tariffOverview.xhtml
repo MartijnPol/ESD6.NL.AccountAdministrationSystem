@@ -27,10 +27,17 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10, 20, 50"
                                  value="#{tariffOverviewBean.tariffs}" var="tariff"
+                                 editable="true" editMode="cell"
                                  widgetVar="tariffOverviewDataTable">
 
+                        <p:ajax event="cellEdit" listener="#{tariffOverviewBean.onCellEdit(tariff)}"
+                                update=":defaultForm:growl"/>
+
                         <p:column headerText="Tarief" filterBy="#{tariff.tariffInEuro}" filterMatchMode="contains">
-                            <h:outputText value="#{tariff.tariffInEuro}"/>
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{tariff.tariffInEuro}"/> </f:facet>
+                                <f:facet name="input"><p:inputText value="#{tariff.tariffInEuro}"/> </f:facet>
+                            </p:cellEditor>
                         </p:column>
 
                         <p:column headerText="Spitstarief" filterBy="#{tariff.ridingDuringRushHour}"
@@ -44,6 +51,13 @@
                                 </p:selectOneButton>
                             </f:facet>
                             <h:outputText value="#{tariff.ridingDuringRushHour ? 'Ja' : 'Nee'}"/>
+                        </p:column>
+
+                        <p:column>
+                            <p:commandButton action="#{tariffBean.remove(tariff)}"
+                                             id="remove"
+                                             value="Delete"
+                                             styleClass="btn btn-danger"/>
                         </p:column>
 
                     </p:dataTable>

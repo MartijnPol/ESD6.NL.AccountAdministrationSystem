@@ -33,6 +33,18 @@
                             <h:outputText value="#{car.licensePlate}"/>
                         </p:column>
 
+                        <p:column headerText="Soort" filterBy="#{car.rdwData.voertuigsoort}" filterMatchMode="contains">
+                            <h:outputText value="#{car.rdwData.voertuigsoort}"/>
+                        </p:column>
+
+                        <p:column headerText="Merk" filterBy="#{car.rdwData.merk}" filterMatchMode="contains">
+                            <h:outputText value="#{car.rdwData.merk}"/>
+                        </p:column>
+
+                        <p:column headerText="Type" filterBy="#{car.rdwData.handelsbenaming}" filterMatchMode="contains">
+                            <h:outputText value="#{car.rdwData.handelsbenaming}"/>
+                        </p:column>
+
                         <p:column headerText="Eigenaar" filterBy="#{car.owner.fullName}" filterMatchMode="contains">
                             <h:outputText value="#{car.owner.fullName}"/>
                         </p:column>
