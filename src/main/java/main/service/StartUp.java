@@ -95,12 +95,12 @@ public class StartUp {
         Tariff tariff1 = new Tariff();
         tariff1.setTariffInEuro(0.11);
         tariff1.setRidingDuringRushHour(true);
-        this.tariffService.create(tariff1);
+        this.tariffService.createOrUpdate(tariff1);
 
         Tariff tariff2 = new Tariff();
         tariff2.setTariffInEuro(0.05);
         tariff2.setRidingDuringRushHour(false);
-        this.tariffService.create(tariff2);
+        this.tariffService.createOrUpdate(tariff2);
         this.invoiceService.createOrUpdate(invoice3);
 
     }
