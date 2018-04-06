@@ -3,6 +3,7 @@ package web.bean.invoice;
 import main.domain.Invoice;
 import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
+import org.primefaces.model.LazyDataModel;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -24,7 +25,6 @@ public class InvoiceBean implements Serializable {
 
     private List<Invoice> invoices;
     private List<Invoice> filteredInvoices;
-    private Invoice invoice;
 
     @PostConstruct
     public void init() {
