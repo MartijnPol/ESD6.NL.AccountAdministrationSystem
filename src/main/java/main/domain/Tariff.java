@@ -4,14 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
+@XmlRootElement
 @Entity
-public class Tariff implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Tariff extends BaseEntity {
 
     private double tariffInEuro;
 
@@ -27,15 +25,6 @@ public class Tariff implements Serializable {
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public double getTariffInEuro() {
         return tariffInEuro;
     }

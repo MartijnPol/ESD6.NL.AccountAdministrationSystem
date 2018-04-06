@@ -21,12 +21,8 @@ public class UserService {
     public UserService() {
     }
 
-    public User create(User user) {
-        return this.userDao.create(user);
-    }
-
-    public User update(User user) {
-        return this.userDao.update(user);
+    public User createOrUpdate(User user) {
+        return this.userDao.createOrUpdate(user);
     }
 
     public void delete(User user) {
@@ -45,14 +41,24 @@ public class UserService {
         return this.userDao.findAll();
     }
 
-    public User findbyUsername(String username) {
+    /**
+     * Find a User by its username.
+     * @param username is the username of the User to be found.
+     * @returns the found User or null.
+     */
+    public User findByUsername(String username) {
         return this.userDao.findByUsername(username);
     }
 
+    /**
+     * Register a new User in the system so that the User can login using these credentials.
+     * @param user is the new User to be registered.
+     * @returns the created User.
+     */
     public User register(User user) {
-        User foundUser = this.findbyUsername(user.getUsername());
+        User foundUser = this.findByUsername(user.getUsername());
         if (foundUser == null ) {
-            return this.create(user);
+            return this.createOrUpdate(user);
         }
         return null;
     }

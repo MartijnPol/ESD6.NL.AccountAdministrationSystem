@@ -38,33 +38,33 @@ public class StartUp {
     public void initData() {
         Address address = new Address("Nijverheidsweg", "25a", "5071NL", "Udenhout", "Nederland");
         Address address2 = new Address("Tilburgseweg", "12", "5074FK", "Tilburg", "Nederland");
-        Owner owner1 = ownerService.create(new Owner("Henk", "van der Pol", new Date(), address));
-        Owner owner2 = ownerService.create(new Owner("Frits", "Jansen", new Date(), address2));
+        Owner owner1 = ownerService.createOrUpdate(new Owner("Henk", "van der Pol", new Date(), address));
+        Owner owner2 = ownerService.createOrUpdate(new Owner("Frits", "Jansen", new Date(), address2));
         Car car1 = new Car("FD-83-TT", owner1);
-        Car car2 = carService.create(new Car("KO-PX-12", owner2));
+        Car car2 = carService.createOrUpdate(new Car("KO-PX-12", owner2));
 //        Car car3 = carService.create(new Car("FW-739-S", owner1));
         car1.setCarTrackerId(1L);
         car2.setCarTrackerId(2L);
 //        car3.setCarTrackerId(3L);
-        carService.create(car1);
-        carService.create(car2);
+        carService.createOrUpdate(car1);
+        carService.createOrUpdate(car2);
 
         User smolders = new User("smolders", "1234", "smolders@gmail.com");
 
         UserGroup userGroup = new UserGroup("Regular");
         userGroup.addUser(smolders);
-        userService.create(smolders);
+        userService.createOrUpdate(smolders);
         this.userGroupService.create(userGroup);
 
         Ownership ownership = new Ownership();
         ownership.setOwner(owner1);
         ownership.setCar(car1);
-        this.ownershipService.create(ownership);
+        this.ownershipService.createOrUpdate(ownership);
 
         Ownership ownership2 = new Ownership();
         ownership2.setOwner(owner2);
         ownership2.setCar(car2);
-        this.ownershipService.create(ownership2);
+        this.ownershipService.createOrUpdate(ownership2);
 
         Invoice invoice = new Invoice();
         invoice.setInvoiceNr(20180001L);
@@ -72,7 +72,7 @@ public class StartUp {
         invoice.setPeriod(new Date());
         invoice.setTotalAmount(new BigDecimal(250.30));
         invoice.setOwnership(ownership);
-        this.invoiceService.create(invoice);
+        this.invoiceService.createOrUpdate(invoice);
 
         Invoice invoice2 = new Invoice();
         invoice2.setInvoiceNr(20180002L);
@@ -80,7 +80,7 @@ public class StartUp {
         invoice2.setPeriod(new Date());
         invoice2.setTotalAmount(new BigDecimal(121.12));
         invoice2.setOwnership(ownership);
-        this.invoiceService.create(invoice2);
+        this.invoiceService.createOrUpdate(invoice2);
 
         Invoice invoice3 = new Invoice();
         invoice3.setInvoiceNr(20180003L);
@@ -88,6 +88,6 @@ public class StartUp {
         invoice3.setPeriod(new Date());
         invoice3.setTotalAmount(new BigDecimal(166.25));
         invoice3.setOwnership(ownership2);
-        this.invoiceService.create(invoice3);
+        this.invoiceService.createOrUpdate(invoice3);
     }
 }

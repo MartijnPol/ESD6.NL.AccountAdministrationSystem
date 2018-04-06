@@ -1,6 +1,7 @@
 package main.domain;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,12 +12,9 @@ import java.util.Objects;
 /**
  * @author Thom van de Pas on 4-4-2018
  */
+@XmlRootElement
 @Entity
-public class Ownership implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Ownership extends BaseEntity {
 
     @Temporal(TemporalType.DATE)
     private Date startDate;
@@ -43,14 +41,6 @@ public class Ownership implements Serializable {
     }
 
     //<editor-fold desc="Getters/Setters">
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Date getStartDate() {
         return startDate;
     }
@@ -92,29 +82,5 @@ public class Ownership implements Serializable {
         this.owner = owner;
     }
 
-    //</editor-fold>
-
-    //<editor-fold desc="HashCode/Equals">
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 17 * hash + Objects.hashCode(this.id);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Ownership other = (Ownership) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
-    }
     //</editor-fold>
 }

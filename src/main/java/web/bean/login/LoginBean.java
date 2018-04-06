@@ -38,7 +38,7 @@ public class LoginBean implements Serializable {
             e.printStackTrace();
         }
 
-        User loggedInUser = this.userService.findbyUsername(request.getRemoteUser());
+        User loggedInUser = this.userService.findByUsername(request.getRemoteUser());
         this.sessionBean.setLoggedInUser(loggedInUser);
 
         boolean isRegular = request.isUserInRole("RegularRole");

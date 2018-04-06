@@ -1,5 +1,7 @@
 package main.dao;
 
+import main.domain.BaseEntity;
+
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -7,10 +9,6 @@ import java.util.List;
  * @author Thom van de Pas on 8-3-2018
  */
 public interface GenericDao<T> {
-
-    T create(T t);
-
-    T update(T t);
 
     void deleteById(Long id);
 
@@ -21,5 +19,7 @@ public interface GenericDao<T> {
     List<T> findAll();
 
     T oneResult(TypedQuery<T> query);
+
+    <T extends BaseEntity> T createOrUpdate(T t);
 
 }

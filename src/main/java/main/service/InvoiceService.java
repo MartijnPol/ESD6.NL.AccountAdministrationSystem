@@ -18,8 +18,8 @@ public class InvoiceService {
     @JPA
     private InvoiceDao invoiceDao;
 
-    public Invoice create(Invoice invoice) {
-        return this.invoiceDao.create(invoice);
+    public Invoice createOrUpdate(Invoice invoice) {
+        return this.invoiceDao.createOrUpdate(invoice);
     }
 
     public List<Invoice> getAll() {

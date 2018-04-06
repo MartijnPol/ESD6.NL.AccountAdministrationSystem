@@ -3,6 +3,7 @@ package main.domain;
 import main.domain.enums.PaymentStatus;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,12 +12,9 @@ import java.util.Objects;
 /**
  * @author Thom van de Pas on 4-4-2018
  */
+@XmlRootElement
 @Entity
-public class Invoice implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Invoice extends BaseEntity {
 
     private Long invoiceNr;
 
@@ -40,14 +38,6 @@ public class Invoice implements Serializable {
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public PaymentStatus getPaymentStatus() {
         return paymentStatus;
     }
@@ -94,31 +84,6 @@ public class Invoice implements Serializable {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
-    }
-
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="HashCode/Equals">
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.id);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Invoice other = (Invoice) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
     }
 
     //</editor-fold>

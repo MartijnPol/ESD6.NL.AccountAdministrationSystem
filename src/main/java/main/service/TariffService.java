@@ -15,9 +15,9 @@ public class TariffService {
     @JPA
     private TariffDao tariffDao;
 
-    public Tariff create(Tariff tariff) { return this.tariffDao.create(tariff); }
-
-    public Tariff update(Tariff tariff) { return this.tariffDao.update(tariff); }
+    public Tariff createOrUpdate(Tariff tariff) {
+        return this.tariffDao.createOrUpdate(tariff);
+    }
 
     public void delete(Tariff tariff) { this.tariffDao.delete(tariff); }
 

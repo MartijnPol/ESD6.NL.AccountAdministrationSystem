@@ -3,6 +3,7 @@ package main.domain;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,12 +15,9 @@ import java.util.Objects;
 /**
  * @author Thom van de Pas on 8-3-2018
  */
+@XmlRootElement
 @Entity
-public class Owner implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Owner extends BaseEntity {
 
     private String firstName;
     private String lastName;
@@ -65,15 +63,6 @@ public class Owner implements Serializable {
     }
 
     //<editor-fold desc="Getters/Setters">
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -112,22 +101,6 @@ public class Owner implements Serializable {
 
     public void setOwnerships(List<Ownership> ownerships) {
         this.ownerships = ownerships;
-    }
-
-    //</editor-fold>
-
-    //<editor-fold desc="equals/hashCode">
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Owner owner = (Owner) o;
-        return Objects.equals(id, owner.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 
     //</editor-fold>
