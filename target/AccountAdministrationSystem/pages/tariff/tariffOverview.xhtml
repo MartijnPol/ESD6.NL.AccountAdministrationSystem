@@ -21,24 +21,53 @@
                 <h:form>
 
                     <p:dataTable emptyMessage="Er zijn geen tarieven gevonden die voldoen aan de criteria"
-                                 filteredValue="#{tariffBean.tariffs}"
+                                 filteredValue="#{tariffOverviewBean.filteredTariffs}"
                                  paginator="true"
                                  paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10, 20, 50"
-                                 value="#{tariffBean.tariffs}" var="tariff"
-                                 widgetVar="invoiceOverviewDataTable">
+                                 value="#{tariffOverviewBean.tariffs}" var="tariff"
+                                 editable="true" editMode="cell"
+                                 widgetVar="tariffOverviewDataTable">
+
+                        <p:ajax event="cellEdit" listener="#{tariffOverviewBean.onCellEdit(tariff)}"
+                                update=":defaultForm:growl"/>
 
                         <p:column headerText="Tarief" filterBy="#{tariff.tariffInEuro}" filterMatchMode="contains">
-                            <h:outputText value="#{tariff.tariffInEuro}"/>
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{tariff.tariffInEuro}"/> </f:facet>
+                                <f:facet name="input"><p:inputText value="#{tariff.tariffInEuro}"/> </f:facet>
+                            </p:cellEditor>
                         </p:column>
 
-                        <p:column headerText="Geldig in de spits" filterBy="#{tariff.ridingDuringRushHour}"
-                                  filterMatchMode="contains">
-                            <h:outputText value="#{tariff.ridingDuringRushHour}"/>
+                        <p:column headerText="Spitstarief" filterBy="#{tariff.ridingDuringRushHour}"
+                                  filterMatchMode="equals">
+                            <f:facet name="filter">
+                                <p:selectOneButton onchange="PF('tariffOverviewDataTable').filter()">
+                                    <f:converter converterId="javax.faces.Boolean"/>
+                                    <f:selectItem itemLabel="Alle" itemValue=""/>
+                                    <f:selectItem itemLabel="Ja" itemValue="true"/>
+                                    <f:selectItem itemLabel="Nee" itemValue="false"/>
+                                </p:selectOneButton>
+                            </f:facet>
+                            <h:outputText value="#{tariff.ridingDuringRushHour ? 'Ja' : 'Nee'}"/>
+                        </p:column>
+
+                        <p:column>
+                            <p:commandButton action="#{tariffBean.remove(tariff)}"
+                                             id="remove"
+                                             value="Delete"
+                                             styleClass="btn btn-danger"/>
                         </p:column>
 
                     </p:dataTable>
+
+                    <div>
+                        <p:commandButton action="#{tariffOverviewBean.create}"
+                                         id="create"
+                                         value="Nieuw"
+                                         styleClass="btn btn-success"/>
+                    </div>
 
                 </h:form>
             </div>
