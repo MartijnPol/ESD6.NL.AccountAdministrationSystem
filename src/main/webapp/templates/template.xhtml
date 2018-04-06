@@ -32,6 +32,12 @@
 
     <h:form id="defaultForm">
         <p:growl id="growl" showDetail="true"/>
+
+        <p:confirmDialog global="true" showEffect="fade">
+            <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+            <p:commandButton value="Nee" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        </p:confirmDialog>
+
     </h:form>
 
     <ui:include src="./header.xhtml"/>

@@ -4,6 +4,7 @@ import main.dao.CarDao;
 import main.dao.JPA;
 import main.domain.Car;
 import main.domain.Owner;
+import main.domain.RDW;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -28,7 +29,10 @@ public class CarService {
     }
 
     public Car createOrUpdate(Car car) {
-        car.setRdwData(rdwService.findByLicensePlate(car.getLicensePlate()));
+        RDW rdwData = rdwService.findByLicensePlate(car.getLicensePlate());
+        if (rdwData != null) {
+            car.setRdwData(rdwData);
+        }
         return this.carDao.createOrUpdate(car);
     }
 

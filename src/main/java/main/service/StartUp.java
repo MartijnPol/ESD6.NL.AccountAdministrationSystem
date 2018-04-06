@@ -26,11 +26,13 @@ public class StartUp {
     @Inject
     private OwnerService ownerService;
     @Inject
+    private RDWService rdwService;
+    @Inject
+    private TariffService tariffService;
+    @Inject
     private UserGroupService userGroupService;
     @Inject
     private UserService userService;
-    @Inject
-    private RDWService rdwService;
 
     public StartUp() {
 
@@ -91,5 +93,11 @@ public class StartUp {
         invoice3.setTotalAmount(new BigDecimal(166.25));
         invoice3.setOwnership(ownership2);
         this.invoiceService.createOrUpdate(invoice3);
+
+        Tariff tariff1 = new Tariff(0.07, false);
+        Tariff tariff2 = new Tariff(0.13, true);
+
+        this.tariffService.createOrUpdate(tariff1);
+        this.tariffService.createOrUpdate(tariff2);
     }
 }

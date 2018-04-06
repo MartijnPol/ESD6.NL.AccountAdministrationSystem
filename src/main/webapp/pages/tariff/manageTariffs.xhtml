@@ -28,10 +28,8 @@
                     </div>
 
                     <div>
+                        <h:selectBooleanCheckbox value="#{tariffBean.ridingDuringRushHour}"/>
                         <h:outputText value="Geldt dit tarief tijdens spits uren?"/>
-                        <p:selectBooleanCheckbox value="#{tariffBean.ridingDuringRushHour}">
-                            <p:ajax update="defaultForm:growl" listener="#{tariffBean.ridingDuringRushHour}" />
-                        </p:selectBooleanCheckbox>
                     </div>
                     <div>
                         <p:commandButton action="#{tariffBean.create}"

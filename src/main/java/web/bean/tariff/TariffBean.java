@@ -3,6 +3,7 @@ package web.bean.tariff;
 import main.domain.Tariff;
 import main.service.TariffService;
 import org.omnifaces.util.Ajax;
+import web.core.helper.FrontendHelper;
 import web.core.helper.RedirectHelper;
 
 import javax.faces.application.FacesMessage;
@@ -26,13 +27,19 @@ public class TariffBean implements Serializable{
         if (tariffInEuro != 0) {
             Tariff newTariff = new Tariff(this.tariffInEuro, this.ridingDuringRushHour);
             tariffService.createOrUpdate(newTariff);
+            RedirectHelper.redirect("/pages/tariff/tariffOverview.xhtml");
+        } else {
+            FrontendHelper.displayErrorSmallMessage("Vul alstublieft een tarief in.");
         }
-        RedirectHelper.redirect("/pages/tariff/tariffOverview.xhtml");
     }
 
     public void remove(Tariff tariff){
-        tariffService.delete(tariff);
-        RedirectHelper.redirect("/pages/tariff/tariffOverview.xhtml");
+        if (tariff != null) {
+            tariffService.delete(tariff);
+            RedirectHelper.redirect("/pages/tariff/tariffOverview.xhtml");
+        } else {
+            FrontendHelper.displayErrorSmallMessage("Er ging iets mis.", "Probeer het opnieuw.");
+        }
     }
 
     public double getTariffInEuro() {
