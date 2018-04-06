@@ -21,10 +21,14 @@ public class CarService {
     @JPA
     private CarDao carDao;
 
+    @Inject
+    private RDWService rdwService;
+
     public CarService() {
     }
 
     public Car createOrUpdate(Car car) {
+        car.setRdwData(rdwService.findByLicensePlate(car.getLicensePlate()));
         return this.carDao.createOrUpdate(car);
     }
 

@@ -90,6 +90,12 @@ input {
     margin-bottom: 24px;
 }
 
+/** NAVBAR **/
+
+.ui-menu .ui-menuitem-text {
+    color: #444;
+}
+
 /** HEADER **/
 
 .header {
