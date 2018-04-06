@@ -15,13 +15,35 @@ public class TariffService {
     @JPA
     private TariffDao tariffDao;
 
+    /**
+     * Create a new tariff in the database
+     * @param tariff
+     * @return the newly created tariff
+     */
     public Tariff create(Tariff tariff) { return this.tariffDao.create(tariff); }
 
+    /**
+     * Update an excisting tariff in the database
+     * @param tariff
+     * @return the updated tariff
+     */
     public Tariff update(Tariff tariff) { return this.tariffDao.update(tariff); }
 
+    /**
+     * Delete a tariff from the database
+     * @param tariff
+     */
     public void delete(Tariff tariff) { this.tariffDao.delete(tariff); }
 
+    /**
+     * Delete a tariff from the database using an id
+     * @param id
+     */
     public void deleteById(Long id) { this.tariffDao.deleteById(id); }
 
+    /**
+     * Get a list of all the tariffs that exist in the database.
+     * @return the list of all the tariffs found
+     */
     public List<Tariff> findAll() { return this.tariffDao.findAll(); }
 }

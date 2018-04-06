@@ -29,6 +29,8 @@ public class StartUp {
     private UserGroupService userGroupService;
     @Inject
     private UserService userService;
+    @Inject
+    private TariffService tariffService;
 
     public StartUp() {
 
@@ -89,5 +91,15 @@ public class StartUp {
         invoice3.setTotalAmount(new BigDecimal(166.25));
         invoice3.setOwnership(ownership2);
         this.invoiceService.create(invoice3);
+
+        Tariff tariff1 = new Tariff();
+        tariff1.setTariffInEuro(0.11);
+        tariff1.setRidingDuringRushHour(true);
+        this.tariffService.create(tariff1);
+
+        Tariff tariff2 = new Tariff();
+        tariff2.setTariffInEuro(0.05);
+        tariff2.setRidingDuringRushHour(false);
+        this.tariffService.create(tariff2);
     }
 }
