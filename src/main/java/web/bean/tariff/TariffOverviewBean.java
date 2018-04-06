@@ -16,8 +16,9 @@ public class TariffOverviewBean implements Serializable {
 
     @Inject
     private TariffService tariffService;
+
     private List<Tariff> tariffs;
-    private Tariff tariff;
+    private List<Tariff> filteredTariffs;
 
     @PostConstruct
     public void init() {
@@ -30,5 +31,13 @@ public class TariffOverviewBean implements Serializable {
 
     public void setTariffs(List<Tariff> tariffList) {
         this.tariffs = tariffList;
+    }
+
+    public List<Tariff> getFilteredTariffs() {
+        return filteredTariffs;
+    }
+
+    public void setFilteredTariffs(List<Tariff> filteredTariffs) {
+        this.filteredTariffs = filteredTariffs;
     }
 }

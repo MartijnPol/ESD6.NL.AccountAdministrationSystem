@@ -21,21 +21,29 @@
                 <h:form>
 
                     <p:dataTable emptyMessage="Er zijn geen tarieven gevonden die voldoen aan de criteria"
-                                 filteredValue="#{tariffOverviewBean.tariffs}"
+                                 filteredValue="#{tariffOverviewBean.filteredTariffs}"
                                  paginator="true"
                                  paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10, 20, 50"
                                  value="#{tariffOverviewBean.tariffs}" var="tariff"
-                                 widgetVar="invoiceOverviewDataTable">
+                                 widgetVar="tariffOverviewDataTable">
 
                         <p:column headerText="Tarief" filterBy="#{tariff.tariffInEuro}" filterMatchMode="contains">
                             <h:outputText value="#{tariff.tariffInEuro}"/>
                         </p:column>
 
-                        <p:column headerText="Geldig in de spits" filterBy="#{tariff.ridingDuringRushHour}"
-                                  filterMatchMode="contains">
-                            <h:outputText value="#{tariff.ridingDuringRushHour}"/>
+                        <p:column headerText="Spitstarief" filterBy="#{tariff.ridingDuringRushHour}"
+                                  filterMatchMode="equals">
+                            <f:facet name="filter">
+                                <p:selectOneButton onchange="PF('tariffOverviewDataTable').filter()">
+                                    <f:converter converterId="javax.faces.Boolean"/>
+                                    <f:selectItem itemLabel="Alle" itemValue=""/>
+                                    <f:selectItem itemLabel="Ja" itemValue="true"/>
+                                    <f:selectItem itemLabel="Nee" itemValue="false"/>
+                                </p:selectOneButton>
+                            </f:facet>
+                            <h:outputText value="#{tariff.ridingDuringRushHour ? 'Ja' : 'Nee'}"/>
                         </p:column>
 
                     </p:dataTable>
