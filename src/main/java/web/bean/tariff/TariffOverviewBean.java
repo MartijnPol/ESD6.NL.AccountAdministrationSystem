@@ -2,6 +2,7 @@ package web.bean.tariff;
 
 import main.domain.Tariff;
 import main.service.TariffService;
+import web.core.helper.RedirectHelper;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -23,10 +24,6 @@ public class TariffOverviewBean implements Serializable {
     @PostConstruct
     public void init() {
         this.tariffs = this.tariffService.findAll();
-    }
-
-    public List<Tariff> getTariffs() {
-        return tariffs;
     }
 
     public void setTariffs(List<Tariff> tariffList) {
