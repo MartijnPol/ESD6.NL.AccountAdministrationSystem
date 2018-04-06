@@ -24,12 +24,8 @@ public class CarService {
     public CarService() {
     }
 
-    public Car create(Car car) {
-        return this.carDao.create(car);
-    }
-
-    public Car update(Car car) {
-        return this.carDao.update(car);
+    public Car createOrUpdate(Car car) {
+        return this.carDao.createOrUpdate(car);
     }
 
     public void delete(Car car) {

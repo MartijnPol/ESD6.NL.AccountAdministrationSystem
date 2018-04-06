@@ -7,6 +7,10 @@ import main.domain.UserGroup;
  */
 public interface UserGroupDao extends GenericDao<UserGroup> {
 
+    UserGroup create(UserGroup userGroup);
+
+    UserGroup update(UserGroup userGroup);
+
     UserGroup findByGroupName(String groupName);
 
     UserGroup getRegularUserGroup();

@@ -99,7 +99,7 @@ public class CarResource {
         if (foundCar == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        carService.update(car);
+        carService.createOrUpdate(car);
         return Response.ok(foundCar).build();
     }
 
@@ -116,7 +116,7 @@ public class CarResource {
         if (car == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        carService.create(car);
+        carService.createOrUpdate(car);
         URI id = URI.create(car.getLicensePlate());
         return Response.created(id).build();
     }

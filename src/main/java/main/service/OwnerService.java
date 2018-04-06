@@ -21,12 +21,8 @@ public class OwnerService {
     public OwnerService() {
     }
 
-    public Owner create(Owner owner) {
-        return this.ownerDao.create(owner);
-    }
-
-    public Owner update(Owner owner) {
-        return this.ownerDao.update(owner);
+    public Owner createOrUpdate(Owner owner) {
+        return this.ownerDao.createOrUpdate(owner);
     }
 
     public void delete(Owner owner) {

@@ -67,6 +67,10 @@ public class UserGroupService {
         return this.userGroupDao.getRegularUserGroup();
     }
 
+    /**
+     * Finds all the UserGroups.
+     * @returns a List of UserGroups.
+     */
     public List<UserGroup> getAllUserGroups() {
         return this.userGroupDao.findAll();
     }

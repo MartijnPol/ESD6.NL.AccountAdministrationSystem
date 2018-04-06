@@ -3,27 +3,23 @@ package main.domain;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.persistence.*;
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author Thom van de Pas on 8-3-2018
  */
+@XmlRootElement
 @Entity
 @NamedQueries({
         @NamedQuery(name = "car.findByOwner", query = "SELECT c FROM Car c WHERE c.owner = :owner"),
         @NamedQuery(name = "car.findByCarTrackerId", query = "SELECT c FROM Car c WHERE c.carTrackerId = :carTrackerId"),
         @NamedQuery(name = "car.deleteByLicencePlate", query = "DELETE FROM Car c WHERE c.licensePlate = :licensePlate")
 })
-public class Car implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Car extends BaseEntity {
 
     private Long carTrackerId;
     private String licensePlate;
@@ -60,14 +56,6 @@ public class Car implements Serializable {
     }
 
     //<editor-fold desc="Getters/Setters">
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getCarTrackerId() {
         return carTrackerId;
     }
@@ -106,21 +94,6 @@ public class Car implements Serializable {
 
     public void setOwner(Owner owner) {
         this.owner = owner;
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="equals/hashCode">
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Car car = (Car) o;
-        return Objects.equals(id, car.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
     //</editor-fold>
 }

@@ -17,6 +17,17 @@ public class UserGroupDaoImpl extends GenericDaoJPAImpl<UserGroup> implements Us
     public UserGroupDaoImpl() {
     }
 
+
+
+    public UserGroup create(UserGroup userGroup) {
+        this.entityManager.persist(userGroup);
+        return userGroup;
+    }
+
+    public UserGroup update(UserGroup userGroup) {
+        return this.entityManager.merge(userGroup);
+    }
+
     @Override
     public UserGroup findByGroupName(String groupName) {
         TypedQuery<UserGroup> query = getEntityManager().createNamedQuery("userGroup.findByGroupName", UserGroup.class)

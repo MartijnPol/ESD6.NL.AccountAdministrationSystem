@@ -20,11 +20,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "user.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
 })
-public class User implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity {
 
     @Column(unique = true)
     private String username;
@@ -69,14 +65,6 @@ public class User implements Serializable {
     }
 
     //<editor-fold defaultState=collapsed desc="Getters/Setters">
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getUsername() {
         return username;
     }

@@ -19,11 +19,7 @@ public class OwnershipService {
     private OwnershipDao ownershipDao;
 
 
-    public Ownership create(Ownership ownership) {
-        return this.ownershipDao.create(ownership);
-    }
-
-    public Ownership update(Ownership ownership) {
-        return this.ownershipDao.update(ownership);
+    public Ownership createOrUpdate(Ownership ownership) {
+        return this.ownershipDao.createOrUpdate(ownership);
     }
 }

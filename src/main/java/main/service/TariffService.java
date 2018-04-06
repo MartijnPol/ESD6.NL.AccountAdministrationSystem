@@ -16,18 +16,13 @@ public class TariffService {
     private TariffDao tariffDao;
 
     /**
-     * Create a new tariff in the database
+     * Create or update a tariff
      * @param tariff
-     * @return the newly created tariff
+     * @return the new or updated tariff
      */
-    public Tariff create(Tariff tariff) { return this.tariffDao.create(tariff); }
-
-    /**
-     * Update an excisting tariff in the database
-     * @param tariff
-     * @return the updated tariff
-     */
-    public Tariff update(Tariff tariff) { return this.tariffDao.update(tariff); }
+    public Tariff createOrUpdate(Tariff tariff) {
+        return this.tariffDao.createOrUpdate(tariff);
+    }
 
     /**
      * Delete a tariff from the database

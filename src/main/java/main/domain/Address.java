@@ -4,17 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
  * @author Thom van de Pas on 4-4-2018
  */
+@XmlRootElement
 @Entity
-public class Address implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Address extends BaseEntity {
 
     private String street;
     private String streetNr;
@@ -34,14 +32,6 @@ public class Address implements Serializable {
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getStreet() {
         return street;
     }
@@ -85,28 +75,5 @@ public class Address implements Serializable {
     public String getStreetAndNr() {
         return street + " " + streetNr;
     }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="HashCode/Equals">
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Address address = (Address) o;
-
-        return id != null ? id.equals(address.id) : address.id == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
-
     //</editor-fold>
 }

@@ -39,7 +39,7 @@ public class RegistrationBean implements Serializable {
             if (this.userGroups != null) {
                 for (UserGroup userGroup : this.userGroups) {
                     userGroup.addUser(newUser);
-                    this.userService.update(newUser);
+                    this.userService.createOrUpdate(newUser);
                 }
             } else {
                 UserGroup regularUserGroup = this.userGroupService.getRegularUserGroup();
