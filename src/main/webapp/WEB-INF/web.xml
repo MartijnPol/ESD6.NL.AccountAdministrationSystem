@@ -43,6 +43,11 @@
         <param-value>client</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>facelets.SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Secure Pages</web-resource-name>

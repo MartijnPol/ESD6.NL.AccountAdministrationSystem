@@ -33,6 +33,9 @@ public class Car extends BaseEntity {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Ownership currentOwnership;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private RDW rdwData;
+
     public Car() {
         this.pastOwnerships = new ArrayList<>();
     }
@@ -95,5 +98,14 @@ public class Car extends BaseEntity {
     public void setOwner(Owner owner) {
         this.owner = owner;
     }
+
+    public RDW getRdwData() {
+        return rdwData;
+    }
+
+    public void setRdwData(RDW rdwData) {
+        this.rdwData = rdwData;
+    }
+
     //</editor-fold>
 }

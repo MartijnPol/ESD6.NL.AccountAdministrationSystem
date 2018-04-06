@@ -29,6 +29,8 @@ public class StartUp {
     private UserGroupService userGroupService;
     @Inject
     private UserService userService;
+    @Inject
+    private RDWService rdwService;
 
     public StartUp() {
 
@@ -40,12 +42,12 @@ public class StartUp {
         Address address2 = new Address("Tilburgseweg", "12", "5074FK", "Tilburg", "Nederland");
         Owner owner1 = ownerService.createOrUpdate(new Owner("Henk", "van der Pol", new Date(), address));
         Owner owner2 = ownerService.createOrUpdate(new Owner("Frits", "Jansen", new Date(), address2));
-        Car car1 = new Car("FD-83-TT", owner1);
-        Car car2 = carService.createOrUpdate(new Car("KO-PX-12", owner2));
-//        Car car3 = carService.create(new Car("FW-739-S", owner1));
+        Car car1 = new Car("08-SK-PX", owner1);
+        Car car2 = new Car("00-01-ES", owner2);
+
         car1.setCarTrackerId(1L);
         car2.setCarTrackerId(2L);
-//        car3.setCarTrackerId(3L);
+
         carService.createOrUpdate(car1);
         carService.createOrUpdate(car2);
 
