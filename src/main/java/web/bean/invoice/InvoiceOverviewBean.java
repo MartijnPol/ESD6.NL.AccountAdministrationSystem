@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Named
 @ViewScoped
-public class InvoiceBean implements Serializable {
+public class InvoiceOverviewBean implements Serializable {
 
     @Inject
     private InvoiceService invoiceService;

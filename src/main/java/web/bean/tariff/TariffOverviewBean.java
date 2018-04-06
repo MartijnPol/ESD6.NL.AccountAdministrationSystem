@@ -10,9 +10,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
-@Named("tariffBean")
+@Named
 @ViewScoped
-public class TariffBean implements Serializable{
+public class TariffOverviewBean implements Serializable {
 
     @Inject
     private TariffService tariffService;
@@ -24,7 +24,11 @@ public class TariffBean implements Serializable{
         this.tariffs = this.tariffService.findAll();
     }
 
-    public List<Tariff> getTariffs() { return tariffs; }
+    public List<Tariff> getTariffs() {
+        return tariffs;
+    }
 
-    public void setTariffs(List<Tariff> tariffList) { this.tariffs = tariffList; }
+    public void setTariffs(List<Tariff> tariffList) {
+        this.tariffs = tariffList;
+    }
 }
