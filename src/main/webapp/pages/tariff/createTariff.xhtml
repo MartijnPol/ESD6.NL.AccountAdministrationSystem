@@ -20,28 +20,20 @@
                 <h:form>
 
                     <div class="form-group">
-                        <p:inputText id="username"
+                        <p:inputText id="tariff"
                                      placeholder="0,00"
                                      required="true"
                                      requiredMessage="Vul het tarief in eurocenten in."
                                      styleClass="form-control"
-                                     value=""/>
+                                     value="#{tariffBean.tariffInEuro}"/>
                     </div>
 
                     <div class="form-group">
-                        <p:inputText id="email"
-                                     placeholder=""
-                                     required="true"
-                                     requiredMessage="Geldt dit tarief tijdens spits uren?"
-                                     styleClass="form-control"
-                                     type="email"
-                                     value=""/>
+                        <h:outputText value="Geldt dit tarief tijdens spits uren? "/>
+                        <p:selectBooleanCheckbox
+                                value="#{tariffBean.ridingDuringRushHour}">
+                        </p:selectBooleanCheckbox>
                     </div>
-
-                    <p:commandButton action="#{registrationBean.register}"
-                                     id="register"
-                                     value="Registreer"
-                                     styleClass="btn btn-success"/>
 
                 </h:form>
 
