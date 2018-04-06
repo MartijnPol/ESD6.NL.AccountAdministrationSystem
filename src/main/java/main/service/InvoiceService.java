@@ -22,7 +22,7 @@ public class InvoiceService {
         return this.invoiceDao.createOrUpdate(invoice);
     }
 
-    public List<Invoice> getAll() {
+    public List<Invoice> findAll() {
         return this.invoiceDao.findAll();
     }
 }

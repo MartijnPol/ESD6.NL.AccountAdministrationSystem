@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/template.xhtml">
+
+    <ui:define name="title">Tarieven</ui:define>
+
+    <ui:define name="content">
+
+        <div class="container">
+
+            <header class="header">
+                <h1>Tarieven overzicht</h1>
+                <h5 class="text-muted">Overzicht van alle tarieven</h5>
+            </header>
+
+            <div class="content-container">
+
+                <h:form>
+
+                    <p:dataTable emptyMessage="Er zijn geen tarieven gevonden die voldoen aan de criteria"
+                                 filteredValue="#{tariffOverviewBean.filteredTariffs}"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10, 20, 50"
+                                 value="#{tariffOverviewBean.tariffs}" var="tariff"
+                                 widgetVar="tariffOverviewDataTable">
+
+                        <p:column headerText="Tarief" filterBy="#{tariff.tariffInEuro}" filterMatchMode="contains">
+                            <h:outputText value="#{tariff.tariffInEuro}"/>
+                        </p:column>
+
+                        <p:column headerText="Spitstarief" filterBy="#{tariff.ridingDuringRushHour}"
+                                  filterMatchMode="equals">
+                            <f:facet name="filter">
+                                <p:selectOneButton onchange="PF('tariffOverviewDataTable').filter()">
+                                    <f:converter converterId="javax.faces.Boolean"/>
+                                    <f:selectItem itemLabel="Alle" itemValue=""/>
+                                    <f:selectItem itemLabel="Ja" itemValue="true"/>
+                                    <f:selectItem itemLabel="Nee" itemValue="false"/>
+                                </p:selectOneButton>
+                            </f:facet>
+                            <h:outputText value="#{tariff.ridingDuringRushHour ? 'Ja' : 'Nee'}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </h:form>
+            </div>
+
+        </div>
+
+    </ui:define>
+</ui:composition>
