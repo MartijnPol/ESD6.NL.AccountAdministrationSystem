@@ -26,8 +26,8 @@ public class TariffOverviewBean implements Serializable {
         this.tariffs = this.tariffService.findAll();
     }
 
-    public void setTariffs(List<Tariff> tariffList) {
-        this.tariffs = tariffList;
+    public void setTariffs(List<Tariff> tariffs) {
+        this.tariffs = tariffs;
     }
 
     public List<Tariff> getFilteredTariffs() {
