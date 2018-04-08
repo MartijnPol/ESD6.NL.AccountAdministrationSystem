@@ -1,8 +1,13 @@
 package web.bean.invoice;
 
+import io.swagger.models.auth.In;
 import main.domain.Invoice;
 import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
+import org.primefaces.event.SelectEvent;
+import web.bean.BaseBean;
+import web.core.helper.FrontendHelper;
+import web.core.helper.RedirectHelper;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -16,14 +21,16 @@ import java.util.List;
  */
 @Named
 @ViewScoped
-public class InvoiceOverviewBean implements Serializable {
+public class InvoiceOverviewBean extends BaseBean {
 
     @Inject
     private InvoiceService invoiceService;
 
     private List<Invoice> invoices;
     private List<Invoice> filteredInvoices;
+    private Invoice selectedInvoice;
 
+    @Override
     @PostConstruct
     public void init() {
         this.invoices = this.invoiceService.findAll();
@@ -49,5 +56,17 @@ public class InvoiceOverviewBean implements Serializable {
         this.filteredInvoices = filteredInvoices;
     }
 
+    public void onRowSelect(SelectEvent event) {
+        Invoice selectedInvoice = (Invoice) event.getObject();
+        RedirectHelper.redirect("/pages/invoice/invoice.xhtml?invoiceId=" + selectedInvoice.getId());
+    }
 
+
+    public void setSelectedInvoice(Invoice selectedInvoice) {
+        this.selectedInvoice = selectedInvoice;
+    }
+
+    public Invoice getSelectedInvoice() {
+        return selectedInvoice;
+    }
 }

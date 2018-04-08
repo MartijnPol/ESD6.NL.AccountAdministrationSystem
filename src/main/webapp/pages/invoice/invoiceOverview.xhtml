@@ -26,8 +26,13 @@
                                  paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10, 20, 50"
+                                 selectionMode="single"
+                                 selection="#{invoiceOverviewBean.selectedInvoice}"
+                                 rowKey="#{invoice.id}"
                                  value="#{invoiceOverviewBean.invoices}" var="invoice"
                                  widgetVar="invoiceOverviewDataTable">
+
+                        <p:ajax event="rowSelect" listener="#{invoiceOverviewBean.onRowSelect}"/>
 
                         <p:column headerText="Factuurnummer" filterBy="#{invoice.invoiceNr}" filterMatchMode="contains">
                             <h:outputText value="#{invoice.invoiceNr}"/>

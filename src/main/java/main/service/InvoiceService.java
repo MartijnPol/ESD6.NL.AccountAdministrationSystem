@@ -25,4 +25,11 @@ public class InvoiceService {
     public List<Invoice> findAll() {
         return this.invoiceDao.findAll();
     }
+
+    public Invoice findById(Long id) {
+        if (id != null) {
+            return this.invoiceDao.findById(id);
+        }
+        return null;
+    }
 }
