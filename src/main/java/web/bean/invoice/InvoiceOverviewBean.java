@@ -61,7 +61,6 @@ public class InvoiceOverviewBean extends BaseBean {
         RedirectHelper.redirect("/pages/invoice/invoice.xhtml?invoiceId=" + selectedInvoice.getId());
     }
 
-
     public void setSelectedInvoice(Invoice selectedInvoice) {
         this.selectedInvoice = selectedInvoice;
     }
