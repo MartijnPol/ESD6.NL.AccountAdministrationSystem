@@ -17,7 +17,6 @@ import java.util.List;
 public class CarDaoImpl extends GenericDaoJPAImpl<Car> implements CarDao {
 
     public CarDaoImpl() {
-
     }
 
     public List<Car> findByOwner(Owner owner) {

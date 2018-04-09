@@ -14,6 +14,5 @@ import javax.ejb.Stateless;
 public class OwnerDaoImpl extends GenericDaoJPAImpl<Owner> implements OwnerDao {
 
     public OwnerDaoImpl() {
-
     }
 }

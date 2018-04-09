@@ -1,10 +1,8 @@
 package main.service;
 
-import com.mysql.jdbc.StringUtils;
 import main.dao.JPA;
 import main.dao.UserDao;
 import main.domain.User;
-import main.utils.EncryptionHelper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -23,19 +21,8 @@ public class UserService {
     public UserService() {
     }
 
-    public User create(User user) {
-        return this.userDao.create(user);
-    }
-
-    public User findByCredentials(String username, String password) {
-        if (!StringUtils.isNullOrEmpty(username) && !StringUtils.isNullOrEmpty(password)) {
-            return this.userDao.findByCredentials(username, EncryptionHelper.encryptPassword(username, password));
-        }
-        return null;
-    }
-
-    public User update(User user) {
-        return this.userDao.update(user);
+    public User createOrUpdate(User user) {
+        return this.userDao.createOrUpdate(user);
     }
 
     public void delete(User user) {
@@ -54,16 +41,25 @@ public class UserService {
         return this.userDao.findAll();
     }
 
-    public User login(String username, String password) {
-        if (!StringUtils.isNullOrEmpty(username) && !StringUtils.isNullOrEmpty(password)) {
-            String lowerCaseUsername = username.toLowerCase();
-            lowerCaseUsername = lowerCaseUsername.trim();
+    /**
+     * Find a User by its username.
+     * @param username is the username of the User to be found.
+     * @returns the found User or null.
+     */
+    public User findByUsername(String username) {
+        return this.userDao.findByUsername(username);
+    }
 
-            User possibleUser = this.findByCredentials(lowerCaseUsername, password);
-
-            if (possibleUser != null) return possibleUser;
+    /**
+     * Register a new User in the system so that the User can login using these credentials.
+     * @param user is the new User to be registered.
+     * @returns the created User.
+     */
+    public User register(User user) {
+        User foundUser = this.findByUsername(user.getUsername());
+        if (foundUser == null ) {
+            return this.createOrUpdate(user);
         }
         return null;
     }
-
 }

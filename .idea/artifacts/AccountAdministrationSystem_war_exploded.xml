@@ -30,6 +30,13 @@
           <element id="library" level="project" name="Maven: org.primefaces:primefaces:6.2" />
           <element id="library" level="project" name="Maven: org.jasypt:jasypt:1.9.2" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.11" />
+          <element id="library" level="project" name="Maven: org.omnifaces:omnifaces:3.0" />
+          <element id="library" level="project" name="Maven: org.webjars:bootstrap:4.0.0-2" />
+          <element id="library" level="project" name="Maven: org.webjars:jquery:3.0.0" />
+          <element id="library" level="project" name="Maven: org.webjars:popper.js:1.12.9-1" />
+          <element id="library" level="project" name="Maven: org.json:json:20180130" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:2.5" />
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.8.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">

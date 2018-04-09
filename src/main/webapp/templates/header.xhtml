@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<h:form>
+    <div class="navbar navbar-expand-lg navbar-light bg-light">
+
+        <p:megaMenu orientation="horizontal">
+
+            <p:menuitem value="Dashboard" url="/pages/profile/dashboard.xhtml" icon="ui-icon-check"/>
+
+            <p:submenu label="Gebruiker">
+                <p:column>
+                    <p:submenu styleClass="nav-item">
+                        <p:menuitem value="Toevoegen" url="/pages/profile/register.xhtml"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Factuur">
+                <p:column>
+                    <p:submenu>
+                        <p:menuitem value="Overzicht" url="/pages/invoice/invoiceOverview.xhtml"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Auto's">
+                <p:column>
+                    <p:submenu>
+                        <p:menuitem value="Overzicht" url="/pages/cars/carOverview.xhtml"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Tarieven">
+                <p:column>
+                    <p:submenu>
+                        <p:menuitem value="Overzicht" url="/pages/tariff/tariffOverview.xhtml"/>
+                        <p:menuitem value="Toevoegen" url="/pages/tariff/manageTariffs.xhtml"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:menuitem value="Uitloggen" action="#{sessionBean.logout()}" icon="ui-icon-close"/>
+
+        </p:megaMenu>
+
+    </div>
+
+</h:form>
+
+</html>

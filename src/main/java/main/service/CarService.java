@@ -4,11 +4,16 @@ import main.dao.CarDao;
 import main.dao.JPA;
 import main.domain.Car;
 import main.domain.Owner;
+import main.domain.Ownership;
+import main.domain.RDW;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.JsonObject;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,15 +26,18 @@ public class CarService {
     @JPA
     private CarDao carDao;
 
+    @Inject
+    private RDWService rdwService;
+
     public CarService() {
     }
 
-    public Car create(Car car) {
-        return this.carDao.create(car);
-    }
-
-    public Car update(Car car) {
-        return this.carDao.update(car);
+    public Car createOrUpdate(Car car) {
+        RDW rdwData = rdwService.findByLicensePlate(car.getLicensePlate());
+        if (rdwData != null) {
+            car.setRdwData(rdwData);
+        }
+        return this.carDao.createOrUpdate(car);
     }
 
     public void delete(Car car) {
@@ -77,5 +85,66 @@ public class CarService {
             carsToJson.add(car.toJson());
         }
         return carsToJson;
+    }
+
+    /**
+     * Removes Ownerships older than 5 years and returns a List of old Owners (till 5 years ago)
+     *
+     * @returns a List of past Owners or null.
+     */
+    public List<Ownership> getAndUpdatePastOwnerships(Car car) {
+//        Car foundCar = this.carDao.findById(car.getId());
+
+        for (Ownership ownership : car.getPastOwnerships()) {
+            if (isLongerThanFiveYearsAgo(ownership.getEndDate())) {
+                car.getPastOwnerships().remove(ownership);
+            }
+        }
+        car = this.createOrUpdate(car);
+
+        return car.getPastOwnerships();
+    }
+
+    /**
+     * Checks if a date is longer than five years ago.
+     *
+     * @param date the date to be checked.
+     * @returns true if the date is longer ago, false if not.
+     */
+    private boolean isLongerThanFiveYearsAgo(Date date) {
+        LocalDate inputDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate fiveYearsAgo = LocalDate.now().minusYears(5);
+
+        return inputDate.isBefore(fiveYearsAgo);
+    }
+
+    /**
+     * Assign a Car to a new Ownership.
+     *
+     * @param car          is the Car that gets a new Ownership.
+     * @param newOwnership is the new Ownership
+     * @returns the updated Car.
+     */
+    public Car assignToNewOwner(Car car, Ownership newOwnership) {
+        if (car != null && newOwnership != null) {
+            if (!car.getCurrentOwnership().equals(newOwnership)) {
+                Ownership pastOwnership = car.getCurrentOwnership();
+                if (pastOwnership != null) {
+                    pastOwnership.setEndDate(new Date());
+                    car.addPastOwnership(pastOwnership);
+                }
+                newOwnership.setStartDate(new Date());
+                newOwnership.setOwner(newOwnership.getOwner());
+                newOwnership.setCar(car);
+                car.setOwner(newOwnership.getOwner());
+                car.setCurrentOwnership(newOwnership);
+            }
+        }
+        car = this.createOrUpdate(car);
+        return car;
+    }
+
+    public void setCarDao(CarDao carDao) {
+        this.carDao = carDao;
     }
 }

@@ -2,6 +2,7 @@ package main.dao.implementation;
 
 import main.dao.GenericDao;
 import main.dao.JPA;
+import main.domain.BaseEntity;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,12 +30,32 @@ public abstract class GenericDaoJPAImpl<T> implements GenericDao<T> {
         type = (Class) pt.getActualTypeArguments()[0];
     }
 
-    public T create(T t) {
+    /**
+     * Create or Update an Entity. When its id is null the Entity is created, otherwise it is updated.
+     *
+     * @param t   represents the Entity to be created/updated.
+     * @param <T> is the Object.
+     * @returns the created or updated Object.
+     */
+    public <T extends BaseEntity> T createOrUpdate(T t) {
+        if (t.getId() == null) {
+            return this.create(t);
+        } else {
+            this.entityManager.merge(t);
+        }
+
+        // This is not necessary
+//        this.entityManager.flush();
+
+        return t;
+    }
+
+    private <T extends BaseEntity> T create(T t) {
         this.entityManager.persist(t);
         return t;
     }
 
-    public T update(T t) {
+    private <T extends BaseEntity> T update(T t) {
         return this.entityManager.merge(t);
     }
 

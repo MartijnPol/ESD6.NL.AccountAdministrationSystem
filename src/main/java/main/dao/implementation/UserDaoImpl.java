@@ -15,13 +15,12 @@ import javax.persistence.TypedQuery;
 public class UserDaoImpl extends GenericDaoJPAImpl<User> implements UserDao {
 
     public UserDaoImpl() {
-
     }
 
-    public User findByCredentials(String username, String password) {
-        TypedQuery<User> query = getEntityManager().createNamedQuery("user.findByCredentials", User.class)
-                .setParameter("username", username)
-                .setParameter("password", password);
+    @Override
+    public User findByUsername(String username) {
+        TypedQuery<User> query = getEntityManager().createNamedQuery("user.findByUsername", User.class)
+                .setParameter("username", username);
 
         return oneResult(query);
     }
