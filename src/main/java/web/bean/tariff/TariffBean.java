@@ -2,7 +2,6 @@ package web.bean.tariff;
 
 import main.domain.Tariff;
 import main.service.TariffService;
-import org.omnifaces.util.Ajax;
 import web.core.helper.FrontendHelper;
 import web.core.helper.RedirectHelper;
 
@@ -27,7 +26,7 @@ public class TariffBean implements Serializable{
         if (tariffInEuro != 0) {
             Tariff newTariff = new Tariff(this.tariffInEuro, this.ridingDuringRushHour);
             tariffService.createOrUpdate(newTariff);
-            RedirectHelper.redirect("/pages/tariff/tariffOverview.xhtml");
+            RedirectHelper.redirect("/pages/tariff/overview.xhtml");
         } else {
             FrontendHelper.displayErrorSmallMessage("Vul alstublieft een tarief in.");
         }
@@ -36,7 +35,7 @@ public class TariffBean implements Serializable{
     public void remove(Tariff tariff){
         if (tariff != null) {
             tariffService.delete(tariff);
-            RedirectHelper.redirect("/pages/tariff/tariffOverview.xhtml");
+            RedirectHelper.redirect("/pages/tariff/overview.xhtml");
         } else {
             FrontendHelper.displayErrorSmallMessage("Er ging iets mis.", "Probeer het opnieuw.");
         }
