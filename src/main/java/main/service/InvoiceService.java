@@ -2,6 +2,7 @@ package main.service;
 
 import main.dao.InvoiceDao;
 import main.dao.JPA;
+import main.dao.implementation.InvoiceDaoImpl;
 import main.domain.Invoice;
 
 import javax.ejb.Stateless;
@@ -62,5 +63,9 @@ public class InvoiceService {
             return this.invoiceDao.findByInvoiceNr(invoiceNr);
         }
         return null;
+    }
+
+    public void setInvoiceDao(InvoiceDao invoiceDao) {
+        this.invoiceDao = invoiceDao;
     }
 }
