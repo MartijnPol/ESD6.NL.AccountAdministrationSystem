@@ -6,7 +6,7 @@
                 template="/templates/template.xhtml">
 
     <f:metadata>
-        <f:viewParam name="invoiceId" value="#{invoiceBean.invoiceId}"/>
+        <f:viewParam name="invoiceNr" value="#{invoiceBean.invoiceNr}"/>
 
         <f:event type="preRenderView" listener="#{invoiceBean.init}"/>
     </f:metadata>
@@ -18,7 +18,7 @@
         <div class="container">
 
             <header class="header">
-                <h1>Factuurdetails</h1>
+                <h1>Factuurdetails factuur #{invoiceBean.invoice.invoiceNr}</h1>
                 <h5 class="text-muted">Details van de factuur</h5>
             </header>
 
@@ -26,9 +26,16 @@
 
                 <h:form id="form" rendered="#{not empty invoiceBean.invoice}">
 
-                    <p:outputLabel id="amount" value="#{invoiceBean.invoice.totalAmount}"/>
+                    <p:outputLabel for="totalAmountText" value="Totaalbedrag: "/>
+                    <h:outputText id="totalAmountText" value="#{invoiceBean.invoice.totalAmount}"/>
+
+                    <p:outputLabel for="periodText" value="Periode: "/>
+                    <h:outputText id="periodText" value="#{invoiceBean.monthName}"/>
                 </h:form>
 
+                <h:form id="emptyForm" rendered="#{empty invoiceBean.invoice}">
+                    <p:outputLabel id="mistake" value="Er is iets mis gegaan."/>
+                </h:form>
             </div>
 
         </div>

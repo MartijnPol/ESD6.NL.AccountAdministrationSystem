@@ -58,7 +58,7 @@ public class InvoiceOverviewBean extends BaseBean {
 
     public void onRowSelect(SelectEvent event) {
         Invoice selectedInvoice = (Invoice) event.getObject();
-        RedirectHelper.redirect("/pages/invoice/invoice.xhtml?invoiceId=" + selectedInvoice.getId());
+        RedirectHelper.redirect("/pages/invoice/invoice.xhtml?invoiceNr=" + selectedInvoice.getInvoiceNr());
     }
 
     public void setSelectedInvoice(Invoice selectedInvoice) {

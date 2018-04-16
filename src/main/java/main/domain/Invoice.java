@@ -14,6 +14,9 @@ import java.util.Objects;
  */
 @XmlRootElement
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "invoice.findByInvoiceNr", query = "SELECT i FROM Invoice i WHERE i.invoiceNr = :invoiceNr")
+})
 public class Invoice extends BaseEntity {
 
     private Long invoiceNr;
