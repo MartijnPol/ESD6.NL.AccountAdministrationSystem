@@ -1,6 +1,8 @@
 package main.service;
 
 import main.dao.CarDao;
+import main.dao.implementation.CarDaoImpl;
+import main.dao.implementation.RDWDaoImpl;
 import main.domain.Address;
 import main.domain.Car;
 import main.domain.Owner;
@@ -9,6 +11,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -20,6 +23,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,7 +34,6 @@ import static org.mockito.Mockito.when;
 public class CarServiceTest {
 
     private CarService carService;
-
     private Car car;
 
     private Owner currentOwner;
@@ -39,13 +42,18 @@ public class CarServiceTest {
     private Ownership currentOwnership;
 
     @Mock
-    private CarDao carDao;
+    private CarDaoImpl carDao;
+    @Mock
+    private RDWDaoImpl rdwDao;
+    @Mock
+    private CarService carServiceMock;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         carService = new CarService();
         carService.setCarDao(carDao);
+        carService.setRdwDao(rdwDao);
 
         currentOwner = new Owner("Thom", "van de Pas", new Date(), new Address());
         currentOwnership = new Ownership();
@@ -61,7 +69,6 @@ public class CarServiceTest {
     }
 
     @Test
-    @Ignore
     public void getAndUpdatePastOwnerships() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, 2012);
@@ -85,7 +92,7 @@ public class CarServiceTest {
         List<Ownership> theOwnerships = car.getPastOwnerships();
         assertThat(theOwnerships.size(), is(2));
 
-        when(carService.getAndUpdatePastOwnerships(car)).thenReturn(car.getPastOwnerships());
+        when(carServiceMock.getAndUpdatePastOwnerships(car)).thenReturn(car.getPastOwnerships());
         List<Ownership> pastOwnerships = carService.getAndUpdatePastOwnerships(car);
         verify(carDao, Mockito.times(1)).createOrUpdate(car);
         assertThat(pastOwnerships.size(), is(1));
