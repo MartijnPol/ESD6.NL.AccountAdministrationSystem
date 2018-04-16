@@ -4,10 +4,8 @@ import main.domain.enums.PaymentStatus;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * @author Thom van de Pas on 4-4-2018
