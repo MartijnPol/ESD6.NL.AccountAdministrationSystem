@@ -1,7 +1,5 @@
 package util;
 
-
-
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 import java.sql.SQLException;

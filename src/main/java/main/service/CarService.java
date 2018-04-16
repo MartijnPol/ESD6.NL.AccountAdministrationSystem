@@ -2,6 +2,7 @@ package main.service;
 
 import main.dao.CarDao;
 import main.dao.JPA;
+import main.dao.RDWDao;
 import main.domain.Car;
 import main.domain.Owner;
 import main.domain.Ownership;
@@ -27,13 +28,14 @@ public class CarService {
     private CarDao carDao;
 
     @Inject
-    private RDWService rdwService;
+    @JPA
+    private RDWDao rdwDao;
 
     public CarService() {
     }
 
     public Car createOrUpdate(Car car) {
-        RDW rdwData = rdwService.findByLicensePlate(car.getLicensePlate());
+        RDW rdwData = this.rdwDao.findByLicensePlate(car.getLicensePlate());
         if (rdwData != null) {
             car.setRdwData(rdwData);
         }
@@ -100,7 +102,7 @@ public class CarService {
                 car.getPastOwnerships().remove(ownership);
             }
         }
-        car = this.createOrUpdate(car);
+        this.createOrUpdate(car);
 
         return car.getPastOwnerships();
     }
@@ -146,5 +148,9 @@ public class CarService {
 
     public void setCarDao(CarDao carDao) {
         this.carDao = carDao;
+    }
+
+    public void setRdwDao(RDWDao rdwDao) {
+        this.rdwDao = rdwDao;
     }
 }
