@@ -28,6 +28,7 @@
           <element id="library" level="project" name="Maven: com.google.guava:guava:20.0" />
           <element id="library" level="project" name="Maven: io.swagger:swagger-annotations:1.5.18" />
           <element id="library" level="project" name="Maven: org.primefaces:primefaces:6.2" />
+          <element id="library" level="project" name="Maven: org.primefaces.themes:all-themes:1.0.10" />
           <element id="library" level="project" name="Maven: org.jasypt:jasypt:1.9.2" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.11" />
           <element id="library" level="project" name="Maven: org.omnifaces:omnifaces:3.0" />
