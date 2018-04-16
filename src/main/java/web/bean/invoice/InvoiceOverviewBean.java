@@ -13,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -64,9 +65,17 @@ public class InvoiceOverviewBean extends BaseBean {
     public void deleteInvoice(Invoice invoice) {
         if (invoice != null) {
             invoiceService.delete(invoice);
-            RedirectHelper.redirect("/pages/invoice/invoiceOverview.xhtml");
+            RedirectHelper.redirect("/pages/invoice/overview.xhtml");
         } else {
             FrontendHelper.displayErrorSmallMessage("Er ging iets mis.", "Probeer het opnieuw.");
+        }
+    }
+
+    public void generateInvoicePdf(Invoice invoice) {
+        try {
+            invoiceService.generateInvoidePdf(invoice);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

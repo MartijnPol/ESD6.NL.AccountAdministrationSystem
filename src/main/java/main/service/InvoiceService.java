@@ -2,11 +2,15 @@ package main.service;
 
 import main.dao.InvoiceDao;
 import main.dao.JPA;
-import main.dao.implementation.InvoiceDaoImpl;
 import main.domain.Invoice;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -71,5 +75,25 @@ public class InvoiceService {
 
     public void setInvoiceDao(InvoiceDao invoiceDao) {
         this.invoiceDao = invoiceDao;
+    }
+
+    public void generateInvoidePdf(Invoice invoice) throws IOException {
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+        contentStream.setFont(PDType1Font.COURIER, 12);
+        contentStream.beginText();
+        contentStream.showText(invoice.getTotalAmount().toString());
+        contentStream.showText(invoice.getInvoiceNr().toString());
+        contentStream.showText(invoice.getPaymentStatus().toString());
+        contentStream.showText(invoice.getOwnership().getOwner().getFullName());
+        contentStream.endText();
+        contentStream.close();
+
+        document.save("C:/Users/Gebruiker/Documents/Development/pdfBoxHelloWorld.pdf");
+        document.close();
     }
 }
