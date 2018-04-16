@@ -26,6 +26,10 @@ public class InvoiceService {
         return this.invoiceDao.createOrUpdate(invoice);
     }
 
+    public void delete(Invoice invoice) {
+        this.invoiceDao.delete(invoice);
+    }
+
     public List<Invoice> findAll() {
         return this.invoiceDao.findAll();
     }

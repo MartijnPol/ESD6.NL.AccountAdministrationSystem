@@ -61,6 +61,15 @@ public class InvoiceOverviewBean extends BaseBean {
         RedirectHelper.redirect("/pages/invoice/invoice.xhtml?invoiceNr=" + selectedInvoice.getInvoiceNr());
     }
 
+    public void deleteInvoice(Invoice invoice) {
+        if (invoice != null) {
+            invoiceService.delete(invoice);
+            RedirectHelper.redirect("/pages/invoice/invoiceOverview.xhtml");
+        } else {
+            FrontendHelper.displayErrorSmallMessage("Er ging iets mis.", "Probeer het opnieuw.");
+        }
+    }
+
     public void setSelectedInvoice(Invoice selectedInvoice) {
         this.selectedInvoice = selectedInvoice;
     }
