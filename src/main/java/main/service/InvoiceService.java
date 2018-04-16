@@ -2,11 +2,12 @@ package main.service;
 
 import main.dao.InvoiceDao;
 import main.dao.JPA;
-import main.dao.implementation.InvoiceDaoImpl;
 import main.domain.Invoice;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -72,4 +73,5 @@ public class InvoiceService {
     public void setInvoiceDao(InvoiceDao invoiceDao) {
         this.invoiceDao = invoiceDao;
     }
+
 }

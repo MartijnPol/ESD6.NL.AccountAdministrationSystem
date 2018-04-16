@@ -26,11 +26,30 @@
 
                 <h:form id="form" rendered="#{not empty invoiceBean.invoice}">
 
-                    <p:outputLabel for="totalAmountText" value="Totaalbedrag: "/>
-                    <h:outputText id="totalAmountText" value="#{invoiceBean.invoice.totalAmount}"/>
+                    <div class="form-group">
+                        <p:outputLabel for="totalAmountText" value="Totaalbedrag: "/>
+                        <h:outputText id="totalAmountText" value="#{invoiceBean.invoice.totalAmount.setScale(2, 4)}"/>
+                    </div>
 
-                    <p:outputLabel for="periodText" value="Periode: "/>
-                    <h:outputText id="periodText" value="#{invoiceBean.monthName}"/>
+                    <div class="form-group">
+                        <p:outputLabel for="periodText" value="Periode: "/>
+                        <h:outputText id="periodText" value="#{invoiceBean.monthName}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel for="ownerNameText" value="Eigenaar: "/>
+                        <h:outputText id="ownerNameText" value="#{invoiceBean.invoice.ownership.owner.fullName}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel for="paymentStatusText" value="Betaalstatus: "/>
+                        <h:outputText id="paymentStatusText" value="#{invoiceBean.invoice.paymentStatus.toString()}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel for="licensePlateText" value="Nummerplaat: "/>
+                        <h:outputText id="licensePlateText" value="#{invoiceBean.invoice.ownership.car.licensePlate}"/>
+                    </div>
                 </h:form>
 
                 <h:form id="emptyForm" rendered="#{empty invoiceBean.invoice}">

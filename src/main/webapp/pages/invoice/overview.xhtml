@@ -65,7 +65,7 @@
 
                         <p:column headerText="Totaalbedrag" filterBy="#{invoice.totalAmount}"
                                   filterMatchMode="contains">
-                            <h:outputText value="€#{invoice.totalAmount}" converter="javax.faces.BigDecimal">
+                            <h:outputText value="€#{invoice.totalAmount.setScale(2, 4)}" converter="javax.faces.BigDecimal">
                                 <f:convertNumber currencySymbol="€" type="currency"/>
                             </h:outputText>
                         </p:column>
