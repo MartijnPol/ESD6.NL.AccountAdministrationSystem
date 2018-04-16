@@ -13,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -58,7 +59,24 @@ public class InvoiceOverviewBean extends BaseBean {
 
     public void onRowSelect(SelectEvent event) {
         Invoice selectedInvoice = (Invoice) event.getObject();
-        RedirectHelper.redirect("/pages/invoice/invoice.xhtml?invoiceId=" + selectedInvoice.getId());
+        RedirectHelper.redirect("/pages/invoice/invoice.xhtml?invoiceNr=" + selectedInvoice.getInvoiceNr());
+    }
+
+    public void deleteInvoice(Invoice invoice) {
+        if (invoice != null) {
+            invoiceService.delete(invoice);
+            RedirectHelper.redirect("/pages/invoice/overview.xhtml");
+        } else {
+            FrontendHelper.displayErrorSmallMessage("Er ging iets mis.", "Probeer het opnieuw.");
+        }
+    }
+
+    public void generateInvoicePdf(Invoice invoice) {
+        try {
+            invoiceService.generateInvoidePdf(invoice);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setSelectedInvoice(Invoice selectedInvoice) {

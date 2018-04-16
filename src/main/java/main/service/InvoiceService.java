@@ -3,9 +3,17 @@ package main.service;
 import main.dao.InvoiceDao;
 import main.dao.JPA;
 import main.domain.Invoice;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.io.IOException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +30,10 @@ public class InvoiceService {
         return this.invoiceDao.createOrUpdate(invoice);
     }
 
+    public void delete(Invoice invoice) {
+        this.invoiceDao.delete(invoice);
+    }
+
     public List<Invoice> findAll() {
         return this.invoiceDao.findAll();
     }
@@ -31,5 +43,57 @@ public class InvoiceService {
             return this.invoiceDao.findById(id);
         }
         return null;
+    }
+
+    /**
+     * Gets the name of the month from a Date.
+     *
+     * @param date is the whole date from which the month name has to be shown.
+     * @return a String of the month name.
+     */
+    public String getMonthName(Date date) {
+        String monthName;
+
+        Format formatter = new SimpleDateFormat("MMMM");
+        monthName = formatter.format(date);
+
+        return monthName;
+    }
+
+    /**
+     * Finds an Invoice by its number.
+     *
+     * @param invoiceNr is the number of the Invoice to be found.
+     * @return the found Invoice or null if the number is unknown.
+     */
+    public Invoice findByInvoiceNr(Long invoiceNr) {
+        if (invoiceNr != null) {
+            return this.invoiceDao.findByInvoiceNr(invoiceNr);
+        }
+        return null;
+    }
+
+    public void setInvoiceDao(InvoiceDao invoiceDao) {
+        this.invoiceDao = invoiceDao;
+    }
+
+    public void generateInvoidePdf(Invoice invoice) throws IOException {
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+        contentStream.setFont(PDType1Font.COURIER, 12);
+        contentStream.beginText();
+        contentStream.showText(invoice.getTotalAmount().toString());
+        contentStream.showText(invoice.getInvoiceNr().toString());
+        contentStream.showText(invoice.getPaymentStatus().toString());
+        contentStream.showText(invoice.getOwnership().getOwner().getFullName());
+        contentStream.endText();
+        contentStream.close();
+
+        document.save("C:/Users/Gebruiker/Documents/Development/pdfBoxHelloWorld.pdf");
+        document.close();
     }
 }
