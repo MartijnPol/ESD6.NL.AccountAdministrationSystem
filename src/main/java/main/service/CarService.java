@@ -141,9 +141,10 @@ public class CarService {
                 car.setOwner(newOwnership.getOwner());
                 car.setCurrentOwnership(newOwnership);
             }
+            this.createOrUpdate(car);
+            return car;
         }
-        car = this.createOrUpdate(car);
-        return car;
+        return null;
     }
 
     public void setCarDao(CarDao carDao) {
