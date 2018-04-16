@@ -4,15 +4,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
 
 <h:form>
     <div class="navbar navbar-expand-lg navbar-light bg-light">
 
         <p:megaMenu orientation="horizontal">
 
-            <p:menuitem value="Dashboard" url="/pages/profile/dashboard.xhtml" icon="ui-icon-check"/>
+            <p:menuitem value="Dashboard" url="/pages/profile/dashboard.xhtml"/>
 
             <p:submenu label="Gebruiker">
                 <p:column>
@@ -47,11 +46,7 @@
                 </p:column>
             </p:submenu>
 
-            <p:menuitem value="Uitloggen" action="#{sessionBean.logout()}" icon="ui-icon-close"/>
-
-            <f:facet name="options">
-                <p:menuitem value="Uitloggen" action="#{sessionBean.logout()}" icon="ui-icon-close"/>
-            </f:facet>
+            <p:menuitem value="Uitloggen" action="#{sessionBean.logout()}"/>
 
         </p:megaMenu>
 
