@@ -107,11 +107,11 @@
             <version>3.0</version>
         </dependency>
 
-        <!-- PdfBox -->
+        <!-- LibrePDF / OpenPDF -->
         <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>2.0.9</version>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>1.0.5</version>
         </dependency>
 
         <!-- Bootstrap Webjar -->
