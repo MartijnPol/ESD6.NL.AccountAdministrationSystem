@@ -50,7 +50,7 @@ pipeline{
                 branch 'development'
             }
             steps{
-                sh 'docker stack deploy -c compose-dev.yml AccountAdministrationSystem
+                sh 'docker stack deploy -c compose-dev.yml AccountAdministrationSystem'
             }
         }
         stage('Deploy master'){
