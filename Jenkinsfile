@@ -35,7 +35,7 @@ pipeline{
                 branch 'development'
             }
             steps{
-                sh 'docker stack deploy -c dev.yml AccountAdministrationSystem'
+                sh 'docker stack deploy -c dev.yml accountadministrationsystem'
             }
         }
         stage('Deploy master'){
