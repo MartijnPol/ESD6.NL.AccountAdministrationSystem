@@ -50,6 +50,10 @@ public class Car extends BaseEntity {
         this.pastOwnerships.add(ownership);
     }
 
+    public void addMultiplePastOwnerships(List<Ownership> ownerships) {
+        this.pastOwnerships.addAll(ownerships);
+    }
+
     public JsonObject toJson() {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String date = dateFormat.format(this.owner.getBirthDay());
