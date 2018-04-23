@@ -15,23 +15,22 @@ pipeline{
         }
         stage('Build project'){
             agent{
-                steps {
-                    sh 'mvn -Dmaven.test.failure.ignore=true compile'
-                }
-                post {
-                    success {
-                        junit 'target/surefire-reports/**/*.xml'
-                    }
-                }
+
             }
+            steps {
+                sh 'mvn -Dmaven.test.failure.ignore=true compile'
+            }
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml'
+                }
+        }
         }
         stage('Build image'){
             agent{
 
             }
-            steps{
 
-            }
         }
         stage('Test sonarqube'){
             agent{
