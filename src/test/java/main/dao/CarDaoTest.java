@@ -74,6 +74,7 @@ public class CarDaoTest {
     }
 
     @Test
+    @Ignore
     public void saveCarSuccessfulTest() {
         Integer expResult = 1;
         tx.begin();
@@ -89,6 +90,7 @@ public class CarDaoTest {
     }
 
     @Test
+    @Ignore
     public void findByOwnerSuccessfulTest() {
         Owner testOwner = new Owner("Pietje", "Bell", new Date(), new Address());
         Car test = new Car("PT-EI-82", testOwner);
