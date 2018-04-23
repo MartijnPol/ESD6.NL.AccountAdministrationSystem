@@ -15,7 +15,7 @@ import java.util.List;
 @XmlRootElement
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "car.findByOwner", query = "SELECT c FROM Car c WHERE c.owner = :owner"),
+        @NamedQuery(name = "car.findByOwner", query = "SELECT c FROM Car c WHERE c.currentOwnership.owner = :owner"),
         @NamedQuery(name = "car.findByCarTrackerId", query = "SELECT c FROM Car c WHERE c.carTrackerId = :carTrackerId"),
         @NamedQuery(name = "car.deleteByLicencePlate", query = "DELETE FROM Car c WHERE c.licensePlate = :licensePlate")
 })
@@ -23,9 +23,6 @@ public class Car extends BaseEntity {
 
     private Long carTrackerId;
     private String licensePlate;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Owner owner;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<Ownership> pastOwnerships;
@@ -40,10 +37,10 @@ public class Car extends BaseEntity {
         this.pastOwnerships = new ArrayList<>();
     }
 
-    public Car(String licensePlate, Owner owner) {
+    public Car(String licensePlate, Ownership currentOwnership) {
         this();
         this.licensePlate = licensePlate;
-        this.owner = owner;
+        this.currentOwnership = currentOwnership;
     }
 
     public void addPastOwnership(Ownership ownership) {
@@ -56,12 +53,12 @@ public class Car extends BaseEntity {
 
     public JsonObject toJson() {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String date = dateFormat.format(this.owner.getBirthDay());
+        String date = dateFormat.format(this.getCurrentOwnership().getOwner().getBirthDay());
         return Json.createObjectBuilder()
                 .add("carTrackerId", this.carTrackerId)
                 .add("licensePlate", this.licensePlate)
                 .add("owner", Json.createObjectBuilder()
-                        .add("fullname", this.owner.getFullName())
+                        .add("fullname", this.getCurrentOwnership().getOwner().getFullName())
                         .add("birthday", date).build())
                 .build();
     }
@@ -97,14 +94,6 @@ public class Car extends BaseEntity {
 
     public void setCurrentOwnership(Ownership currentOwnership) {
         this.currentOwnership = currentOwnership;
-    }
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
     }
 
     public RDW getRdwData() {

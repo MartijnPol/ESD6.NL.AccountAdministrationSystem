@@ -11,18 +11,18 @@ import static org.junit.Assert.assertEquals;
 public class CarTest {
 
     private Car car;
-    private Owner owner;
+    private Ownership ownership;
 
     @Before
     public void setUp() {
         car = new Car();
-        owner = new Owner();
+        ownership = new Ownership();
     }
 
     @Test
     public void createCarTest() {
-        Owner expOwner = owner;
-        car.setOwner(owner);
-        assertEquals(expOwner, car.getOwner());
+        Ownership expOwner = ownership;
+        car.setCurrentOwnership(ownership);
+        assertEquals(expOwner, car.getCurrentOwnership().getOwner());
     }
 }

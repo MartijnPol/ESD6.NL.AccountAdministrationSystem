@@ -64,8 +64,7 @@ public class CarDaoTest {
         owner = new Owner("Herman", "de Schermman", new Date(), new Address());
         ownership = new Ownership();
         ownership.setOwner(owner);
-        car = new Car("HT-328-W", owner);
-        car.setOwner(owner);
+        car = new Car("HT-328-W", ownership);
         car.setCurrentOwnership(ownership);
     }
 
@@ -83,7 +82,6 @@ public class CarDaoTest {
         ownership.setCar(car);
         ownershipDao.createOrUpdate(ownership);
         tx.commit();
-        tx.begin();
         int size = carDao.findAll().size();
         assertThat(size, is(expResult));
     }
@@ -91,8 +89,10 @@ public class CarDaoTest {
     @Test
     public void findByOwnerSuccessfulTest() {
         Owner testOwner = new Owner("Pietje", "Bell", new Date(), new Address());
-        Car test = new Car("PT-EI-82", testOwner);
-        Car test2 = new Car("SR-206-P", owner);
+        Ownership testOwnership = new Ownership();
+        testOwnership.setOwner(testOwner);
+        Car test = new Car("PT-EI-82", testOwnership);
+        Car test2 = new Car("SR-206-P", ownership);
         tx.begin();
         carDao.createOrUpdate(car);
         carDao.createOrUpdate(test);
@@ -120,7 +120,7 @@ public class CarDaoTest {
     @Ignore
     @Test
     public void removeCarSuccessfulTest() {
-        Car test = new Car("PT-EI-82", owner);
+        Car test = new Car("PT-EI-82", ownership);
         tx.begin();
         carDao.createOrUpdate(car);
         carDao.createOrUpdate(test);

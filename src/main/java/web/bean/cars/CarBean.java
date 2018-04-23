@@ -1,46 +1,82 @@
 package web.bean.cars;
 
 import main.domain.Car;
+import main.domain.Owner;
+import main.domain.Ownership;
 import main.service.CarService;
+import main.service.OwnerService;
+import main.service.OwnershipService;
+import web.bean.BaseBean;
+import web.core.helper.FrontendHelper;
 
-import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by Martijn van der Pol on 05-04-18
- **/
+ * @author Thom van de Pas on 23-4-2018
+ */
 @Named
 @ViewScoped
-public class CarBean implements Serializable {
+public class CarBean extends BaseBean {
 
     @Inject
     private CarService carService;
+    @Inject
+    private OwnershipService ownershipService;
 
-    private List<Car> cars;
-    private List<Car> filteredCars;
+    private Long carId;
+    private Car car;
+    private List<Ownership> ownerships;
+    private Ownership ownership;
 
-    @PostConstruct
+    @Override
     public void init() {
-        this.cars = this.carService.findAll();
+        this.ownerships = this.ownershipService.findAll();
+        this.car = this.carService.findById(this.carId);
     }
 
-    public List<Car> getCars() {
-        return cars;
+    public void update() {
+        if (car != null && ownership != null) {
+            if (!car.getCurrentOwnership().equals(ownership)) {
+                this.carService.assignToNewOwner(this.car, this.ownership);
+            } else {
+                this.carService.createOrUpdate(this.car);
+            }
+            FrontendHelper.displaySuccessSmallMessage("De auto is succesvol geüpdatet.");
+        }
     }
 
-    public void setCars(List<Car> cars) {
-        this.cars = cars;
+    public Car getCar() {
+        return car;
     }
 
-    public List<Car> getFilteredCars() {
-        return filteredCars;
+    public void setCar(Car car) {
+        this.car = car;
     }
 
-    public void setFilteredCars(List<Car> filteredCars) {
-        this.filteredCars = filteredCars;
+    public Long getCarId() {
+        return carId;
+    }
+
+    public void setCarId(Long carId) {
+        this.carId = carId;
+    }
+
+    public Ownership getOwnership() {
+        return ownership;
+    }
+
+    public void setOwnership(Ownership ownership) {
+        this.ownership = ownership;
+    }
+
+    public List<Ownership> getOwnerships() {
+        return ownerships;
+    }
+
+    public void setOwnerships(List<Ownership> ownerships) {
+        this.ownerships = ownerships;
     }
 }

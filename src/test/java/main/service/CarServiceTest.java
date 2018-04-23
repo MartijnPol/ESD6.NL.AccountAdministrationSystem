@@ -58,7 +58,7 @@ public class CarServiceTest {
         currentOwner.addOwnership(currentOwnership);
         currentOwnership.setOwner(currentOwner);
         currentOwnership.setId(1L);
-        car = new Car("FF-01-RK", currentOwner);
+        car = new Car("FF-01-RK", currentOwnership);
         car.setCurrentOwnership(currentOwnership);
 
 
