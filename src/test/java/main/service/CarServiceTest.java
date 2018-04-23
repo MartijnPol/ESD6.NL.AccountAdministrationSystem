@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -70,21 +71,25 @@ public class CarServiceTest {
 
     @Test
     public void getAndUpdatePastOwnershipsTest() {
+        List<Ownership> ownerships = new ArrayList<>();
+
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, 2012);
         calendar.set(Calendar.MONTH, Calendar.APRIL);
         calendar.set(Calendar.DATE, 3);
         Ownership test = new Ownership();
         test.setEndDate(calendar.getTime());
-        Ownership test2 = new Ownership();
 
         Calendar calendar2 = Calendar.getInstance();
         calendar2.set(Calendar.YEAR, 2016);
         calendar2.set(Calendar.MONTH, Calendar.APRIL);
         calendar2.set(Calendar.DATE, 3);
+        Ownership test2 = new Ownership();
         test2.setEndDate(calendar2.getTime());
-        car.addPastOwnership(test);
-        car.addPastOwnership(test2);
+
+        ownerships.add(test);
+        ownerships.add(test2);
+        car.addMultiplePastOwnerships(ownerships);
 
         car.setCurrentOwnership(currentOwnership);
         car.setCarTrackerId(1L);

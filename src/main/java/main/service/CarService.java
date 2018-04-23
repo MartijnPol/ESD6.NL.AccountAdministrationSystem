@@ -92,11 +92,9 @@ public class CarService {
     /**
      * Removes Ownerships older than 5 years and returns a List of old Owners (till 5 years ago)
      *
-     * @returns a List of past Owners or null.
+     * @returns a List of past owners or an empty list when there are no past owners.
      */
     public List<Ownership> getAndUpdatePastOwnerships(Car car) {
-//        Car foundCar = this.carDao.findById(car.getId());
-
         for (Ownership ownership : car.getPastOwnerships()) {
             if (isLongerThanFiveYearsAgo(ownership.getEndDate())) {
                 car.getPastOwnerships().remove(ownership);
@@ -122,10 +120,11 @@ public class CarService {
 
     /**
      * Assign a Car to a new Ownership.
+     * Previous owner is added to past ownerships and the new owner will be assigned.
      *
      * @param car          is the Car that gets a new Ownership.
      * @param newOwnership is the new Ownership
-     * @returns the updated Car.
+     * @returns the updated Car, if something went wrong null will be returned.
      */
     public Car assignToNewOwner(Car car, Ownership newOwnership) {
         if (car != null && newOwnership != null) {
@@ -146,6 +145,7 @@ public class CarService {
         }
         return null;
     }
+
 
     public void setCarDao(CarDao carDao) {
         this.carDao = carDao;
