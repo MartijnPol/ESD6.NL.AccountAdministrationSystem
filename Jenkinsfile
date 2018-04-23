@@ -24,7 +24,9 @@ pipeline{
         }
         }
         stage('Build image'){
-
+            steps{
+                sh 'mvn clean package -B'
+            }
 
         }
         stage('Test sonarqube'){
@@ -46,7 +48,7 @@ pipeline{
                 branch 'master'
             }
             steps{
-
+                sh 'mvn clean package -B'
             }
         }
         stage('Deploy release'){
@@ -54,7 +56,7 @@ pipeline{
                 branch 'release'
             }
             steps{
-
+                sh 'mvn clean package -B'
             }
         }
     }
