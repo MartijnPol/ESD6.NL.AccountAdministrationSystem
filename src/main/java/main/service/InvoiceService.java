@@ -1,16 +1,17 @@
 package main.service;
 
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.PdfCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import main.dao.InvoiceDao;
 import main.dao.JPA;
 import main.domain.Invoice;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -77,23 +78,86 @@ public class InvoiceService {
         this.invoiceDao = invoiceDao;
     }
 
-    public void generateInvoidePdf(Invoice invoice) throws IOException {
-        PDDocument document = new PDDocument();
-        PDPage page = new PDPage();
-        document.addPage(page);
+    /**
+     * Generate invoice pdf file.
+     * The OpenPDF library is used for generating the file.
+     *
+     * @param invoice Invoice
+     */
+    public void generateInvoicePdf(Invoice invoice) {
+        Document document = new Document();
 
-        PDPageContentStream contentStream = new PDPageContentStream(document, page);
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream("C:/Users/Gebruiker/Documents/Development/pdfBoxHelloWorld.pdf"));
+            document.open();
 
-        contentStream.setFont(PDType1Font.COURIER, 12);
-        contentStream.beginText();
-        contentStream.showText(invoice.getTotalAmount().toString());
-        contentStream.showText(invoice.getInvoiceNr().toString());
-        contentStream.showText(invoice.getPaymentStatus().toString());
-        contentStream.showText(invoice.getOwnership().getOwner().getFullName());
-        contentStream.endText();
-        contentStream.close();
+            document.addTitle("Factuur" + invoice.getInvoiceNr());
+            document.addCreationDate();
+            document.addAuthor("RekeningRijden AAS");
 
-        document.save("C:/Users/Gebruiker/Documents/Development/pdfBoxHelloWorld.pdf");
+            document.add(new Paragraph("Factuur: " + invoice.getInvoiceNr()));
+
+            document.add(getAddressTable(invoice));
+
+
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         document.close();
+    }
+
+    private Table getAddressTable(Invoice invoice) throws BadElementException {
+        Table table = new Table(2);
+        table.setBorder(0);
+
+        table.addCell(getAddressParagraph("Klant",
+                invoice.getOwnership().getOwner().getFullName(),
+                invoice.getOwnership().getOwner().getAddress().getStreet(),
+                invoice.getOwnership().getOwner().getAddress().getStreetNr(),
+                invoice.getOwnership().getOwner().getAddress().getPostalCode(),
+                invoice.getOwnership().getOwner().getAddress().getCity()));
+
+        table.addCell(getCarParagraph(invoice.getOwnership().getCar().getLicensePlate(),
+                invoice.getOwnership().getCar().getRdwData().getMerk(),
+                invoice.getOwnership().getCar().getRdwData().getVoertuigsoort()));
+
+        return table;
+    }
+
+    private Cell getAddressParagraph(String name, String fullname, String street, String streetNr, String postalCode, String city) {
+        Paragraph addressParagraph = new Paragraph();
+
+        addressParagraph.add(name);
+        addressParagraph.add(Chunk.NEWLINE);
+        addressParagraph.add(fullname);
+        addressParagraph.add(Chunk.NEWLINE);
+        addressParagraph.add(street + " " + streetNr);
+        addressParagraph.add(Chunk.NEWLINE);
+        addressParagraph.add(postalCode + " " + city);
+
+        Cell cell = new Cell();
+        cell.setBorder(0);
+        cell.add(addressParagraph);
+
+        return cell;
+    }
+
+    private Cell getCarParagraph(String licensePlate, String brand, String model) {
+        Paragraph carParagraph = new Paragraph();
+
+        carParagraph.add(licensePlate);
+        carParagraph.add(Chunk.NEWLINE);
+        carParagraph.add(brand);
+        carParagraph.add(Chunk.NEWLINE);
+        carParagraph.add(model);
+
+        Cell cell = new Cell();
+        cell.setBorder(0);
+        cell.add(carParagraph);
+
+        return cell;
     }
 }
