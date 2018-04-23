@@ -20,7 +20,7 @@
 
                 <h:form id="invoicesForm">
 
-                    <p:dataTable emptyMessage="Er zijn geen factuurs gevonden die voldoen aan de criteria"
+                    <p:dataTable emptyMessage="Er zijn geen facturen gevonden die voldoen aan de criteria"
                                  filteredValue="#{invoiceOverviewBean.filteredInvoices}"
                                  id="invoiceOverviewDataTable"
                                  paginator="true"
@@ -81,6 +81,10 @@
                                              value="Delete"
                                              styleClass="btn btn-danger">
                                 <p:confirm header="Weet u het zeker?" message="Wil u deze factuur echt verwijderen?"/>
+                            </p:commandButton>
+                            <p:commandButton action="#{invoiceOverviewBean.generateInvoicePdf(invoice)}"
+                                             value="Genereate"
+                                             styleClass="btn btn-primary">
                             </p:commandButton>
                         </p:column>
 
