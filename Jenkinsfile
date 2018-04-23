@@ -15,13 +15,8 @@ pipeline{
         }
         stage('Build project'){
             steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true compile'
+                sh 'mvn compile'
             }
-            post {
-                success {
-                    junit 'target/surefire-reports/**/*.xml'
-                }
-        }
         }
         stage('Build image'){
             steps{
