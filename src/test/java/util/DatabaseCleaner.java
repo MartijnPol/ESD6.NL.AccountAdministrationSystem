@@ -12,7 +12,6 @@ public class DatabaseCleaner {
     private static final Class<?>[] ENTITY_TYPES = {
             Car.class, Invoice.class, Owner.class, Ownership.class, RDW.class,
             Tariff.class, User.class, UserGroup.class
-            //Entity Classes here
     };
     private final EntityManager em;
 

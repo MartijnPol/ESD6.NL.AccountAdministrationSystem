@@ -16,11 +16,16 @@ pipeline{
         stage('Build project'){
             steps {
                 sh 'mvn compile'
+                archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
         }
         stage('Build image'){
             steps{
+				sh 'docker build -t accountadministrationsystem .'
+				sh 'docker tag accountadministrationsystem:latest localhost:5000/aas'
+				sh 'docker push localhost:5000/aas'
                 sh 'mvn clean package -B'
+                archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
 
         }

@@ -25,12 +25,12 @@ public class OwnerTest {
 //    @Test
 //    public void setCarsToOwnerTest() {
 //        int expResult = 2;
-//        cars.add(new Car("32-ABC-1", owner));
-//        cars.add(new Car("12-CBA-9", owner));
+//        cars.add(new Car("32-ABC-1", cartracker));
+//        cars.add(new Car("12-CBA-9", cartracker));
 //
-//        owner.setCars(cars);
+//        cartracker.setCars(cars);
 //
 //        assertEquals(expResult, cars.size());
-//        assertEquals(expResult, owner.getCars().size());
+//        assertEquals(expResult, cartracker.getCars().size());
 //    }
 }
