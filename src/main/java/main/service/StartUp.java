@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -101,5 +102,6 @@ public class StartUp {
 
         this.tariffService.createOrUpdate(tariff1);
         this.tariffService.createOrUpdate(tariff2);
+
     }
 }
