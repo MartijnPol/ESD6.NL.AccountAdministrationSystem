@@ -1,5 +1,7 @@
 package util;
 
+import main.domain.*;
+
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 import java.sql.SQLException;
@@ -8,7 +10,15 @@ import java.sql.SQLException;
 public class DatabaseCleaner {
 
     private static final Class<?>[] ENTITY_TYPES = {
-            //Entity Classes here
+            Address.class,
+            Car.class,
+            Invoice.class,
+            Owner.class,
+            Ownership.class,
+            Tariff.class,
+            RDW.class,
+            User.class,
+            UserGroup.class
     };
     private final EntityManager em;
 

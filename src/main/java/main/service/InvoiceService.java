@@ -82,13 +82,13 @@ public class InvoiceService {
      * Generate invoice pdf file.
      * The OpenPDF library is used for generating the file.
      *
-     * @param invoice Invoice
+     * @param invoice Invoice containing all the necessary data
      */
     public void generateInvoicePdf(Invoice invoice) {
         Document document = new Document();
 
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("C:/Users/Gebruiker/Documents/Development/pdfBoxHelloWorld.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream("C:/Users/Gebruiker/Documents/Development/invoice.pdf"));
             document.open();
 
             document.addTitle("Factuur" + invoice.getInvoiceNr());
@@ -100,21 +100,26 @@ public class InvoiceService {
             document.add(getAddressTable(invoice));
 
 
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
+        } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
         }
 
         document.close();
     }
 
+    /**
+     * Get the address table that is placed at the top section in the invoice.
+     * This table contains owner and car details.
+     *
+     * @param invoice Invoice containing all the necessary data
+     * @return Address table containing car and owner details
+     * @throws BadElementException Signals an attempt to create an Element that hasn't got the right form
+     */
     private Table getAddressTable(Invoice invoice) throws BadElementException {
         Table table = new Table(2);
         table.setBorder(0);
 
-        table.addCell(getAddressParagraph("Klant",
-                invoice.getOwnership().getOwner().getFullName(),
+        table.addCell(getAddressParagraph(invoice.getOwnership().getOwner().getFullName(),
                 invoice.getOwnership().getOwner().getAddress().getStreet(),
                 invoice.getOwnership().getOwner().getAddress().getStreetNr(),
                 invoice.getOwnership().getOwner().getAddress().getPostalCode(),
@@ -127,11 +132,19 @@ public class InvoiceService {
         return table;
     }
 
-    private Cell getAddressParagraph(String name, String fullname, String street, String streetNr, String postalCode, String city) {
+    /**
+     * Get the address table cell.
+     *
+     * @param fullname Owners first name and last name
+     * @param street Name of the street
+     * @param streetNr House number
+     * @param postalCode Postal code
+     * @param city City the owners lives
+     * @return Table cell
+     */
+    private Cell getAddressParagraph(String fullname, String street, String streetNr, String postalCode, String city) {
         Paragraph addressParagraph = new Paragraph();
 
-        addressParagraph.add(name);
-        addressParagraph.add(Chunk.NEWLINE);
         addressParagraph.add(fullname);
         addressParagraph.add(Chunk.NEWLINE);
         addressParagraph.add(street + " " + streetNr);
@@ -145,6 +158,14 @@ public class InvoiceService {
         return cell;
     }
 
+    /**
+     * Get the car table cell.
+     *
+     * @param licensePlate License plate that represents the car
+     * @param brand Brand of the car
+     * @param model Car model
+     * @return Table cell
+     */
     private Cell getCarParagraph(String licensePlate, String brand, String model) {
         Paragraph carParagraph = new Paragraph();
 
