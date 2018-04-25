@@ -1,14 +1,13 @@
 package web.bean.cars;
 
 import main.domain.Car;
-import main.domain.Owner;
 import main.domain.Ownership;
 import main.service.CarService;
-import main.service.OwnerService;
 import main.service.OwnershipService;
 import web.bean.BaseBean;
 import web.core.helper.FrontendHelper;
 
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,7 +16,7 @@ import java.util.List;
 /**
  * @author Thom van de Pas on 23-4-2018
  */
-@Named
+@Named("carBean")
 @ViewScoped
 public class CarBean extends BaseBean {
 
@@ -29,7 +28,7 @@ public class CarBean extends BaseBean {
     private Long carId;
     private Car car;
     private List<Ownership> ownerships;
-    private Ownership ownership;
+    private Ownership selectedOwnership;
 
     @Override
     public void init() {
@@ -37,10 +36,14 @@ public class CarBean extends BaseBean {
         this.car = this.carService.findById(this.carId);
     }
 
+    public void onItemChange(Ownership selectedOwnership) {
+        this.selectedOwnership = selectedOwnership;
+    }
+
     public void update() {
-        if (car != null && ownership != null) {
-            if (!car.getCurrentOwnership().equals(ownership)) {
-                this.carService.assignToNewOwner(this.car, this.ownership);
+        if (this.car != null && this.selectedOwnership != null) {
+            if (!car.getCurrentOwnership().equals(this.selectedOwnership)) {
+                this.carService.assignToNewOwner(this.car, this.selectedOwnership);
             } else {
                 this.carService.createOrUpdate(this.car);
             }
@@ -48,6 +51,7 @@ public class CarBean extends BaseBean {
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
     public Car getCar() {
         return car;
     }
@@ -64,12 +68,12 @@ public class CarBean extends BaseBean {
         this.carId = carId;
     }
 
-    public Ownership getOwnership() {
-        return ownership;
+    public Ownership getSelectedOwnership() {
+        return selectedOwnership;
     }
 
-    public void setOwnership(Ownership ownership) {
-        this.ownership = ownership;
+    public void setSelectedOwnership(Ownership selectedOwnership) {
+        this.selectedOwnership = selectedOwnership;
     }
 
     public List<Ownership> getOwnerships() {
@@ -79,4 +83,5 @@ public class CarBean extends BaseBean {
     public void setOwnerships(List<Ownership> ownerships) {
         this.ownerships = ownerships;
     }
+    //</editor-fold>
 }
