@@ -38,7 +38,7 @@ pipeline{
         stage('Deploy development'){
             agent {
                 docker {
-                    image 'docker:17.12-dind'
+                    image 'localhost:5000/aas:latest'
                     args '-v /var/run/docker.sock:/var/run/docker.sock'
                     reuseNode true
                 }
