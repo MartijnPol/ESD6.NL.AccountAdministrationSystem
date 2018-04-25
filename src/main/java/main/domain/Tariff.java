@@ -1,11 +1,10 @@
 package main.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 @XmlRootElement
 @Entity
@@ -13,10 +12,14 @@ public class Tariff extends BaseEntity {
 
     private double tariffInEuro;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Map<String, Double> carLabels;
+
     private boolean ridingDuringRushHour;
 
     public Tariff() {
         this.ridingDuringRushHour = false;
+        this.carLabels = new HashMap<>();
     }
 
     public Tariff(double tariffInEuro, boolean ridingDuringRushHour) {
@@ -39,6 +42,14 @@ public class Tariff extends BaseEntity {
 
     public void setRidingDuringRushHour(boolean ridingDuringRushHour) {
         this.ridingDuringRushHour = ridingDuringRushHour;
+    }
+
+    public Map<String, Double> getCarLabels() {
+        return carLabels;
+    }
+
+    public void setCarLabels(Map<String, Double> carLabels) {
+        this.carLabels = carLabels;
     }
 
     //</editor-fold>
