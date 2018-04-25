@@ -160,4 +160,8 @@ public class InvoiceService {
 
         return cell;
     }
+
+    public Invoice findFirstInvoice() {
+        return this.invoiceDao.findFirstInvoice();
+    }
 }

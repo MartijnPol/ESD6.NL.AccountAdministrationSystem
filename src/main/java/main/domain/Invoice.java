@@ -13,7 +13,8 @@ import java.util.Date;
 @XmlRootElement
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "invoice.findByInvoiceNr", query = "SELECT i FROM Invoice i WHERE i.invoiceNr = :invoiceNr")
+        @NamedQuery(name = "invoice.findByInvoiceNr", query = "SELECT i FROM Invoice i WHERE i.invoiceNr = :invoiceNr"),
+        @NamedQuery(name = "invoice.findFirstInvoice", query = "SELECT i FROM Invoice i ORDER BY i.id ASC")
 })
 public class Invoice extends BaseEntity {
 
