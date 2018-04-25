@@ -36,6 +36,13 @@ pipeline{
             }
         }
         stage('Deploy development'){
+            agent {
+                docker {
+                    image 'docker:17.12-dind'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                    reuseNode true
+                }
+            }
             when{
                 branch 'development'
             }
