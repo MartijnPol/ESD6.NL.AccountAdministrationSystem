@@ -10,7 +10,7 @@ services:
     volumes:
       - aas-mysql-dev:/var/lib/mysql
   aas-dev:
-    image: accountadministrationsystem:latest
+    image: localhost:5000/aas
     depends_on:
       - mysql-dev
     ports:
