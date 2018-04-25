@@ -20,7 +20,9 @@ pipeline{
         }
         stage('Build image'){
             steps{
+				sh 'docker build -t accountadministrationsystem .'
                 sh 'mvn clean package -B'
+                archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
 
         }

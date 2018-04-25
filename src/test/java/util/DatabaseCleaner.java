@@ -10,15 +10,8 @@ import java.sql.SQLException;
 public class DatabaseCleaner {
 
     private static final Class<?>[] ENTITY_TYPES = {
-            Address.class,
-            Car.class,
-            Invoice.class,
-            Owner.class,
-            Ownership.class,
-            Tariff.class,
-            RDW.class,
-            User.class,
-            UserGroup.class
+            Car.class, Invoice.class, Owner.class, Ownership.class, RDW.class,
+            Tariff.class, User.class, UserGroup.class
     };
     private final EntityManager em;
 

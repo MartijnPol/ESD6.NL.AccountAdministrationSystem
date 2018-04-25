@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -44,8 +45,20 @@ public class StartUp {
         Address address2 = new Address("Tilburgseweg", "12", "5074FK", "Tilburg", "Nederland");
         Owner owner1 = ownerService.createOrUpdate(new Owner("Henk", "van der Pol", new Date(), address));
         Owner owner2 = ownerService.createOrUpdate(new Owner("Frits", "Jansen", new Date(), address2));
-        Car car1 = new Car("08-SK-PX", owner1);
-        Car car2 = new Car("00-01-ES", owner2);
+
+        Ownership ownership = new Ownership();
+        ownership.setOwner(owner1);
+
+        Ownership ownership2 = new Ownership();
+        ownership2.setOwner(owner2);
+
+        Car car1 = new Car("08-SK-PX", ownership);
+        Car car2 = new Car("00-01-ES", ownership2);
+
+        ownership.setCar(car1);
+        ownership2.setCar(car2);
+        this.ownershipService.createOrUpdate(ownership);
+        this.ownershipService.createOrUpdate(ownership2);
 
         car1.setCarTrackerId(1L);
         car2.setCarTrackerId(2L);
@@ -59,16 +72,6 @@ public class StartUp {
         userGroup.addUser(smolders);
         userService.createOrUpdate(smolders);
         this.userGroupService.create(userGroup);
-
-        Ownership ownership = new Ownership();
-        ownership.setOwner(owner1);
-        ownership.setCar(car1);
-        this.ownershipService.createOrUpdate(ownership);
-
-        Ownership ownership2 = new Ownership();
-        ownership2.setOwner(owner2);
-        ownership2.setCar(car2);
-        this.ownershipService.createOrUpdate(ownership2);
 
         Invoice invoice = new Invoice();
         invoice.setInvoiceNr(20180001L);
@@ -99,5 +102,6 @@ public class StartUp {
 
         this.tariffService.createOrUpdate(tariff1);
         this.tariffService.createOrUpdate(tariff2);
+
     }
 }

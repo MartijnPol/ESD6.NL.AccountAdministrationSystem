@@ -120,7 +120,7 @@ public class CarService {
 
     /**
      * Assign a Car to a new Ownership.
-     * Previous owner is added to past ownerships and the new owner will be assigned.
+     * Previous cartracker is added to past ownerships and the new cartracker will be assigned.
      *
      * @param car          is the Car that gets a new Ownership.
      * @param newOwnership is the new Ownership
@@ -137,7 +137,6 @@ public class CarService {
                 newOwnership.setStartDate(new Date());
                 newOwnership.setOwner(newOwnership.getOwner());
                 newOwnership.setCar(car);
-                car.setOwner(newOwnership.getOwner());
                 car.setCurrentOwnership(newOwnership);
             }
             this.createOrUpdate(car);
