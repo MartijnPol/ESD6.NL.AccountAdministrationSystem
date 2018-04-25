@@ -16,7 +16,7 @@ pipeline{
         stage('Build project'){
             steps {
                 sh 'mvn compile'
-                archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
+                archiveArtifacts artifacts: 'target/', fingerprint: true
             }
         }
         stage('Build image'){
