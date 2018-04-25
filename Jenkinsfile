@@ -21,6 +21,7 @@ pipeline{
         stage('Build image'){
             steps{
                 sh 'mvn clean package -B'
+                archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
 
         }
