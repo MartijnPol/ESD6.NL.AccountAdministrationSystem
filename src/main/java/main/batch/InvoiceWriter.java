@@ -21,8 +21,8 @@ public class InvoiceWriter implements ItemWriter {
 
     @Inject
     private InvoiceService invoiceService;
-    @Inject
-    private Logger logger;
+
+    private static final Logger logger = Logger.getLogger(InvoiceWriter.class.getName());
 
     @Override
     public void open(Serializable serializable) throws Exception {
@@ -41,10 +41,8 @@ public class InvoiceWriter implements ItemWriter {
             Invoice invoice = (Invoice) item;
             logger.log(Level.INFO, "Generating PDF for: " + invoice.getInvoiceNr());
             //TODO: Generate PDF here.
-            //Here the pdf gets generated.
 //            this.invoiceService.generateInvoicePdf(invoice);
         }
-
     }
 
     @Override

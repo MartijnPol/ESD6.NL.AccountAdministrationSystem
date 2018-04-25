@@ -4,7 +4,6 @@ import main.domain.Invoice;
 import main.service.InvoiceService;
 
 import javax.batch.api.chunk.ItemReader;
-import javax.batch.runtime.context.JobContext;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,10 +20,8 @@ public class InvoiceReader implements ItemReader {
 
     @Inject
     private InvoiceService invoiceService;
-    @Inject
-    private JobContext jobContext;
-    @Inject
-    private Logger logger;
+
+    private static final Logger logger = Logger.getLogger(InvoiceReader.class.getName());
 
     private ItemNumberCheckpoint checkpoint;
     private Invoice invoice;

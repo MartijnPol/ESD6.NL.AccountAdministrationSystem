@@ -4,7 +4,6 @@ import main.domain.Invoice;
 
 import javax.batch.api.chunk.ItemProcessor;
 import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,8 +15,7 @@ import java.util.logging.Logger;
 @Named("InvoiceProcessor")
 public class InvoiceProcessor implements ItemProcessor {
 
-    @Inject
-    private Logger logger;
+    private static final Logger logger = Logger.getLogger(InvoiceProcessor.class.getName());
 
     @Override
     public Object processItem(Object object) throws Exception {
