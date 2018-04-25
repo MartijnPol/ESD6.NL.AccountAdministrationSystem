@@ -1,7 +1,9 @@
 package web.bean.login;
 
+import com.mysql.jdbc.StringUtils;
 import main.domain.User;
 import main.service.UserService;
+import web.core.helper.FrontendHelper;
 import web.core.helper.RedirectHelper;
 
 import javax.faces.context.FacesContext;
@@ -38,7 +40,17 @@ public class LoginBean implements Serializable {
             e.printStackTrace();
         }
 
+        if (StringUtils.isNullOrEmpty(this.username)) {
+            FrontendHelper.displayErrorSmallMessage(null, "Vul alstublieft uw gebruikersnaam in.");
+        }
+        if (StringUtils.isNullOrEmpty(this.password)) {
+            FrontendHelper.displayErrorSmallMessage(null, "Vul alstublieft uw wachtwoord in.");
+        }
+
         User loggedInUser = this.userService.findByUsername(request.getRemoteUser());
+        if (loggedInUser == null) {
+            FrontendHelper.displayErrorSmallMessage("Uw gebruikersnaam en/of wachtwoord is onjuist, probeer het opnieuw.");
+        }
         this.sessionBean.setLoggedInUser(loggedInUser);
 
         boolean isRegular = request.isUserInRole("RegularRole");
