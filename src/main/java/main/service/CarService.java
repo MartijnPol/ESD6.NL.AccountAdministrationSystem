@@ -36,7 +36,7 @@ public class CarService {
 
     public Car createOrUpdate(Car car) {
         RDW rdwData = this.rdwDao.findByLicensePlate(car.getLicensePlate());
-        if (rdwData != null) {
+        if (rdwData != null && car.getRdwData() == null) {
             car.setRdwData(rdwData);
         }
         return this.carDao.createOrUpdate(car);
