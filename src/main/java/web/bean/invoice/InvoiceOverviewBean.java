@@ -81,12 +81,13 @@ public class InvoiceOverviewBean extends BaseBean {
         }
     }
 
+    /**
+     * Generate pdf file for an invoice.
+     *
+     * @param invoice Invoice that should be used for generation
+     */
     public void generateInvoicePdf(Invoice invoice) {
-        try {
-            invoiceService.generateInvoidePdf(invoice);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        invoiceService.generateInvoicePdf(invoice);
     }
 
     public void setSelectedInvoice(Invoice selectedInvoice) {

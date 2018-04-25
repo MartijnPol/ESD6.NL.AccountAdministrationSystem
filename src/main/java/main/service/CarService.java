@@ -137,7 +137,6 @@ public class CarService {
                 newOwnership.setStartDate(new Date());
                 newOwnership.setOwner(newOwnership.getOwner());
                 newOwnership.setCar(car);
-                car.setOwner(newOwnership.getOwner());
                 car.setCurrentOwnership(newOwnership);
             }
             this.createOrUpdate(car);
