@@ -26,38 +26,45 @@
 
                 <h:form rendered="#{not empty carBean.car}">
 
-                    <div class="form-group">
+                    <div class="form-control">
                         <p:outputLabel for="licensePlateText" value="Kenteken: "/>
                         <h:outputText id="licensePlateText" value="#{carBean.car.licensePlate}"/>
                     </div>
 
-                    <div class="form-group">
-                        <p:outputLabel for="lazySelectOneMenu" value="Eigenaar: "/>
-                        <p:selectOneMenu id="lazySelectOneMenu" value="#{carBean.ownership}" lazy="true" filter="true"
+                    <div class="form-control">
+                        <p:outputLabel for="selectOneMenu" value="Eigenaar: "/>
+                        <p:selectOneMenu id="selectOneMenu" value="#{carBean.selectedOwnership}" filter="true"
+                                         converter="omnifaces.SelectItemsIndexConverter"
                                          filterMatchMode="startsWith">
                             <f:selectItem itemLabel="#{carBean.car.currentOwnership.owner.fullName}"
                                           itemDisabled="true"/>
-                            <f:selectItems value="#{carBean.ownerships}"
-                                           var="ownership"
+                            <f:selectItems itemLabel="#{ownership.owner.getFullName()}"
                                            itemValue="#{ownership}"
-                                           itemLabel="#{ownership.owner.getFullName()}"/>
+                                           value="#{carBean.ownerships}"
+                                           var="ownership"/>
+                            <p:ajax listener="#{carBean.onItemChange(ownership)}"/>
                         </p:selectOneMenu>
                     </div>
-
-                    <p:commandButton actionListener="#{carBean.update}"
+                    <p:commandButton action="#{carBean.update}"
+                                     ajax="true"
                                      id="update"
-                                     value="Update"
-                                     update="@form"
-                                     styleClass="btn btn-success"/>
+                                     styleClass="btn btn-success"
+                                     value="Update"/>
 
-                </h:form>
 
-                <h:form id="emptyForm" rendered="#{empty carBean.car}">
-                    <p:outputLabel id="mistake" value="Er is iets mis gegaan."/>
                 </h:form>
             </div>
 
         </div>
+
+        <div class="container">
+            <div class="content-container">
+                <h:form id="emptyForm" rendered="#{empty carBean.car}">
+                    <p:outputLabel id="mistake" value="Er is iets mis gegaan."/>
+                </h:form>
+            </div>
+        </div>
+
 
     </ui:define>
 </ui:composition>

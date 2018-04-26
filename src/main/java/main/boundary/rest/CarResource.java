@@ -1,16 +1,25 @@
 package main.boundary.rest;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.domain.Car;
+import main.domain.CarTracker;
 import main.domain.Owner;
 import main.service.CarService;
 import main.service.OwnerService;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,9 +72,9 @@ public class CarResource {
 //    }
 
     /**
-     * Gets the cars of an owner.
+     * Gets the cars of an cartracker.
      *
-     * @param ownerId is the Id of the owner.
+     * @param ownerId is the Id of the cartracker.
      * @returns a List of cars.
      */
     @GET
@@ -129,8 +138,18 @@ public class CarResource {
      */
     @DELETE
     @Path("{licensePlate}")
-    public Response deleteCar(String licensePlate) {
+    public Response deleteCar(String licensePlate)
+    {
         carService.deleteByLicensePlate(licensePlate);
         return Response.noContent().build();
+    }
+
+    @GET
+    @Path("test")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response test() throws UnirestException {
+        HttpResponse<JsonNode> getResponse = Unirest.get("http://localhost:8080/DisplacementSystem/api/CarTrackers").asJson();
+        JSONArray array = getResponse.getBody().getArray();
+        return Response.ok(array.toString()).build();
     }
 }

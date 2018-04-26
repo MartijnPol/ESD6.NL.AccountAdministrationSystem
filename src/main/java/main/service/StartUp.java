@@ -7,8 +7,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Thom van de Pas on 8-3-2018
@@ -97,9 +100,19 @@ public class StartUp {
         this.invoiceService.createOrUpdate(invoice3);
 
         Tariff tariff1 = new Tariff(0.07, false);
-        Tariff tariff2 = new Tariff(0.13, true);
+
+        Map<String, Double> carLabels = new HashMap<>();
+        carLabels.put("A", -20.0);
+        carLabels.put("B", -15.0);
+        carLabels.put("C", -10.0);
+        carLabels.put("D", 0.0);
+        carLabels.put("E", 10.0);
+        carLabels.put("F", 20.0);
+        carLabels.put("G", 30.0);
+
+        tariff1.setCarLabels(carLabels);
 
         this.tariffService.createOrUpdate(tariff1);
-        this.tariffService.createOrUpdate(tariff2);
+
     }
 }

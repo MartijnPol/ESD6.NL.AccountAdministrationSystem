@@ -2,6 +2,7 @@ package main.service;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfCell;
+import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import main.dao.InvoiceDao;
@@ -74,6 +75,9 @@ public class InvoiceService {
         return null;
     }
 
+    public Invoice findFirstInvoice() {
+        return this.invoiceDao.findFirstInvoice();
+    }
     public void setInvoiceDao(InvoiceDao invoiceDao) {
         this.invoiceDao = invoiceDao;
     }
@@ -82,39 +86,48 @@ public class InvoiceService {
      * Generate invoice pdf file.
      * The OpenPDF library is used for generating the file.
      *
-     * @param invoice Invoice
+     * @param invoice Invoice containing all the necessary data
      */
     public void generateInvoicePdf(Invoice invoice) {
         Document document = new Document();
 
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("C:/Users/Gebruiker/Documents/Development/pdfBoxHelloWorld.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream("C:/Users/Gebruiker/Documents/Development/invoice.pdf"));
             document.open();
 
             document.addTitle("Factuur" + invoice.getInvoiceNr());
             document.addCreationDate();
             document.addAuthor("RekeningRijden AAS");
 
-            document.add(new Paragraph("Factuur: " + invoice.getInvoiceNr()));
+            Paragraph paragraph = new Paragraph("Factuur: " + invoice.getInvoiceNr());
+            paragraph.setSpacingAfter(10);
+
+            document.add(paragraph);
 
             document.add(getAddressTable(invoice));
 
+            document.add(getTariffTable());
 
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
+            document.add(getTotalAmountTable());
+        } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
         }
 
         document.close();
     }
 
-    private Table getAddressTable(Invoice invoice) throws BadElementException {
-        Table table = new Table(2);
-        table.setBorder(0);
+    /**
+     * Get the address table that is placed at the top section in the invoice.
+     * This table contains owner and car details.
+     *
+     * @param invoice Invoice containing all the necessary data
+     * @return Address table containing car and owner details
+     */
+    private PdfPTable getAddressTable(Invoice invoice) {
+        PdfPTable table = new PdfPTable(2);
+        table.getDefaultCell().setBorder(0);
 
-        table.addCell(getAddressParagraph("Klant",
-                invoice.getOwnership().getOwner().getFullName(),
+        table.addCell(getAddressParagraph(invoice.getOwnership().getOwner().getFullName(),
                 invoice.getOwnership().getOwner().getAddress().getStreet(),
                 invoice.getOwnership().getOwner().getAddress().getStreetNr(),
                 invoice.getOwnership().getOwner().getAddress().getPostalCode(),
@@ -124,28 +137,46 @@ public class InvoiceService {
                 invoice.getOwnership().getCar().getRdwData().getMerk(),
                 invoice.getOwnership().getCar().getRdwData().getVoertuigsoort()));
 
+        table.setSpacingAfter(10);
+
         return table;
     }
 
-    private Cell getAddressParagraph(String name, String fullname, String street, String streetNr, String postalCode, String city) {
+    /**
+     * Get the address table cell.
+     *
+     * @param fullname Owners first name and last name
+     * @param street Name of the street
+     * @param streetNr House number
+     * @param postalCode Postal code
+     * @param city City the owners lives
+     * @return Table cell
+     */
+    private PdfPCell getAddressParagraph(String fullname, String street, String streetNr, String postalCode, String city) {
         Paragraph addressParagraph = new Paragraph();
 
-        addressParagraph.add(name);
-        addressParagraph.add(Chunk.NEWLINE);
         addressParagraph.add(fullname);
         addressParagraph.add(Chunk.NEWLINE);
         addressParagraph.add(street + " " + streetNr);
         addressParagraph.add(Chunk.NEWLINE);
         addressParagraph.add(postalCode + " " + city);
 
-        Cell cell = new Cell();
+        PdfPCell cell = new PdfPCell();
         cell.setBorder(0);
-        cell.add(addressParagraph);
+        cell.addElement(addressParagraph);
 
         return cell;
     }
 
-    private Cell getCarParagraph(String licensePlate, String brand, String model) {
+    /**
+     * Get the car table cell.
+     *
+     * @param licensePlate License plate that represents the car
+     * @param brand Brand of the car
+     * @param model Car model
+     * @return Table cell
+     */
+    private PdfPCell getCarParagraph(String licensePlate, String brand, String model) {
         Paragraph carParagraph = new Paragraph();
 
         carParagraph.add(licensePlate);
@@ -154,14 +185,52 @@ public class InvoiceService {
         carParagraph.add(Chunk.NEWLINE);
         carParagraph.add(model);
 
-        Cell cell = new Cell();
+        PdfPCell cell = new PdfPCell();
         cell.setBorder(0);
-        cell.add(carParagraph);
+        cell.addElement(carParagraph);
 
         return cell;
     }
 
-    public Invoice findFirstInvoice() {
-        return this.invoiceDao.findFirstInvoice();
+    /**
+     * Get the tariff table.
+     * This table shows per day how much the customer needs to pay.
+     *
+     * @return Tariff table
+     */
+    private PdfPTable getTariffTable() {
+        PdfPTable table = new PdfPTable(3);
+
+        table.getDefaultCell().setPadding(5);
+        Font boldFont = new Font(Font.HELVETICA, -1.0F, Font.BOLD);
+
+        table.addCell(new Phrase("Datum", boldFont));
+        table.addCell(new Phrase("Dag van de week", boldFont));
+        table.addCell(new Phrase("Bedrag", boldFont));
+
+        table.setHeaderRows(1);
+
+        table.addCell("25-04-2018");
+        table.addCell("Woensdag");
+        table.addCell("€5,00");
+        table.addCell("26-04-2018");
+        table.addCell("Donderdag");
+        table.addCell("€5,00");
+
+        return table;
+    }
+
+    private PdfPTable getTotalAmountTable() {
+        PdfPTable table = new PdfPTable(3);
+
+        table.getDefaultCell().setPadding(5);
+        table.getDefaultCell().setBorder(0);
+        table.getDefaultCell().setBorderWidthTop(1);
+
+        table.addCell("");
+        table.addCell("");
+        table.addCell("€10,00");
+
+        return table;
     }
 }

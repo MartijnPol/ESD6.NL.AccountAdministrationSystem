@@ -36,7 +36,7 @@ public class CarService {
 
     public Car createOrUpdate(Car car) {
         RDW rdwData = this.rdwDao.findByLicensePlate(car.getLicensePlate());
-        if (rdwData != null) {
+        if (rdwData != null && car.getRdwData() == null) {
             car.setRdwData(rdwData);
         }
         return this.carDao.createOrUpdate(car);
@@ -120,7 +120,7 @@ public class CarService {
 
     /**
      * Assign a Car to a new Ownership.
-     * Previous owner is added to past ownerships and the new owner will be assigned.
+     * Previous cartracker is added to past ownerships and the new cartracker will be assigned.
      *
      * @param car          is the Car that gets a new Ownership.
      * @param newOwnership is the new Ownership
