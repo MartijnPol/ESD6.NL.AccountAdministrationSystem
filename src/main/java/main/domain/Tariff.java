@@ -52,5 +52,13 @@ public class Tariff extends BaseEntity {
         this.carLabels = carLabels;
     }
 
+    public void addCarLabel(String label, Double percentage) {
+        this.carLabels.put(label, percentage);
+    }
+
+    public void addCarLabels(Map<String, Double> carLabels) {
+        this.carLabels.putAll(carLabels);
+    }
+
     //</editor-fold>
 }
