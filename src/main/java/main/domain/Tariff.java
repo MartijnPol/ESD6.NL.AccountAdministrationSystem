@@ -15,11 +15,15 @@ public class Tariff extends BaseEntity {
     @ElementCollection(fetch = FetchType.LAZY)
     private Map<String, Double> carLabels;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Map<String, Double> carFuels;
+
     private boolean ridingDuringRushHour;
 
     public Tariff() {
         this.ridingDuringRushHour = false;
         this.carLabels = new HashMap<>();
+        this.carFuels = new HashMap<>();
     }
 
     public Tariff(double tariffInEuro, boolean ridingDuringRushHour) {
@@ -58,6 +62,22 @@ public class Tariff extends BaseEntity {
 
     public void addCarLabels(Map<String, Double> carLabels) {
         this.carLabels.putAll(carLabels);
+    }
+
+    public Map<String, Double> getCarFuels() {
+        return carFuels;
+    }
+
+    public void setCarFuels(Map<String, Double> carFuels) {
+        this.carFuels = carFuels;
+    }
+
+    public void addCarFuel(String fuel, Double percentage) {
+        this.carFuels.put(fuel, percentage);
+    }
+
+    public void addCarFuels(Map<String, Double> carFuels) {
+        this.carFuels.putAll(carFuels);
     }
 
     //</editor-fold>

@@ -110,7 +110,15 @@ public class StartUp {
         carLabels.put("F", 20.0);
         carLabels.put("G", 30.0);
 
+        Map<String, Double> carFuels = new HashMap<>();
+        carFuels.put("Diesel", 20.0);
+        carFuels.put("Petrol", 10.0);
+        carFuels.put("LPG", 0.0);
+        carFuels.put("Electric", 10.0);
+        carFuels.put("Hydrogen", 20.0);
+
         tariff1.setCarLabels(carLabels);
+        tariff1.setCarFuels(carFuels);
 
         this.tariffService.createOrUpdate(tariff1);
 

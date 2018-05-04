@@ -7,7 +7,10 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import main.dao.InvoiceDao;
 import main.dao.JPA;
+import main.domain.Car;
 import main.domain.Invoice;
+import main.domain.Ownership;
+import main.domain.Tariff;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -27,6 +30,9 @@ public class InvoiceService {
     @Inject
     @JPA
     private InvoiceDao invoiceDao;
+
+    @Inject
+    private TariffService tariffService;
 
     public Invoice createOrUpdate(Invoice invoice) {
         return this.invoiceDao.createOrUpdate(invoice);
@@ -93,6 +99,45 @@ public class InvoiceService {
     public void setInvoiceDao(InvoiceDao invoiceDao) {
         this.invoiceDao = invoiceDao;
     }
+
+    //<editor-fold defaultstate="collapsed" desc="Invoice amount generation methods">
+
+    /**
+     * @param ownership
+     * @return
+     */
+    public double generateTotalInvoiceAmount(Ownership ownership) {
+        Car car = ownership.getCar();
+        Tariff tariff = tariffService.findById(1L);
+
+        double economicalAddition = getEconomicalAddition(car, tariff);
+
+        return 0.0;
+    }
+
+    /**
+     * Get the economical addition for a given car.
+     * The carlabel is retrieved from the RDW data and the matching addition is searched in the tariff entity.
+     * When this search return empty a default addition of 0.0 is returned.
+     *
+     * @param car    Car that should be checked
+     * @param tariff Tariff used for calculation
+     * @return Addition based on the economical label of the car when there is no label found 0.0 is returned
+     */
+    private double getEconomicalAddition(Car car, Tariff tariff) {
+        String economicalLabel = car.getRdwData().getZuinigheidslabel();
+        Double addition = 0.0;
+
+        if (economicalLabel != null && !economicalLabel.isEmpty()) {
+            addition = tariff.getCarLabels().get(economicalLabel);
+        }
+
+        return addition;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="PDF generation methods">
 
     /**
      * Generate invoice pdf file.
@@ -245,4 +290,5 @@ public class InvoiceService {
 
         return table;
     }
+    //</editor-fold>
 }
