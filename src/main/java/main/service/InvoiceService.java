@@ -110,9 +110,11 @@ public class InvoiceService {
         Car car = ownership.getCar();
         Tariff tariff = tariffService.findById(1L);
 
+        double mainTariff = tariff.getTariffInEuro();
         double economicalAddition = getEconomicalAddition(car, tariff);
 
-        return 0.0;
+        double result = mainTariff + (mainTariff * economicalAddition);
+        return result;
     }
 
     /**
@@ -290,5 +292,14 @@ public class InvoiceService {
 
         return table;
     }
+    //</editor-fold>
+
+
+    //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
+
+    public void setTariffService(TariffService tariffService) {
+        this.tariffService = tariffService;
+    }
+
     //</editor-fold>
 }
