@@ -75,6 +75,9 @@ public class InvoiceService {
         return null;
     }
 
+    public Invoice findFirstInvoice() {
+        return this.invoiceDao.findFirstInvoice();
+    }
     public void setInvoiceDao(InvoiceDao invoiceDao) {
         this.invoiceDao = invoiceDao;
     }
