@@ -11,151 +11,115 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 public class RDWFuel extends BaseEntity {
 
-    @JsonProperty("brandstof_omschrijving")
-    private String brandstofOmschrijving;
-    @JsonProperty("brandstof_volgnummer")
-    private String brandstofVolgnummer;
-    @JsonProperty("brandstofverbruik_buiten")
-    private String brandstofVerbruikBuiten;
-    @JsonProperty("brandstofverbruik_gecombineerd")
-    private String brandstofVerbruikGecombineerd;
-    @JsonProperty("brandstofverbruik_stad")
-    private String brandstofVerbruikStad;
-    @JsonProperty("co2_uitstoot_gecombineerd")
-    private String co2UitstootGecombineerd;
-    @JsonProperty("emissiecode_omschrijving")
-    private String emissiecodeOmschrijving;
-    @JsonProperty("geluidsniveau_stationair")
-    private String geluidsniveauStationair;
-    @JsonProperty("kenteken")
+    private String brandstof_omschrijving;
+    private String brandstof_volgnummer;
+    private String brandstofverbruik_buiten;
+    private String brandstofverbruik_gecombineerd;
+    private String brandstofverbruik_stad;
+    private String co2_uitstoot_gecombineerd;
+    private String emissiecode_omschrijving;
+    private String geluidsniveau_stationair;
     private String kenteken;
-    @JsonProperty("milieuklasse_eg_goedkeuring_licht")
-    private String milieuklasseEgGoedkeuringLicht;
-    @JsonProperty("nettomaximumvermogen")
+    private String milieuklasse_eg_goedkeuring_licht;
     private String nettomaximumvermogen;
-    @JsonProperty("toerental_geluidsniveau")
-    private String toerentalGeluidsniveau;
+    private String toerental_geluidsniveau;
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
 
-    @JsonProperty("brandstof_omschrijving")
-    public String getBrandstofOmschrijving() {
-        return brandstofOmschrijving;
+    public String getBrandstof_omschrijving() {
+        return brandstof_omschrijving;
     }
 
-    @JsonProperty("brandstof_omschrijving")
-    public void setBrandstofOmschrijving(String brandstofOmschrijving) {
-        this.brandstofOmschrijving = brandstofOmschrijving;
+    public void setBrandstof_omschrijving(String brandstof_omschrijving) {
+        this.brandstof_omschrijving = brandstof_omschrijving;
     }
 
-    @JsonProperty("brandstof_volgnummer")
-    public String getBrandstofVolgnummer() {
-        return brandstofVolgnummer;
+    public String getBrandstof_volgnummer() {
+        return brandstof_volgnummer;
     }
 
-    @JsonProperty("brandstof_volgnummer")
-    public void setBrandstofVolgnummer(String brandstofVolgnummer) {
-        this.brandstofVolgnummer = brandstofVolgnummer;
+    public void setBrandstof_volgnummer(String brandstof_volgnummer) {
+        this.brandstof_volgnummer = brandstof_volgnummer;
     }
 
-    @JsonProperty("brandstofverbruik_buiten")
-    public String getBrandstofVerbruikBuiten() {
-        return brandstofVerbruikBuiten;
+    public String getBrandstofverbruik_buiten() {
+        return brandstofverbruik_buiten;
     }
 
-    @JsonProperty("brandstofverbruik_buiten")
-    public void setBrandstofVerbruikBuiten(String brandstofVerbruikBuiten) {
-        this.brandstofVerbruikBuiten = brandstofVerbruikBuiten;
+    public void setBrandstofverbruik_buiten(String brandstofverbruik_buiten) {
+        this.brandstofverbruik_buiten = brandstofverbruik_buiten;
     }
 
-    @JsonProperty("brandstofverbruik_gecombineerd")
-    public String getBrandstofVerbruikGecombineerd() {
-        return brandstofVerbruikGecombineerd;
+    public String getBrandstofverbruik_gecombineerd() {
+        return brandstofverbruik_gecombineerd;
     }
 
-    @JsonProperty("brandstofverbruik_gecombineerd")
-    public void setBrandstofVerbruikGecombineerd(String brandstofVerbruikGecombineerd) {
-        this.brandstofVerbruikGecombineerd = brandstofVerbruikGecombineerd;
+    public void setBrandstofverbruik_gecombineerd(String brandstofverbruik_gecombineerd) {
+        this.brandstofverbruik_gecombineerd = brandstofverbruik_gecombineerd;
     }
 
-    @JsonProperty("brandstofverbruik_stad")
-    public String getBrandstofVerbruikStad() {
-        return brandstofVerbruikStad;
+    public String getBrandstofverbruik_stad() {
+        return brandstofverbruik_stad;
     }
 
-    @JsonProperty("brandstofverbruik_stad")
-    public void setBrandstofVerbruikStad(String brandstofVerbruikStad) {
-        this.brandstofVerbruikStad = brandstofVerbruikStad;
+    public void setBrandstofverbruik_stad(String brandstofverbruik_stad) {
+        this.brandstofverbruik_stad = brandstofverbruik_stad;
     }
 
-    @JsonProperty("co2_uitstoot_gecombineerd")
-    public String getCo2UitstootGecombineerd() {
-        return co2UitstootGecombineerd;
+    public String getCo2_uitstoot_gecombineerd() {
+        return co2_uitstoot_gecombineerd;
     }
 
-    @JsonProperty("co2_uitstoot_gecombineerd")
-    public void setCo2UitstootGecombineerd(String co2UitstootGecombineerd) {
-        this.co2UitstootGecombineerd = co2UitstootGecombineerd;
+    public void setCo2_uitstoot_gecombineerd(String co2_uitstoot_gecombineerd) {
+        this.co2_uitstoot_gecombineerd = co2_uitstoot_gecombineerd;
     }
 
-    @JsonProperty("emissiecode_omschrijving")
-    public String getEmissiecodeOmschrijving() {
-        return emissiecodeOmschrijving;
+    public String getEmissiecode_omschrijving() {
+        return emissiecode_omschrijving;
     }
 
-    @JsonProperty("emissiecode_omschrijving")
-    public void setEmissiecodeOmschrijving(String emissiecodeOmschrijving) {
-        this.emissiecodeOmschrijving = emissiecodeOmschrijving;
+    public void setEmissiecode_omschrijving(String emissiecode_omschrijving) {
+        this.emissiecode_omschrijving = emissiecode_omschrijving;
     }
 
-    @JsonProperty("geluidsniveau_stationair")
-    public String getGeluidsniveauStationair() {
-        return geluidsniveauStationair;
+    public String getGeluidsniveau_stationair() {
+        return geluidsniveau_stationair;
     }
 
-    @JsonProperty("geluidsniveau_stationair")
-    public void setGeluidsniveauStationair(String geluidsniveauStationair) {
-        this.geluidsniveauStationair = geluidsniveauStationair;
+    public void setGeluidsniveau_stationair(String geluidsniveau_stationair) {
+        this.geluidsniveau_stationair = geluidsniveau_stationair;
     }
 
-    @JsonProperty("kenteken")
     public String getKenteken() {
         return kenteken;
     }
 
-    @JsonProperty("kenteken")
     public void setKenteken(String kenteken) {
         this.kenteken = kenteken;
     }
 
-    @JsonProperty("milieuklasse_eg_goedkeuring_licht")
-    public String getMilieuklasseEgGoedkeuringLicht() {
-        return milieuklasseEgGoedkeuringLicht;
+    public String getMilieuklasse_eg_goedkeuring_licht() {
+        return milieuklasse_eg_goedkeuring_licht;
     }
 
-    @JsonProperty("milieuklasse_eg_goedkeuring_licht")
-    public void setMilieuklasseEgGoedkeuringLicht(String milieuklasseEgGoedkeuringLicht) {
-        this.milieuklasseEgGoedkeuringLicht = milieuklasseEgGoedkeuringLicht;
+    public void setMilieuklasse_eg_goedkeuring_licht(String milieuklasse_eg_goedkeuring_licht) {
+        this.milieuklasse_eg_goedkeuring_licht = milieuklasse_eg_goedkeuring_licht;
     }
 
-    @JsonProperty("nettomaximumvermogen")
     public String getNettomaximumvermogen() {
         return nettomaximumvermogen;
     }
 
-    @JsonProperty("nettomaximumvermogen")
     public void setNettomaximumvermogen(String nettomaximumvermogen) {
         this.nettomaximumvermogen = nettomaximumvermogen;
     }
 
-    @JsonProperty("toerental_geluidsniveau")
-    public String getToerentalGeluidsniveau() {
-        return toerentalGeluidsniveau;
+    public String getToerental_geluidsniveau() {
+        return toerental_geluidsniveau;
     }
 
-    @JsonProperty("toerental_geluidsniveau")
-    public void setToerentalGeluidsniveau(String toerentalGeluidsniveau) {
-        this.toerentalGeluidsniveau = toerentalGeluidsniveau;
+    public void setToerental_geluidsniveau(String toerental_geluidsniveau) {
+        this.toerental_geluidsniveau = toerental_geluidsniveau;
     }
 
     //</editor-fold>
