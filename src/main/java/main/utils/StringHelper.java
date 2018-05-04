@@ -1,0 +1,19 @@
+package main.utils;
+
+public final class StringHelper {
+
+    private StringHelper() {
+    }
+
+    /**
+     * Replace specific elements in a string
+     *
+     * @param input String that should be transformed
+     * @param target Characters that should be searched for
+     * @param replaceWith Characters that should be placed in the string every time the target occurs
+     * @return Transformed string
+     */
+    public static String replace(String input, String target, String replaceWith) {
+        return input.replace(target, replaceWith);
+    }
+}

@@ -33,6 +33,9 @@ public class Car extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private RDW rdwData;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private RDWFuel rdwFuelData;
+
     public Car() {
         this.pastOwnerships = new ArrayList<>();
     }
@@ -102,6 +105,14 @@ public class Car extends BaseEntity {
 
     public void setRdwData(RDW rdwData) {
         this.rdwData = rdwData;
+    }
+
+    public RDWFuel getRdwFuelData() {
+        return rdwFuelData;
+    }
+
+    public void setRdwFuelData(RDWFuel rdwFuelData) {
+        this.rdwFuelData = rdwFuelData;
     }
 
     //</editor-fold>
