@@ -40,6 +40,12 @@ public class InvoiceService {
         return this.invoiceDao.findAll();
     }
 
+    /**
+     * Finds an Invoice by its id.
+     *
+     * @param id The id that represents the Invoice
+     * @return Invoice that matches te provided id.
+     */
     public Invoice findById(Long id) {
         if (id != null) {
             return this.invoiceDao.findById(id);
@@ -75,9 +81,15 @@ public class InvoiceService {
         return null;
     }
 
+    /**
+     * Find the first Invoice that exists in the database.
+     *
+     * @return The found Invoice or null if there was nothing retrieved from the database.
+     */
     public Invoice findFirstInvoice() {
         return this.invoiceDao.findFirstInvoice();
     }
+
     public void setInvoiceDao(InvoiceDao invoiceDao) {
         this.invoiceDao = invoiceDao;
     }
@@ -145,11 +157,11 @@ public class InvoiceService {
     /**
      * Get the address table cell.
      *
-     * @param fullname Owners first name and last name
-     * @param street Name of the street
-     * @param streetNr House number
+     * @param fullname   Owners first name and last name
+     * @param street     Name of the street
+     * @param streetNr   House number
      * @param postalCode Postal code
-     * @param city City the owners lives
+     * @param city       City the owners lives
      * @return Table cell
      */
     private PdfPCell getAddressParagraph(String fullname, String street, String streetNr, String postalCode, String city) {
@@ -172,8 +184,8 @@ public class InvoiceService {
      * Get the car table cell.
      *
      * @param licensePlate License plate that represents the car
-     * @param brand Brand of the car
-     * @param model Car model
+     * @param brand        Brand of the car
+     * @param model        Car model
      * @return Table cell
      */
     private PdfPCell getCarParagraph(String licensePlate, String brand, String model) {
