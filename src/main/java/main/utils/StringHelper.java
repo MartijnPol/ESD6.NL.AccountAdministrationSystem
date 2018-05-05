@@ -16,4 +16,18 @@ public final class StringHelper {
     public static String replace(String input, String target, String replaceWith) {
         return input.replace(target, replaceWith);
     }
+
+    /**
+     * Check if a string is empty.
+     *
+     * @param input String that should be checked
+     * @return True when input is null or empty else false
+     */
+    public static boolean isEmpty(String input) {
+        if (input != null && !input.isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
 }

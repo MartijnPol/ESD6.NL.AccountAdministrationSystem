@@ -112,10 +112,10 @@ public class StartUp {
 
         Map<String, Double> carFuels = new HashMap<>();
         carFuels.put("Diesel", 20.0);
-        carFuels.put("Petrol", 10.0);
+        carFuels.put("Benzine", 10.0);
         carFuels.put("LPG", 0.0);
         carFuels.put("Electric", 10.0);
-        carFuels.put("Hydrogen", 20.0);
+        carFuels.put("Waterstof", 20.0);
 
         tariff1.setCarLabels(carLabels);
         tariff1.setCarFuels(carFuels);

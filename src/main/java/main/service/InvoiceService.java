@@ -11,6 +11,7 @@ import main.domain.Car;
 import main.domain.Invoice;
 import main.domain.Ownership;
 import main.domain.Tariff;
+import main.utils.StringHelper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -112,8 +113,9 @@ public class InvoiceService {
 
         double mainTariff = tariff.getTariffInEuro();
         double economicalAddition = getEconomicalAddition(car, tariff);
+        double carFuelAddition = getCarFuelAddition(car, tariff);
 
-        double result = mainTariff + (mainTariff * economicalAddition);
+        double result = mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition);
         return result;
     }
 
@@ -130,8 +132,28 @@ public class InvoiceService {
         String economicalLabel = car.getRdwData().getZuinigheidslabel();
         Double addition = 0.0;
 
-        if (economicalLabel != null && !economicalLabel.isEmpty()) {
+        if (!StringHelper.isEmpty(economicalLabel)) {
             addition = tariff.getCarLabels().get(economicalLabel);
+        }
+
+        return addition;
+    }
+
+    /**
+     * Get the car fuel addition for a given car.
+     * The car fuel is retrieved form the RDWFuel data and the matching addition is searched in the tariff entity.
+     * When this search return empty a default addition of 0.0 is returned.
+     *
+     * @param car Car that should be checked
+     * @param tariff Tariff used for calculation
+     * @return Addition based on car fuel when there is no fuel found 0.0 is returned
+     */
+    private double getCarFuelAddition(Car car, Tariff tariff) {
+        String carFuel = car.getRdwFuelData().getBrandstof_omschrijving();
+        Double addition = 0.0;
+
+        if (!StringHelper.isEmpty(carFuel)) {
+            addition = tariff.getCarFuels().get(carFuel);
         }
 
         return addition;
