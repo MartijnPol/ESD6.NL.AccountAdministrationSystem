@@ -6,6 +6,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import main.domain.Car;
+import main.domain.CarTracker;
 import main.domain.Owner;
 import main.domain.Ownership;
 import main.service.CarService;
@@ -13,7 +14,10 @@ import main.service.OwnerService;
 import main.service.OwnershipService;
 import main.service.RDWService;
 import org.json.JSONArray;
+import org.primefaces.event.SelectEvent;
+import web.core.helper.RedirectHelper;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -23,7 +27,7 @@ import java.util.List;
 
 @Named
 @ViewScoped
-public class CarTrackerManageBean implements Serializable {
+public class CarTrackerOverviewBean implements Serializable {
 
     @Inject
     private CarService carService;
@@ -37,7 +41,31 @@ public class CarTrackerManageBean implements Serializable {
     @Inject
     private RDWService rdwService;
 
-    private List<Car> cars;
+    private List<CarTracker> carTrackers;
+
+    private List<CarTracker> filteredCartrackers;
+
+    private CarTracker selectedCartracker;
+
+    private List<Owner> owners;
+    private List<Car>  cars;
+
+
+    public CarTrackerOverviewBean() {
+    }
+
+    @PostConstruct
+    public void init() {
+//        try {
+//            this.carTrackers = (List<CarTracker>) getAllCartrackers();
+//        } catch (UnirestException e) {
+//            e.printStackTrace();
+//        }
+        cars = carService.findAll();
+//        addCars();
+//        addOwners();
+    }
+
 
     public void updateOwner (Owner owner){
         Owner knownOwner = ownerService.findById(owner.getId());
@@ -94,4 +122,55 @@ public class CarTrackerManageBean implements Serializable {
             return Response.ok(array.toString()).build();
         }
 
+    public void onRowSelect(SelectEvent event) {
+        Car selectedCar = (Car) event.getObject();
+        RedirectHelper.redirect("/pages/cartracker/cartracker.xhtml?cartrackerId=" + selectedCar.getCarTrackerId());
+    }
+
+    public List<CarTracker> getCarTrackers() {
+        return carTrackers;
+    }
+
+    public void setCarTrackers(List<CarTracker> carTrackers) {
+        this.carTrackers = carTrackers;
+    }
+
+    public List<CarTracker> getFilteredCartrackers() {
+        return filteredCartrackers;
+    }
+
+    public void setFilteredCartrackers(List<CarTracker> filteredCartrackers) {
+        this.filteredCartrackers = filteredCartrackers;
+    }
+
+    public CarTracker getSelectedCartracker() {
+        return selectedCartracker;
+    }
+
+    public void setSelectedCartracker(CarTracker selectedCartracker) {
+        this.selectedCartracker = selectedCartracker;
+    }
+
+    public void addOwners(){
+        for (Car car: cars) {
+            Owner owner = car.getCurrentOwnership().getOwner();
+            owners.add(owner);
+        }
+    }
+
+    public void addCars(){
+        for (CarTracker carTracker : carTrackers)
+        {
+           Car car = carService.findByCarTrackerId(carTracker.getId());
+           cars.add(car);
+        }
+    }
+
+    public List<Owner> getOwners() {
+        return owners;
+    }
+
+    public List<Car> getCars() {
+        return cars;
+    }
 }

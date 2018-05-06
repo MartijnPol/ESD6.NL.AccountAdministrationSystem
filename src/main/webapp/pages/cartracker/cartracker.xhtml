@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/template.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="cartrackerId" value="#{carTrackerBean.cartrackerId}"/>
+
+        <f:event type="preRenderView" listener="#{carTrackerBean.init}"/>
+    </f:metadata>
+
+    <ui:define name="title">Cartrackerdetails</ui:define>
+
+    <ui:define name="content">
+
+        <div class="container">
+
+            <header class="header">
+                <h1>CarTrackerdetails</h1>
+                <h5 class="text-muted">Details van de cartracker</h5>
+            </header>
+
+            <div class="content-container">
+
+                <h:form rendered="#{not empty carTrackerBean.car}">
+
+                    <div class="form-control">
+                        <p:outputLabel value="Cartracker gegevens "/>
+
+                        <p:outputLabel for="cartrackerId" value="Kenteken: "/>
+                        <h:outputText id="cartrackerId" value="#{carTrackerBean.car.carTrackerId}"/>
+
+                        <p:outputLabel value="Auto gegevens "/>
+
+                        <p:outputLabel for="licensePlateText" value="Kenteken: "/>
+                        <h:outputText id="licensePlateText" value="#{carTrackerBean.car.licensePlate}"/>
+
+                        <p:outputLabel for="Soort" value="Soort: "/>
+                        <h:outputText id="Soort" value="#{carTrackerBean.car.rdwData.voertuigsoort}"/>
+
+                        <p:outputLabel for="Merk" value="Merk: "/>
+                        <h:outputText id="Merk" value="#{carTrackerBean.car.rdwData.voertuigsoort}"/>
+
+                        <p:outputLabel for="Type" value="Type: "/>
+                        <h:outputText id="Type" value="#{carTrackerBean.car.rdwData.handelsbenaming}"/>
+
+                        <p:outputLabel value="Eigenaar gegevens "/>
+
+                        <p:outputLabel for="firstName" value="Voornaam: "/>
+                        <h:outputText id="firstName" value="#{carTrackerBean.car.currentOwnership.owner.firstName}"/>
+
+                        <p:outputLabel for="lastName" value="Achternaam: "/>
+                        <h:outputText id="lastName" value="#{carTrackerBean.car.currentOwnership.owner.lastName}"/>
+
+                        <p:outputLabel for="birthDay" value="Geboortedatum: "/>
+                        <h:outputText id="birthDay" value="#{carTrackerBean.car.currentOwnership.owner.lastName}"/>
+
+                        <p:outputLabel for="country" value="Land: "/>
+                        <h:outputText id="country" value="#{carTrackerBean.car.currentOwnership.owner.address.country}"/>
+
+                        <p:outputLabel for="city" value="Woonplaats: "/>
+                        <h:outputText id="city" value="#{carTrackerBean.car.currentOwnership.owner.address.city}"/>
+
+                        <p:outputLabel for="street" value="Straatnaam: "/>
+                        <h:outputText id="street" value="#{carTrackerBean.car.currentOwnership.owner.address.street}"/>
+
+                        <p:outputLabel for="streetNr" value="Huisnummer: "/>
+                        <h:outputText id="streetNr" value="#{carTrackerBean.car.currentOwnership.owner.address.streetNr}"/>
+
+                        <p:outputLabel for="postalCode" value="Postcode: "/>
+                        <h:outputText id="postalCode" value="#{carTrackerBean.car.currentOwnership.owner.address.postalCode}"/>
+                    </div>
+
+                </h:form>
+            </div>
+
+        </div>
+
+        <div class="container">
+            <div class="content-container">
+                <h:form id="emptyForm" rendered="#{empty carTrackerOverviewBean.car}">
+                    <p:outputLabel id="mistake" value="Er is iets mis gegaan."/>
+                </h:form>
+            </div>
+        </div>
+
+
+    </ui:define>
+</ui:composition>

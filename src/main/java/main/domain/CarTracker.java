@@ -1,5 +1,8 @@
 package main.domain;
 
+import main.service.CarService;
+import main.service.OwnerService;
+
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -13,6 +16,11 @@ public class CarTracker implements Serializable {
     private Long id;
     private Long totalRules;
     private List<CarTrackerRule> rules;
+    private Owner owner;
+    private Car car;
+
+    OwnerService ownerService;
+    CarService carService;
 
     public CarTracker() {
         rules = new ArrayList<>();
