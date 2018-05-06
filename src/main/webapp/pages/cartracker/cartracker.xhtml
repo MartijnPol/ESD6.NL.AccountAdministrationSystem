@@ -6,7 +6,7 @@
                 template="/templates/template.xhtml">
 
     <f:metadata>
-        <f:viewParam name="cartrackerId" value="#{carTrackerBean.cartrackerId}"/>
+        <f:viewParam name="carId" value="#{carTrackerBean.carId}"/>
 
         <f:event type="preRenderView" listener="#{carTrackerBean.init}"/>
     </f:metadata>
@@ -18,7 +18,7 @@
         <div class="container">
 
             <header class="header">
-                <h1>CarTrackerdetails</h1>
+                <h1>Cartrackerdetails</h1>
                 <h5 class="text-muted">Details van de cartracker</h5>
             </header>
 
@@ -27,60 +27,81 @@
                 <h:form rendered="#{not empty carTrackerBean.car}">
 
                     <div class="form-control">
-                        <p:outputLabel value="Cartracker gegevens "/>
+                        <p:outputLabel for="cartrackerId" value="Identiteitsnummer: "/>
+                        <h:outputText id="cartrackerId" value="#{carTrackerBean.carTrackerId}"/>
+                    </div>
 
-                        <p:outputLabel for="cartrackerId" value="Kenteken: "/>
-                        <h:outputText id="cartrackerId" value="#{carTrackerBean.car.carTrackerId}"/>
+                </h:form>
 
-                        <p:outputLabel value="Auto gegevens "/>
+            </div>
 
+                        <header class="header">
+                            <h5 class="text-muted">Details van het voertuig</h5>
+                        </header>
+
+            <div class="content-container">
+
+                <h:form rendered="#{not empty carTrackerBean.car}">
+
+                    <div class="form-control">
                         <p:outputLabel for="licensePlateText" value="Kenteken: "/>
                         <h:outputText id="licensePlateText" value="#{carTrackerBean.car.licensePlate}"/>
-
+                        <br/>
                         <p:outputLabel for="Soort" value="Soort: "/>
                         <h:outputText id="Soort" value="#{carTrackerBean.car.rdwData.voertuigsoort}"/>
-
+                        <br/>
                         <p:outputLabel for="Merk" value="Merk: "/>
-                        <h:outputText id="Merk" value="#{carTrackerBean.car.rdwData.voertuigsoort}"/>
-
+                        <h:outputText id="Merk" value="#{carTrackerBean.car.rdwData.merk}"/>
+                        <br/>
                         <p:outputLabel for="Type" value="Type: "/>
                         <h:outputText id="Type" value="#{carTrackerBean.car.rdwData.handelsbenaming}"/>
+                    </div>
+        </h:form>
 
-                        <p:outputLabel value="Eigenaar gegevens "/>
+    </div>
+                        <header class="header">
+                            <h5 class="text-muted">Details van de eigenaar</h5>
+                        </header>
 
+            <div class="content-container">
+
+                <h:form rendered="#{not empty carTrackerBean.car}">
+
+                    <div class="form-control">
                         <p:outputLabel for="firstName" value="Voornaam: "/>
                         <h:outputText id="firstName" value="#{carTrackerBean.car.currentOwnership.owner.firstName}"/>
-
+                        <br/>
                         <p:outputLabel for="lastName" value="Achternaam: "/>
                         <h:outputText id="lastName" value="#{carTrackerBean.car.currentOwnership.owner.lastName}"/>
-
+                        <br/>
                         <p:outputLabel for="birthDay" value="Geboortedatum: "/>
-                        <h:outputText id="birthDay" value="#{carTrackerBean.car.currentOwnership.owner.lastName}"/>
-
+                        <h:outputText id="birthDay" value="#{carTrackerBean.car.currentOwnership.owner.birthDay}"/>
+                        <br/>
                         <p:outputLabel for="country" value="Land: "/>
                         <h:outputText id="country" value="#{carTrackerBean.car.currentOwnership.owner.address.country}"/>
-
+                        <br/>
                         <p:outputLabel for="city" value="Woonplaats: "/>
                         <h:outputText id="city" value="#{carTrackerBean.car.currentOwnership.owner.address.city}"/>
-
+                        <br/>
                         <p:outputLabel for="street" value="Straatnaam: "/>
                         <h:outputText id="street" value="#{carTrackerBean.car.currentOwnership.owner.address.street}"/>
-
+                        <br/>
                         <p:outputLabel for="streetNr" value="Huisnummer: "/>
                         <h:outputText id="streetNr" value="#{carTrackerBean.car.currentOwnership.owner.address.streetNr}"/>
-
+                        <br/>
                         <p:outputLabel for="postalCode" value="Postcode: "/>
                         <h:outputText id="postalCode" value="#{carTrackerBean.car.currentOwnership.owner.address.postalCode}"/>
                     </div>
 
                 </h:form>
+
             </div>
 
         </div>
 
         <div class="container">
             <div class="content-container">
-                <h:form id="emptyForm" rendered="#{empty carTrackerOverviewBean.car}">
+                <h:form id="emptyForm" rendered="#{empty carTrackerBean.car}">
                     <p:outputLabel id="mistake" value="Er is iets mis gegaan."/>
                 </h:form>
             </div>

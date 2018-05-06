@@ -46,7 +46,7 @@ public class CarTrackerBean extends BaseBean {
         return carId;
     }
 
-    public long getCartrackerId(){
+    public long getCarTrackerId(){
         return car.getCarTrackerId();
     }
 

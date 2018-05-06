@@ -124,7 +124,7 @@ public class CarTrackerOverviewBean implements Serializable {
 
     public void onRowSelect(SelectEvent event) {
         Car selectedCar = (Car) event.getObject();
-        RedirectHelper.redirect("/pages/cartracker/cartracker.xhtml?cartrackerId=" + selectedCar.getCarTrackerId());
+        RedirectHelper.redirect("/pages/cartracker/cartracker.xhtml?carId=" + selectedCar.getId());
     }
 
     public List<CarTracker> getCarTrackers() {

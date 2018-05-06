@@ -67,9 +67,7 @@ public class Car extends BaseEntity {
     }
 
     //<editor-fold desc="Getters/Setters">
-    public Long getCarTrackerId() {
-        return carTrackerId;
-    }
+    public Long getCarTrackerId() { return carTrackerId; }
 
     public void setCarTrackerId(Long carTrackerId) {
         this.carTrackerId = carTrackerId;
