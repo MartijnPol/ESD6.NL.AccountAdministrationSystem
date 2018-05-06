@@ -3,10 +3,8 @@ package main.service;
 import main.dao.CarDao;
 import main.dao.JPA;
 import main.dao.RDWDao;
-import main.domain.Car;
-import main.domain.Owner;
-import main.domain.Ownership;
-import main.domain.RDW;
+import main.dao.RDWFuelDao;
+import main.domain.*;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -31,14 +29,24 @@ public class CarService {
     @JPA
     private RDWDao rdwDao;
 
+    @Inject
+    @JPA
+    private RDWFuelDao rdwFuelDao;
+
     public CarService() {
     }
 
     public Car createOrUpdate(Car car) {
         RDW rdwData = this.rdwDao.findByLicensePlate(car.getLicensePlate());
-        if (rdwData != null) {
+        if (rdwData != null && car.getRdwData() == null) {
             car.setRdwData(rdwData);
         }
+
+        RDWFuel rdwFuelData = this.rdwFuelDao.findByLicensePlate(car.getLicensePlate());
+        if (rdwFuelData != null && car.getRdwFuelData() == null) {
+            car.setRdwFuelData(rdwFuelData);
+        }
+
         return this.carDao.createOrUpdate(car);
     }
 

@@ -24,6 +24,10 @@ public class OwnershipService {
         return this.ownershipDao.createOrUpdate(ownership);
     }
 
+    public Ownership findById(Long id) {
+        return this.ownershipDao.findById(id);
+    }
+
     public List<Ownership> findAll() {
         return this.ownershipDao.findAll();
     }
