@@ -14,6 +14,12 @@ pipeline{
             }
         }
         stage('Build project'){
+            agent {
+                docker {
+                    image 'maven'
+                    reuseNode true
+                }
+            }
             steps {
                 sh 'mvn compile'
                 archiveArtifacts artifacts: 'target/', fingerprint: true
@@ -25,7 +31,7 @@ pipeline{
 				sh 'docker tag accountadministrationsystem:latest localhost:5000/aas'
 				sh 'docker push localhost:5000/aas'
                 sh 'mvn clean package -B'
-                archiveArtifacts artifacts: 'AccountAdministrationSystem.war', fingerprint: true
+                archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
 
         }
