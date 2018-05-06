@@ -17,6 +17,8 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -104,10 +106,14 @@ public class InvoiceService {
     //<editor-fold defaultstate="collapsed" desc="Invoice amount generation methods">
 
     /**
-     * @param ownership
-     * @return
+     * Total invoice amount is calculated based on different factors.
+     * The amount is returned as a BigDecimal which is rounded half up.
+     * Rounding mode to round towards "nearest neighbor" unless both neighbors are equidistant, in which case round up.
+     *
+     * @param ownership Ownership used to retrieve data from
+     * @return Total amount to pay in BigDecimal format
      */
-    public double generateTotalInvoiceAmount(Ownership ownership) {
+    public BigDecimal generateTotalInvoiceAmount(Ownership ownership) {
         Car car = ownership.getCar();
         Tariff tariff = tariffService.findById(1L);
 
@@ -115,8 +121,8 @@ public class InvoiceService {
         double economicalAddition = getEconomicalAddition(car, tariff);
         double carFuelAddition = getCarFuelAddition(car, tariff);
 
-        double result = mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition);
-        return result;
+        BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition));
+        return result.setScale(2, RoundingMode.HALF_UP);
     }
 
     /**

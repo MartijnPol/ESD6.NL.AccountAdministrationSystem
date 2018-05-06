@@ -19,6 +19,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Calendar;
 
 /**
@@ -43,6 +45,8 @@ public class InvoiceServiceTest {
     @Mock
     private RDW rdwData;
 
+    @Mock RDWFuel rdwFuelData;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -53,11 +57,13 @@ public class InvoiceServiceTest {
         this.ownership = new Ownership();
         this.car = new Car();
         this.car.setRdwData(rdwData);
+        this.car.setRdwFuelData(rdwFuelData);
         this.car.setCurrentOwnership(ownership);
         this.ownership.setCar(car);
         this.tariff = new Tariff();
         tariff.setTariffInEuro(0.07);
         tariff.addCarLabel("E", 10.0);
+        tariff.addCarFuel("Benzine", 10.0);
 
         this.invoice = new Invoice();
         Calendar calendar = Calendar.getInstance();
@@ -87,12 +93,14 @@ public class InvoiceServiceTest {
     @Test
     @Ignore
     public void generateTotalInvoiceAmount() {
-        Double expectedResult = 0.77;
+        BigDecimal expectedValue = new BigDecimal(1.47);
+        final BigDecimal expectedResult = expectedValue.setScale(2, RoundingMode.HALF_UP);
 
         when(tariffService.findById(1L)).thenReturn(tariff);
         when(rdwData.getZuinigheidslabel()).thenReturn("E");
+        when(rdwFuelData.getBrandstof_omschrijving()).thenReturn("Benzine");
 
-        double amount = invoiceService.generateTotalInvoiceAmount(ownership);
-        Assert.assertEquals(expectedResult, amount, 0.0);
+        BigDecimal amount = invoiceService.generateTotalInvoiceAmount(ownership);
+        Assert.assertEquals(expectedResult, amount);
     }
 }

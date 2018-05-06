@@ -9,6 +9,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,8 +41,14 @@ public class OwnershipWriter implements ItemWriter {
 
         for (Object item : items) {
             Ownership ownership = (Ownership) item;
+
             logger.log(Level.INFO, "Generating invoice for owner: " + ownership.getOwner().getFullName());
-            //TODO: Calculate amount and generate new invoice.
+
+            BigDecimal totalInvoiceAmount = invoiceService.generateTotalInvoiceAmount(ownership);
+            Invoice invoice = new Invoice();
+            invoice.setOwnership(ownership);
+            invoice.setTotalAmount(totalInvoiceAmount);
+            invoiceService.createOrUpdate(invoice);
         }
     }
 
