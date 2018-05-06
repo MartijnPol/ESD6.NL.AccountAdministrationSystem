@@ -25,6 +25,7 @@ public class OwnershipReader implements ItemReader {
 
     private ItemNumberCheckpoint checkpoint;
     private Ownership ownership;
+    private Long idCount = 1L;
 
     public OwnershipReader() {
     }
@@ -41,14 +42,16 @@ public class OwnershipReader implements ItemReader {
 
     @Override
     public void close() throws Exception {
+        this.logger.log(Level.INFO, "Reader closed");
     }
 
     @Override
     public Object readItem() throws Exception {
         this.ownership = null;
-        this.ownership = ownershipService.findById(1L);
+        this.ownership = ownershipService.findById(idCount);
         if (this.ownership != null) {
             this.logger.log(Level.INFO, "Reading item");
+            this.idCount = idCount + 1L;
             return this.ownership;
         } else {
             this.logger.log(Level.INFO, "No items found");

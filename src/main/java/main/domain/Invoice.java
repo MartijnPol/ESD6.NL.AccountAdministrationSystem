@@ -37,6 +37,7 @@ public class Invoice extends BaseEntity {
     public Invoice() {
         this.paymentStatus = PaymentStatus.OPEN;
         this.totalAmount = BigDecimal.ZERO;
+        this.period = new Date();
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">

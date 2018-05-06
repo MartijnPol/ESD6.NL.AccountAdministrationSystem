@@ -19,7 +19,7 @@ public class BatchResource {
     public Response startJob() {
         executeId = jobOperator.start("invoicegeneration", null);
 
-        return Response.ok("Batch invoice generation started: " + executeId).build();
+        return Response.ok("Batch process invoice generation started: " + executeId).build();
     }
 
     @GET
@@ -27,6 +27,6 @@ public class BatchResource {
     public Response stopJob(@PathParam("executeId") Long executeId) {
         jobOperator.stop(executeId);
 
-        return Response.ok("Batch invoice generation stopped: " + executeId).build();
+        return Response.ok("Batch process invoice generation stopped: " + executeId).build();
     }
 }
