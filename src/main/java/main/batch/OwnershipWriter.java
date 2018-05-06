@@ -1,6 +1,7 @@
 package main.batch;
 
 import main.domain.Invoice;
+import main.domain.Ownership;
 import main.service.InvoiceService;
 
 import javax.batch.api.chunk.ItemWriter;
@@ -16,13 +17,13 @@ import java.util.logging.Logger;
  * @author Thom van de Pas on 25-4-2018
  */
 @Dependent
-@Named("InvoiceWriter")
-public class InvoiceWriter implements ItemWriter {
+@Named("OwnershipWriter")
+public class OwnershipWriter implements ItemWriter {
 
     @Inject
     private InvoiceService invoiceService;
 
-    private static final Logger logger = Logger.getLogger(InvoiceWriter.class.getName());
+    private static final Logger logger = Logger.getLogger(OwnershipWriter.class.getName());
 
     @Override
     public void open(Serializable serializable) throws Exception {
@@ -38,10 +39,9 @@ public class InvoiceWriter implements ItemWriter {
     public void writeItems(List<Object> items) throws Exception {
 
         for (Object item : items) {
-            Invoice invoice = (Invoice) item;
-            logger.log(Level.INFO, "Generating PDF for: " + invoice.getInvoiceNr());
-            //TODO: Generate PDF here.
-//            this.invoiceService.generateInvoicePdf(invoice);
+            Ownership ownership = (Ownership) item;
+            logger.log(Level.INFO, "Generating invoice for owner: " + ownership.getOwner().getFullName());
+            //TODO: Calculate amount and generate new invoice.
         }
     }
 

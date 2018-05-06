@@ -1,7 +1,7 @@
 package main.batch;
 
-import main.domain.Invoice;
-import main.service.InvoiceService;
+import main.domain.Ownership;
+import main.service.OwnershipService;
 
 import javax.batch.api.chunk.ItemReader;
 import javax.enterprise.context.Dependent;
@@ -15,18 +15,18 @@ import java.util.logging.Logger;
  * @author Thom van de Pas on 25-4-2018
  */
 @Dependent
-@Named("InvoiceReader")
-public class InvoiceReader implements ItemReader {
+@Named("OwnershipReader")
+public class OwnershipReader implements ItemReader {
 
     @Inject
-    private InvoiceService invoiceService;
+    private OwnershipService ownershipService;
 
-    private static final Logger logger = Logger.getLogger(InvoiceReader.class.getName());
+    private static final Logger logger = Logger.getLogger(OwnershipReader.class.getName());
 
     private ItemNumberCheckpoint checkpoint;
-    private Invoice invoice;
+    private Ownership ownership;
 
-    public InvoiceReader() {
+    public OwnershipReader() {
     }
 
     @Override
@@ -45,11 +45,11 @@ public class InvoiceReader implements ItemReader {
 
     @Override
     public Object readItem() throws Exception {
-        this.invoice = null;
-        this.invoice = invoiceService.findFirstInvoice();
-        if (this.invoice != null) {
+        this.ownership = null;
+        this.ownership = ownershipService.findById(1L);
+        if (this.ownership != null) {
             this.logger.log(Level.INFO, "Reading item");
-            return this.invoice;
+            return this.ownership;
         } else {
             this.logger.log(Level.INFO, "No items found");
             return null;
