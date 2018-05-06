@@ -195,7 +195,7 @@ public class InvoiceService {
 
             document.add(getTariffTable());
 
-            document.add(getTotalAmountTable());
+            document.add(getTotalAmountTable(invoice));
         } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -307,7 +307,13 @@ public class InvoiceService {
         return table;
     }
 
-    private PdfPTable getTotalAmountTable() {
+    /**
+     * Get the total amount that should be payed.
+     *
+     * @param invoice Invoice used to retrieve data from
+     * @return Total amount table
+     */
+    private PdfPTable getTotalAmountTable(Invoice invoice) {
         PdfPTable table = new PdfPTable(3);
 
         table.getDefaultCell().setPadding(5);
@@ -316,7 +322,7 @@ public class InvoiceService {
 
         table.addCell("");
         table.addCell("");
-        table.addCell("€10,00");
+        table.addCell("€" + invoice.getTotalAmount().setScale(2, RoundingMode.HALF_UP));
 
         return table;
     }
