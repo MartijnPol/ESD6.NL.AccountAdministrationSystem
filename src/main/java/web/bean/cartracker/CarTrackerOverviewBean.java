@@ -45,7 +45,7 @@ public class CarTrackerOverviewBean implements Serializable {
 
     private List<CarTracker> filteredCartrackers;
 
-    private CarTracker selectedCartracker;
+    private Car selectedCar;
 
     private List<Owner> owners;
     private List<Car>  cars;
@@ -143,12 +143,12 @@ public class CarTrackerOverviewBean implements Serializable {
         this.filteredCartrackers = filteredCartrackers;
     }
 
-    public CarTracker getSelectedCartracker() {
-        return selectedCartracker;
+    public Car getSelectedCar() {
+        return selectedCar;
     }
 
-    public void setSelectedCartracker(CarTracker selectedCartracker) {
-        this.selectedCartracker = selectedCartracker;
+    public void setSelectedCar(Car selectedCar) {
+        this.selectedCar = selectedCar;
     }
 
     public void addOwners(){
