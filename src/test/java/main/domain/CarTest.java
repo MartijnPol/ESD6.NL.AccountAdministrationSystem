@@ -23,6 +23,6 @@ public class CarTest {
     public void createCarTest() {
         Ownership expOwner = ownership;
         car.setCurrentOwnership(ownership);
-        assertEquals(expOwner, car.getCurrentOwnership().getOwner());
+        assertEquals(expOwner, car.getCurrentOwnership());
     }
 }

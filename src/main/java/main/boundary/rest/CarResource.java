@@ -5,21 +5,18 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import main.domain.Car;
-import main.domain.CarTracker;
 import main.domain.Owner;
 import main.service.CarService;
 import main.service.OwnerService;
 import org.json.JSONArray;
-import org.json.JSONObject;
+
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -147,9 +144,20 @@ public class CarResource {
     @GET
     @Path("test")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response test() throws UnirestException {
+    public Response testGetCartrackers() throws UnirestException {
         HttpResponse<JsonNode> getResponse = Unirest.get("http://localhost:8080/DisplacementSystem/api/CarTrackers").asJson();
         JSONArray array = getResponse.getBody().getArray();
+        System.out.println("array = " + array);
+        return Response.ok(array.toString()).build();
+    }
+
+    @GET
+    @Path("create")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response testCreate() throws UnirestException {
+        HttpResponse<JsonNode> getResponse = Unirest.get("http://localhost:8080/DisplacementSystem/api/CarTrackers/Create").asJson();
+        JSONArray array = getResponse.getBody().getArray();
+        System.out.println("array = " + array);
         return Response.ok(array.toString()).build();
     }
 }

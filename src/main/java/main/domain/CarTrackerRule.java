@@ -1,42 +1,24 @@
 package main.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.persistence.*;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-@Entity
-@NamedQueries({
-        @NamedQuery(name = "carTrackerRule.getHighestRuleIdFromCarTrackerRules",
-                query = "SELECT MAX(c.id) FROM CarTrackerRule c WHERE c.carTracker = :carTracker")
-})
 public class CarTrackerRule implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
     private CarTracker carTracker;
-
     private Long kmDriven;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private Date date;
-
     private double lat;
-
     private double lon;
-
     private boolean driven;
+
 
     public CarTrackerRule() {
     }

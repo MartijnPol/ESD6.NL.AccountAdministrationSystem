@@ -87,8 +87,11 @@ public class CarTrackerManageBean implements Serializable {
         return Response.ok(array.toString()).build();
     }
 
-    public void createCartracker (){
-        
-    }
+    public Response createCartracker () throws UnirestException {
+            HttpResponse<JsonNode> getResponse = Unirest.get("http://localhost:8080/DisplacementSystem/api/CarTrackers/Create").asJson();
+            JSONArray array = getResponse.getBody().getArray();
+            System.out.println("array = " + array);
+            return Response.ok(array.toString()).build();
+        }
 
 }

@@ -3,23 +3,15 @@ package main.domain;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@NamedQuery(name = "carTracker.findAllMovementsWithinPeriodByTrackerId", query = "SELECT cr FROM CarTrackerRule cr " +
-        "WHERE cr.date BETWEEN :startDate AND :endDate AND cr.carTracker.id = :trackerId")
+
 public class CarTracker implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Long totalRules;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CarTrackerRule> rules;
 
     public CarTracker() {
