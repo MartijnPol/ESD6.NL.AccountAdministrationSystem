@@ -14,12 +14,6 @@ pipeline{
             }
         }
         stage('Build project'){
-            agent {
-                docker {
-                    image 'maven:3.5.2-jdk-8'
-                    reuseNode true
-                }
-            }        
             steps {
                 sh 'mvn compile'
                 archiveArtifacts artifacts: 'target/', fingerprint: true
