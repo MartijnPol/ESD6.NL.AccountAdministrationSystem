@@ -85,9 +85,24 @@ public class InvoiceDaoTest {
 
         when(invoiceDao.findByInvoiceNr(Matchers.eq(1L))).thenReturn(null);
 
-
         Invoice invoiceEmpty = invoiceDao.findByInvoiceNr(1L);
 
         assertThat(invoiceEmpty, is(nullValue()));
+    }
+
+    @Test
+    public void findFirstInvoiceTest() {
+        invoice.setInvoiceNr(1L);
+        invoiceDao.createOrUpdate(invoice);
+
+        Invoice invoiceSecond = new Invoice();
+        invoiceSecond.setInvoiceNr(2L);
+        invoiceDao.createOrUpdate(invoiceSecond);
+
+        when(invoiceDao.findFirstInvoice()).thenReturn(invoice);
+
+        Invoice firstInvoice = invoiceDao.findFirstInvoice();
+
+        assertThat(firstInvoice.getInvoiceNr(), is(1L));
     }
 }
