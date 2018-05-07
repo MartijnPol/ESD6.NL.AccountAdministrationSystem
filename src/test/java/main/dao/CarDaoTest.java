@@ -61,6 +61,7 @@ public class CarDaoTest {
         ownerDao.setEntityManager(em);
         ownershipDao = new OwnershipDaoImpl();
         ownershipDao.setEntityManager(em);
+
         owner = new Owner("Herman", "de Schermman", new Date(), new Address());
         ownership = new Ownership();
         ownership.setOwner(owner);
@@ -73,7 +74,6 @@ public class CarDaoTest {
     }
 
     @Test
-    @Ignore
     public void saveCarSuccessfulTest() {
         Integer expResult = 1;
         tx.begin();
@@ -88,7 +88,6 @@ public class CarDaoTest {
     }
 
     @Test
-    @Ignore
     public void findByOwnerSuccessfulTest() {
         Owner testOwner = new Owner("Pietje", "Bell", new Date(), new Address());
         Ownership testOwnership = new Ownership();
@@ -106,20 +105,36 @@ public class CarDaoTest {
         assertEquals(1L, otherCars.size());
     }
 
-//    @Test
-//    public void updateCarSuccessfulTest(){
-//        Integer expResult = 1;
-//        Owner testOwner = new Owner("Pietje", "Bell", new Date());
-//        tx.begin();
-//        carDao.create(car);
-//        car.setOwner(testOwner);
-//        carDao.update(car);
-//        List<Car> result = carDao.findByOwner(testOwner);
-//        tx.commit();
-//        assertThat(result.size(), is(expResult));
-//    }
+    @Test
+    public void updateCarSuccessfulTest(){
+        Integer expResult = 1;
+        Owner testOwner = new Owner("Pietje", "Bell", new Date(), new Address());
+        Ownership ownership = new Ownership();
+        ownership.setOwner(testOwner);
+        tx.begin();
+        carDao.createOrUpdate(car);
+        car.setCurrentOwnership(ownership);
+        carDao.createOrUpdate(car);
+        List<Car> result = carDao.findByOwner(testOwner);
+        tx.commit();
 
-    @Ignore
+        assertThat(result.size(), is(expResult));
+
+        Owner testOwner2 = new Owner("DuckDuck", "Go", new Date(), new Address());
+        Ownership ownership2 = new Ownership();
+        ownership2.setOwner(testOwner2);
+
+        tx.begin();
+        car.addPastOwnership(ownership2);
+        carDao.createOrUpdate(car);
+        List<Car> result2 = carDao.findByOwner(testOwner);
+        tx.commit();
+
+        assertThat(result2.size(), is(expResult));
+        assertThat(result2.get(0).getCurrentOwnership().getOwner().getFirstName(), is("Pietje"));
+        assertThat(result2.get(0).getPastOwnerships().get(0).getOwner().getFirstName(), is("DuckDuck"));
+    }
+
     @Test
     public void removeCarSuccessfulTest() {
         Car test = new Car("PT-EI-82", ownership);
