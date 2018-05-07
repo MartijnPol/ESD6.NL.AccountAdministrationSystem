@@ -3,6 +3,7 @@ package main.dao;
 import main.domain.Invoice;
 import main.domain.enums.PaymentStatus;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.AdditionalMatchers;
@@ -84,8 +85,9 @@ public class InvoiceDaoTest {
 
         when(invoiceDao.findByInvoiceNr(Matchers.eq(1L))).thenReturn(null);
 
+
         Invoice invoiceEmpty = invoiceDao.findByInvoiceNr(1L);
-        
+
         assertThat(invoiceEmpty, is(nullValue()));
     }
 }

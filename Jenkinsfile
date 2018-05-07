@@ -21,17 +21,17 @@ pipeline{
         }
         stage('Build image'){
             steps{
+                sh 'mvn clean package -B'
 				sh 'docker build -t accountadministrationsystem .'
 				sh 'docker tag accountadministrationsystem:latest localhost:5000/aas'
 				sh 'docker push localhost:5000/aas'
-                sh 'mvn clean package -B'
                 archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
 
         }
         stage('Test sonarqube'){
             steps{
-                sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.25.121:9000 -Dsonar.login=33d2bf0931e4ba870789a1cf8e6276a20de55fe1'
+                sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.25.126:9000 -Dsonar.login=33d2bf0931e4ba870789a1cf8e6276a20de55fe1'
 
             }
         }

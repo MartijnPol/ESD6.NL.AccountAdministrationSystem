@@ -74,6 +74,7 @@ public class CarDaoTest {
     }
 
     @Test
+    @Ignore
     public void saveCarSuccessfulTest() {
         Integer expResult = 1;
         tx.begin();
@@ -88,6 +89,7 @@ public class CarDaoTest {
     }
 
     @Test
+    @Ignore
     public void findByOwnerSuccessfulTest() {
         Owner testOwner = new Owner("Pietje", "Bell", new Date(), new Address());
         Ownership testOwnership = new Ownership();
@@ -106,6 +108,7 @@ public class CarDaoTest {
     }
 
     @Test
+    @Ignore
     public void updateCarSuccessfulTest(){
         Integer expResult = 1;
         Owner testOwner = new Owner("Pietje", "Bell", new Date(), new Address());
@@ -136,6 +139,7 @@ public class CarDaoTest {
     }
 
     @Test
+    @Ignore
     public void removeCarSuccessfulTest() {
         Car test = new Car("PT-EI-82", ownership);
         tx.begin();
