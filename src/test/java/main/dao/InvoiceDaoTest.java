@@ -1,124 +1,91 @@
 package main.dao;
 
-import main.dao.implementation.InvoiceDaoImpl;
 import main.domain.Invoice;
 import main.domain.enums.PaymentStatus;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import util.DatabaseCleaner;
+import org.junit.runner.RunWith;
+import org.mockito.AdditionalMatchers;
+import org.mockito.Matchers;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
+import static org.hamcrest.CoreMatchers.is;
 
+@RunWith(MockitoJUnitRunner.class)
 public class InvoiceDaoTest {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccountAdministrationTestPU");
-    private EntityManager em;
-    private EntityTransaction tx;
-    private InvoiceDaoImpl invoiceDao;
+
     private Invoice invoice;
+
+    @Mock
+    private InvoiceDao invoiceDao;
 
     @Before
     public void setUp() {
-        try {
-            new DatabaseCleaner(emf.createEntityManager()).clean();
-        } catch (SQLException ex) {
-            Logger.getLogger(CarDaoTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        em = emf.createEntityManager();
-        tx = em.getTransaction();
-
-        invoiceDao = new InvoiceDaoImpl();
-        invoiceDao.setEntityManager(em);
+        MockitoAnnotations.initMocks(this);
 
         invoice = new Invoice();
     }
 
     @Test
-    public void saveInvoiceSuccessfulTest() {
-        Integer expResult = 1;
-        Integer unExpResult = 2;
-
-        tx.begin();
+    public void createInvoiceTest() {
+        invoice.setInvoiceNr(1L);
         invoiceDao.createOrUpdate(invoice);
-        tx.commit();
 
-        List<Invoice> invoices = invoiceDao.findAll();
-        int nrInvoices = invoices.size();
+        when(invoiceDao.findByInvoiceNr(Matchers.eq(1L))).thenReturn(invoice);
+        when(invoiceDao.findByInvoiceNr(AdditionalMatchers.not(Matchers.eq(1L)))).thenReturn(null);
 
-        assertThat(nrInvoices, is(expResult));
-        assertThat(nrInvoices, not(unExpResult));
+        Invoice invoiceByNrFirst = invoiceDao.findByInvoiceNr(1L);
+        Invoice invoiceByNrSecond = invoiceDao.findByInvoiceNr(2L);
+
+        assertThat(invoiceByNrFirst.getInvoiceNr(), is(1L));
+        assertThat(invoiceByNrSecond, is(nullValue()));
     }
 
     @Test
-    public void updateInvoiceSuccessfulTest() {
+    public void updateInvoiceTest() {
         invoice.setInvoiceNr(1L);
-
-        tx.begin();
         invoiceDao.createOrUpdate(invoice);
-        tx.commit();
 
-        Invoice invoiceByNr = invoiceDao.findByInvoiceNr(1L);
+        when(invoiceDao.findByInvoiceNr(Matchers.eq(1L))).thenReturn(invoice);
 
-        assertThat(invoiceByNr.getInvoiceNr(), is(1L));
+        Invoice invoiceByNrFirst = invoiceDao.findByInvoiceNr(1L);
+        assertThat(invoiceByNrFirst.getInvoiceNr(), is(1L));
 
-        tx.begin();
-        invoiceByNr.setInvoiceNr(2L);
-        invoiceByNr.setPaymentStatus(PaymentStatus.PAID);
-        invoiceDao.createOrUpdate(invoiceByNr);
-        tx.commit();
+        invoiceByNrFirst.setInvoiceNr(2L);
+        invoiceByNrFirst.setPaymentStatus(PaymentStatus.PAID);
 
-        Invoice invoiceEmpty = invoiceDao.findByInvoiceNr(1L);
+        when(invoiceDao.findByInvoiceNr(Matchers.eq(2L))).thenReturn(invoiceByNrFirst);
+        when(invoiceDao.findByInvoiceNr(AdditionalMatchers.not(Matchers.eq(2L)))).thenReturn(null);
+
         Invoice invoiceNotEmpty = invoiceDao.findByInvoiceNr(2L);
-
-        assertThat(invoiceEmpty, nullValue());
-        assertThat(invoiceNotEmpty.getInvoiceNr(), is(2L));
-        assertThat(invoiceNotEmpty.getPaymentStatus(), is(PaymentStatus.PAID));
-    }
-
-    @Test
-    public void removeInvoiceSuccessfulTest() {
-        invoice.setInvoiceNr(1L);
-
-        tx.begin();
-        invoiceDao.createOrUpdate(invoice);
-        tx.commit();
-
-        Invoice invoiceByNr = invoiceDao.findByInvoiceNr(1L);
-
-        assertThat(invoiceByNr.getInvoiceNr(), is(1L));
-
-        tx.begin();
-        invoiceDao.deleteById(invoiceByNr.getId());
-        tx.commit();
-
         Invoice invoiceEmpty = invoiceDao.findByInvoiceNr(1L);
 
-        assertThat(invoiceEmpty, nullValue());
+        assertThat(invoiceNotEmpty.getInvoiceNr(), is(2L));
+        assertThat(invoiceEmpty, is(nullValue()));
     }
 
     @Test
-    public void findFirstInvoiceSuccessfulTest() {
+    public void deleteInvoiceTest() {
         invoice.setInvoiceNr(1L);
-
-        tx.begin();
         invoiceDao.createOrUpdate(invoice);
-        tx.commit();
+
+        when(invoiceDao.findByInvoiceNr(Matchers.eq(1L))).thenReturn(invoice);
 
         Invoice invoiceByNr = invoiceDao.findByInvoiceNr(1L);
-
         assertThat(invoiceByNr.getInvoiceNr(), is(1L));
+
+        invoiceDao.delete(invoiceByNr);
+
+        when(invoiceDao.findByInvoiceNr(Matchers.eq(1L))).thenReturn(null);
+
+        Invoice invoiceEmpty = invoiceDao.findByInvoiceNr(1L);
+        
+        assertThat(invoiceEmpty, is(nullValue()));
     }
 }
