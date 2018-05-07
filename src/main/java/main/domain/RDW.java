@@ -7,650 +7,453 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashMap;
 import java.util.Map;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "aantal_cilinders",
-        "aantal_deuren",
-        "aantal_rolstoelplaatsen",
-        "aantal_wielen",
-        "aantal_zitplaatsen",
-        "afstand_hart_koppeling_tot_achterzijde_voertuig",
-        "afstand_voorzijde_voertuig_tot_hart_koppeling",
-        "api_gekentekende_voertuigen_assen",
-        "api_gekentekende_voertuigen_brandstof",
-        "api_gekentekende_voertuigen_carrosserie",
-        "api_gekentekende_voertuigen_carrosserie_specifiek",
-        "api_gekentekende_voertuigen_voertuigklasse",
-        "breedte",
-        "bruto_bpm",
-        "catalogusprijs",
-        "cilinderinhoud",
-        "datum_eerste_afgifte_nederland",
-        "datum_eerste_toelating",
-        "datum_tenaamstelling",
-        "eerste_kleur",
-        "europese_voertuigcategorie",
-        "export_indicator",
-        "handelsbenaming",
-        "inrichting",
-        "kenteken",
-        "lengte",
-        "massa_ledig_voertuig",
-        "massa_rijklaar",
-        "maximum_massa_samenstelling",
-        "maximum_massa_trekken_ongeremd",
-        "maximum_trekken_massa_geremd",
-        "merk",
-        "openstaande_terugroepactie_indicator",
-        "plaats_chassisnummer",
-        "taxi_indicator",
-        "technische_max_massa_voertuig",
-        "toegestane_maximum_massa_voertuig",
-        "tweede_kleur",
-        "typegoedkeuringsnummer",
-        "uitvoering",
-        "variant",
-        "vermogen_massarijklaar",
-        "vervaldatum_apk",
-        "voertuigsoort",
-        "volgnummer_wijziging_eu_typegoedkeuring",
-        "wacht_op_keuren",
-        "wam_verzekerd",
-        "wielbasis",
-        "zuinigheidslabel"
-})
-
 @XmlRootElement
 @Entity
 public class RDW extends BaseEntity {
 
-    @JsonProperty("aantal_cilinders")
-    private String aantalCilinders;
-    @JsonProperty("aantal_deuren")
-    private String aantalDeuren;
-    @JsonProperty("aantal_rolstoelplaatsen")
-    private String aantalRolstoelplaatsen;
-    @JsonProperty("aantal_wielen")
-    private String aantalWielen;
-    @JsonProperty("aantal_zitplaatsen")
-    private String aantalZitplaatsen;
-    @JsonProperty("afstand_hart_koppeling_tot_achterzijde_voertuig")
-    private String afstandHartKoppelingTotAchterzijdeVoertuig;
-    @JsonProperty("afstand_voorzijde_voertuig_tot_hart_koppeling")
-    private String afstandVoorzijdeVoertuigTotHartKoppeling;
-    @JsonProperty("api_gekentekende_voertuigen_assen")
-    private String apiGekentekendeVoertuigenAssen;
-    @JsonProperty("api_gekentekende_voertuigen_brandstof")
-    private String apiGekentekendeVoertuigenBrandstof;
-    @JsonProperty("api_gekentekende_voertuigen_carrosserie")
-    private String apiGekentekendeVoertuigenCarrosserie;
-    @JsonProperty("api_gekentekende_voertuigen_carrosserie_specifiek")
-    private String apiGekentekendeVoertuigenCarrosserieSpecifiek;
-    @JsonProperty("api_gekentekende_voertuigen_voertuigklasse")
-    private String apiGekentekendeVoertuigenVoertuigklasse;
-    @JsonProperty("breedte")
+    private String aantal_cilinders;
+    private String aantal_deuren;
+    private String aantal_rolstoelplaatsen;
+    private String aantal_wielen;
+    private String aantal_zitplaatsen;
+    private String afstand_hart_koppeling_tot_achterzijde_voertuig;
+    private String afstand_voorzijde_voertuig_tot_hart_koppeling;
+    private String api_gekentekende_voertuigen_assen;
+    private String api_gekentekende_voertuigen_brandstof;
+    private String api_gekentekende_voertuigen_carrosserie;
+    private String api_gekentekende_voertuigen_carrosserie_specifiek;
+    private String api_gekentekende_voertuigen_voertuigklasse;
     private String breedte;
-    @JsonProperty("bruto_bpm")
-    private String brutoBpm;
-    @JsonProperty("catalogusprijs")
+    private String bruto_bpm;
     private String catalogusprijs;
-    @JsonProperty("cilinderinhoud")
     private String cilinderinhoud;
-    @JsonProperty("datum_eerste_afgifte_nederland")
-    private String datumEersteAfgifteNederland;
-    @JsonProperty("datum_eerste_toelating")
-    private String datumEersteToelating;
-    @JsonProperty("datum_tenaamstelling")
-    private String datumTenaamstelling;
-    @JsonProperty("eerste_kleur")
-    private String eersteKleur;
-    @JsonProperty("europese_voertuigcategorie")
-    private String europeseVoertuigcategorie;
-    @JsonProperty("export_indicator")
-    private String exportIndicator;
-    @JsonProperty("handelsbenaming")
+    private String datum_eerste_afgifte_nederland;
+    private String datum_eerste_toelating;
+    private String datum_tenaamstelling;
+    private String eerste_kleur;
+    private String europese_voertuigcategorie;
+    private String export_indicator;
     private String handelsbenaming;
-    @JsonProperty("inrichting")
     private String inrichting;
-    @JsonProperty("kenteken")
     private String kenteken;
-    @JsonProperty("lengte")
     private String lengte;
-    @JsonProperty("massa_ledig_voertuig")
-    private String massaLedigVoertuig;
-    @JsonProperty("massa_rijklaar")
-    private String massaRijklaar;
-    @JsonProperty("maximum_massa_samenstelling")
-    private String maximumMassaSamenstelling;
-    @JsonProperty("maximum_massa_trekken_ongeremd")
-    private String maximumMassaTrekkenOngeremd;
-    @JsonProperty("maximum_trekken_massa_geremd")
-    private String maximumTrekkenMassaGeremd;
-    @JsonProperty("merk")
+    private String massa_ledig_voertuig;
+    private String massa_rijklaar;
+    private String maximum_massa_samenstelling;
+    private String maximum_massa_trekken_ongeremd;
+    private String maximum_trekken_massa_geremd;
     private String merk;
-    @JsonProperty("openstaande_terugroepactie_indicator")
-    private String openstaandeTerugroepactieIndicator;
-    @JsonProperty("plaats_chassisnummer")
-    private String plaatsChassisnummer;
-    @JsonProperty("taxi_indicator")
-    private String taxiIndicator;
-    @JsonProperty("technische_max_massa_voertuig")
-    private String technischeMaxMassaVoertuig;
-    @JsonProperty("toegestane_maximum_massa_voertuig")
-    private String toegestaneMaximumMassaVoertuig;
-    @JsonProperty("tweede_kleur")
-    private String tweedeKleur;
-    @JsonProperty("typegoedkeuringsnummer")
+    private String openstaande_terugroepactie_indicator;
+    private String plaats_chassisnummer;
+    private String taxi_indicator;
+    private String technische_max_massa_voertuig;
+    private String toegestane_maximum_massa_voertuig;
+    private String tweede_kleur;
     private String typegoedkeuringsnummer;
-    @JsonProperty("uitvoering")
     private String uitvoering;
-    @JsonProperty("variant")
     private String variant;
-    @JsonProperty("vermogen_massarijklaar")
-    private String vermogenMassarijklaar;
-    @JsonProperty("vervaldatum_apk")
-    private String vervaldatumApk;
-    @JsonProperty("voertuigsoort")
+    private String vermogen_massarijklaar;
+    private String vervaldatum_apk;
     private String voertuigsoort;
-    @JsonProperty("volgnummer_wijziging_eu_typegoedkeuring")
-    private String volgnummerWijzigingEuTypegoedkeuring;
-    @JsonProperty("wacht_op_keuren")
-    private String wachtOpKeuren;
-    @JsonProperty("wam_verzekerd")
-    private String wamVerzekerd;
-    @JsonProperty("wielbasis")
+    private String volgnummer_wijziging_eu_typegoedkeuring;
+    private String wacht_op_keuren;
+    private String wam_verzekerd;
     private String wielbasis;
-    @JsonProperty("zuinigheidslabel")
     private String zuinigheidslabel;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("aantal_cilinders")
-    public String getAantalCilinders() {
-        return aantalCilinders;
+    //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
+
+
+    public String getAantal_cilinders() {
+        return aantal_cilinders;
     }
 
-    @JsonProperty("aantal_cilinders")
-    public void setAantalCilinders(String aantalCilinders) {
-        this.aantalCilinders = aantalCilinders;
+    public void setAantal_cilinders(String aantal_cilinders) {
+        this.aantal_cilinders = aantal_cilinders;
     }
 
-    @JsonProperty("aantal_deuren")
-    public String getAantalDeuren() {
-        return aantalDeuren;
+    public String getAantal_deuren() {
+        return aantal_deuren;
     }
 
-    @JsonProperty("aantal_deuren")
-    public void setAantalDeuren(String aantalDeuren) {
-        this.aantalDeuren = aantalDeuren;
+    public void setAantal_deuren(String aantal_deuren) {
+        this.aantal_deuren = aantal_deuren;
     }
 
-    @JsonProperty("aantal_rolstoelplaatsen")
-    public String getAantalRolstoelplaatsen() {
-        return aantalRolstoelplaatsen;
+    public String getAantal_rolstoelplaatsen() {
+        return aantal_rolstoelplaatsen;
     }
 
-    @JsonProperty("aantal_rolstoelplaatsen")
-    public void setAantalRolstoelplaatsen(String aantalRolstoelplaatsen) {
-        this.aantalRolstoelplaatsen = aantalRolstoelplaatsen;
+    public void setAantal_rolstoelplaatsen(String aantal_rolstoelplaatsen) {
+        this.aantal_rolstoelplaatsen = aantal_rolstoelplaatsen;
     }
 
-    @JsonProperty("aantal_wielen")
-    public String getAantalWielen() {
-        return aantalWielen;
+    public String getAantal_wielen() {
+        return aantal_wielen;
     }
 
-    @JsonProperty("aantal_wielen")
-    public void setAantalWielen(String aantalWielen) {
-        this.aantalWielen = aantalWielen;
+    public void setAantal_wielen(String aantal_wielen) {
+        this.aantal_wielen = aantal_wielen;
     }
 
-    @JsonProperty("aantal_zitplaatsen")
-    public String getAantalZitplaatsen() {
-        return aantalZitplaatsen;
+    public String getAantal_zitplaatsen() {
+        return aantal_zitplaatsen;
     }
 
-    @JsonProperty("aantal_zitplaatsen")
-    public void setAantalZitplaatsen(String aantalZitplaatsen) {
-        this.aantalZitplaatsen = aantalZitplaatsen;
+    public void setAantal_zitplaatsen(String aantal_zitplaatsen) {
+        this.aantal_zitplaatsen = aantal_zitplaatsen;
     }
 
-    @JsonProperty("afstand_hart_koppeling_tot_achterzijde_voertuig")
-    public String getAfstandHartKoppelingTotAchterzijdeVoertuig() {
-        return afstandHartKoppelingTotAchterzijdeVoertuig;
+    public String getAfstand_hart_koppeling_tot_achterzijde_voertuig() {
+        return afstand_hart_koppeling_tot_achterzijde_voertuig;
     }
 
-    @JsonProperty("afstand_hart_koppeling_tot_achterzijde_voertuig")
-    public void setAfstandHartKoppelingTotAchterzijdeVoertuig(String afstandHartKoppelingTotAchterzijdeVoertuig) {
-        this.afstandHartKoppelingTotAchterzijdeVoertuig = afstandHartKoppelingTotAchterzijdeVoertuig;
+    public void setAfstand_hart_koppeling_tot_achterzijde_voertuig(String afstand_hart_koppeling_tot_achterzijde_voertuig) {
+        this.afstand_hart_koppeling_tot_achterzijde_voertuig = afstand_hart_koppeling_tot_achterzijde_voertuig;
     }
 
-    @JsonProperty("afstand_voorzijde_voertuig_tot_hart_koppeling")
-    public String getAfstandVoorzijdeVoertuigTotHartKoppeling() {
-        return afstandVoorzijdeVoertuigTotHartKoppeling;
+    public String getAfstand_voorzijde_voertuig_tot_hart_koppeling() {
+        return afstand_voorzijde_voertuig_tot_hart_koppeling;
     }
 
-    @JsonProperty("afstand_voorzijde_voertuig_tot_hart_koppeling")
-    public void setAfstandVoorzijdeVoertuigTotHartKoppeling(String afstandVoorzijdeVoertuigTotHartKoppeling) {
-        this.afstandVoorzijdeVoertuigTotHartKoppeling = afstandVoorzijdeVoertuigTotHartKoppeling;
+    public void setAfstand_voorzijde_voertuig_tot_hart_koppeling(String afstand_voorzijde_voertuig_tot_hart_koppeling) {
+        this.afstand_voorzijde_voertuig_tot_hart_koppeling = afstand_voorzijde_voertuig_tot_hart_koppeling;
     }
 
-    @JsonProperty("api_gekentekende_voertuigen_assen")
-    public String getApiGekentekendeVoertuigenAssen() {
-        return apiGekentekendeVoertuigenAssen;
+    public String getApi_gekentekende_voertuigen_assen() {
+        return api_gekentekende_voertuigen_assen;
     }
 
-    @JsonProperty("api_gekentekende_voertuigen_assen")
-    public void setApiGekentekendeVoertuigenAssen(String apiGekentekendeVoertuigenAssen) {
-        this.apiGekentekendeVoertuigenAssen = apiGekentekendeVoertuigenAssen;
+    public void setApi_gekentekende_voertuigen_assen(String api_gekentekende_voertuigen_assen) {
+        this.api_gekentekende_voertuigen_assen = api_gekentekende_voertuigen_assen;
     }
 
-    @JsonProperty("api_gekentekende_voertuigen_brandstof")
-    public String getApiGekentekendeVoertuigenBrandstof() {
-        return apiGekentekendeVoertuigenBrandstof;
+    public String getApi_gekentekende_voertuigen_brandstof() {
+        return api_gekentekende_voertuigen_brandstof;
     }
 
-    @JsonProperty("api_gekentekende_voertuigen_brandstof")
-    public void setApiGekentekendeVoertuigenBrandstof(String apiGekentekendeVoertuigenBrandstof) {
-        this.apiGekentekendeVoertuigenBrandstof = apiGekentekendeVoertuigenBrandstof;
+    public void setApi_gekentekende_voertuigen_brandstof(String api_gekentekende_voertuigen_brandstof) {
+        this.api_gekentekende_voertuigen_brandstof = api_gekentekende_voertuigen_brandstof;
     }
 
-    @JsonProperty("api_gekentekende_voertuigen_carrosserie")
-    public String getApiGekentekendeVoertuigenCarrosserie() {
-        return apiGekentekendeVoertuigenCarrosserie;
+    public String getApi_gekentekende_voertuigen_carrosserie() {
+        return api_gekentekende_voertuigen_carrosserie;
     }
 
-    @JsonProperty("api_gekentekende_voertuigen_carrosserie")
-    public void setApiGekentekendeVoertuigenCarrosserie(String apiGekentekendeVoertuigenCarrosserie) {
-        this.apiGekentekendeVoertuigenCarrosserie = apiGekentekendeVoertuigenCarrosserie;
+    public void setApi_gekentekende_voertuigen_carrosserie(String api_gekentekende_voertuigen_carrosserie) {
+        this.api_gekentekende_voertuigen_carrosserie = api_gekentekende_voertuigen_carrosserie;
     }
 
-    @JsonProperty("api_gekentekende_voertuigen_carrosserie_specifiek")
-    public String getApiGekentekendeVoertuigenCarrosserieSpecifiek() {
-        return apiGekentekendeVoertuigenCarrosserieSpecifiek;
+    public String getApi_gekentekende_voertuigen_carrosserie_specifiek() {
+        return api_gekentekende_voertuigen_carrosserie_specifiek;
     }
 
-    @JsonProperty("api_gekentekende_voertuigen_carrosserie_specifiek")
-    public void setApiGekentekendeVoertuigenCarrosserieSpecifiek(String apiGekentekendeVoertuigenCarrosserieSpecifiek) {
-        this.apiGekentekendeVoertuigenCarrosserieSpecifiek = apiGekentekendeVoertuigenCarrosserieSpecifiek;
+    public void setApi_gekentekende_voertuigen_carrosserie_specifiek(String api_gekentekende_voertuigen_carrosserie_specifiek) {
+        this.api_gekentekende_voertuigen_carrosserie_specifiek = api_gekentekende_voertuigen_carrosserie_specifiek;
     }
 
-    @JsonProperty("api_gekentekende_voertuigen_voertuigklasse")
-    public String getApiGekentekendeVoertuigenVoertuigklasse() {
-        return apiGekentekendeVoertuigenVoertuigklasse;
+    public String getApi_gekentekende_voertuigen_voertuigklasse() {
+        return api_gekentekende_voertuigen_voertuigklasse;
     }
 
-    @JsonProperty("api_gekentekende_voertuigen_voertuigklasse")
-    public void setApiGekentekendeVoertuigenVoertuigklasse(String apiGekentekendeVoertuigenVoertuigklasse) {
-        this.apiGekentekendeVoertuigenVoertuigklasse = apiGekentekendeVoertuigenVoertuigklasse;
+    public void setApi_gekentekende_voertuigen_voertuigklasse(String api_gekentekende_voertuigen_voertuigklasse) {
+        this.api_gekentekende_voertuigen_voertuigklasse = api_gekentekende_voertuigen_voertuigklasse;
     }
 
-    @JsonProperty("breedte")
     public String getBreedte() {
         return breedte;
     }
 
-    @JsonProperty("breedte")
     public void setBreedte(String breedte) {
         this.breedte = breedte;
     }
 
-    @JsonProperty("bruto_bpm")
-    public String getBrutoBpm() {
-        return brutoBpm;
+    public String getBruto_bpm() {
+        return bruto_bpm;
     }
 
-    @JsonProperty("bruto_bpm")
-    public void setBrutoBpm(String brutoBpm) {
-        this.brutoBpm = brutoBpm;
+    public void setBruto_bpm(String bruto_bpm) {
+        this.bruto_bpm = bruto_bpm;
     }
 
-    @JsonProperty("catalogusprijs")
     public String getCatalogusprijs() {
         return catalogusprijs;
     }
 
-    @JsonProperty("catalogusprijs")
     public void setCatalogusprijs(String catalogusprijs) {
         this.catalogusprijs = catalogusprijs;
     }
 
-    @JsonProperty("cilinderinhoud")
     public String getCilinderinhoud() {
         return cilinderinhoud;
     }
 
-    @JsonProperty("cilinderinhoud")
     public void setCilinderinhoud(String cilinderinhoud) {
         this.cilinderinhoud = cilinderinhoud;
     }
 
-    @JsonProperty("datum_eerste_afgifte_nederland")
-    public String getDatumEersteAfgifteNederland() {
-        return datumEersteAfgifteNederland;
+    public String getDatum_eerste_afgifte_nederland() {
+        return datum_eerste_afgifte_nederland;
     }
 
-    @JsonProperty("datum_eerste_afgifte_nederland")
-    public void setDatumEersteAfgifteNederland(String datumEersteAfgifteNederland) {
-        this.datumEersteAfgifteNederland = datumEersteAfgifteNederland;
+    public void setDatum_eerste_afgifte_nederland(String datum_eerste_afgifte_nederland) {
+        this.datum_eerste_afgifte_nederland = datum_eerste_afgifte_nederland;
     }
 
-    @JsonProperty("datum_eerste_toelating")
-    public String getDatumEersteToelating() {
-        return datumEersteToelating;
+    public String getDatum_eerste_toelating() {
+        return datum_eerste_toelating;
     }
 
-    @JsonProperty("datum_eerste_toelating")
-    public void setDatumEersteToelating(String datumEersteToelating) {
-        this.datumEersteToelating = datumEersteToelating;
+    public void setDatum_eerste_toelating(String datum_eerste_toelating) {
+        this.datum_eerste_toelating = datum_eerste_toelating;
     }
 
-    @JsonProperty("datum_tenaamstelling")
-    public String getDatumTenaamstelling() {
-        return datumTenaamstelling;
+    public String getDatum_tenaamstelling() {
+        return datum_tenaamstelling;
     }
 
-    @JsonProperty("datum_tenaamstelling")
-    public void setDatumTenaamstelling(String datumTenaamstelling) {
-        this.datumTenaamstelling = datumTenaamstelling;
+    public void setDatum_tenaamstelling(String datum_tenaamstelling) {
+        this.datum_tenaamstelling = datum_tenaamstelling;
     }
 
-    @JsonProperty("eerste_kleur")
-    public String getEersteKleur() {
-        return eersteKleur;
+    public String getEerste_kleur() {
+        return eerste_kleur;
     }
 
-    @JsonProperty("eerste_kleur")
-    public void setEersteKleur(String eersteKleur) {
-        this.eersteKleur = eersteKleur;
+    public void setEerste_kleur(String eerste_kleur) {
+        this.eerste_kleur = eerste_kleur;
     }
 
-    @JsonProperty("europese_voertuigcategorie")
-    public String getEuropeseVoertuigcategorie() {
-        return europeseVoertuigcategorie;
+    public String getEuropese_voertuigcategorie() {
+        return europese_voertuigcategorie;
     }
 
-    @JsonProperty("europese_voertuigcategorie")
-    public void setEuropeseVoertuigcategorie(String europeseVoertuigcategorie) {
-        this.europeseVoertuigcategorie = europeseVoertuigcategorie;
+    public void setEuropese_voertuigcategorie(String europese_voertuigcategorie) {
+        this.europese_voertuigcategorie = europese_voertuigcategorie;
     }
 
-    @JsonProperty("export_indicator")
-    public String getExportIndicator() {
-        return exportIndicator;
+    public String getExport_indicator() {
+        return export_indicator;
     }
 
-    @JsonProperty("export_indicator")
-    public void setExportIndicator(String exportIndicator) {
-        this.exportIndicator = exportIndicator;
+    public void setExport_indicator(String export_indicator) {
+        this.export_indicator = export_indicator;
     }
 
-    @JsonProperty("handelsbenaming")
     public String getHandelsbenaming() {
         return handelsbenaming;
     }
 
-    @JsonProperty("handelsbenaming")
     public void setHandelsbenaming(String handelsbenaming) {
         this.handelsbenaming = handelsbenaming;
     }
 
-    @JsonProperty("inrichting")
     public String getInrichting() {
         return inrichting;
     }
 
-    @JsonProperty("inrichting")
     public void setInrichting(String inrichting) {
         this.inrichting = inrichting;
     }
 
-    @JsonProperty("kenteken")
     public String getKenteken() {
         return kenteken;
     }
 
-    @JsonProperty("kenteken")
     public void setKenteken(String kenteken) {
         this.kenteken = kenteken;
     }
 
-    @JsonProperty("lengte")
     public String getLengte() {
         return lengte;
     }
 
-    @JsonProperty("lengte")
     public void setLengte(String lengte) {
         this.lengte = lengte;
     }
 
-    @JsonProperty("massa_ledig_voertuig")
-    public String getMassaLedigVoertuig() {
-        return massaLedigVoertuig;
+    public String getMassa_ledig_voertuig() {
+        return massa_ledig_voertuig;
     }
 
-    @JsonProperty("massa_ledig_voertuig")
-    public void setMassaLedigVoertuig(String massaLedigVoertuig) {
-        this.massaLedigVoertuig = massaLedigVoertuig;
+    public void setMassa_ledig_voertuig(String massa_ledig_voertuig) {
+        this.massa_ledig_voertuig = massa_ledig_voertuig;
     }
 
-    @JsonProperty("massa_rijklaar")
-    public String getMassaRijklaar() {
-        return massaRijklaar;
+    public String getMassa_rijklaar() {
+        return massa_rijklaar;
     }
 
-    @JsonProperty("massa_rijklaar")
-    public void setMassaRijklaar(String massaRijklaar) {
-        this.massaRijklaar = massaRijklaar;
+    public void setMassa_rijklaar(String massa_rijklaar) {
+        this.massa_rijklaar = massa_rijklaar;
     }
 
-    @JsonProperty("maximum_massa_samenstelling")
-    public String getMaximumMassaSamenstelling() {
-        return maximumMassaSamenstelling;
+    public String getMaximum_massa_samenstelling() {
+        return maximum_massa_samenstelling;
     }
 
-    @JsonProperty("maximum_massa_samenstelling")
-    public void setMaximumMassaSamenstelling(String maximumMassaSamenstelling) {
-        this.maximumMassaSamenstelling = maximumMassaSamenstelling;
+    public void setMaximum_massa_samenstelling(String maximum_massa_samenstelling) {
+        this.maximum_massa_samenstelling = maximum_massa_samenstelling;
     }
 
-    @JsonProperty("maximum_massa_trekken_ongeremd")
-    public String getMaximumMassaTrekkenOngeremd() {
-        return maximumMassaTrekkenOngeremd;
+    public String getMaximum_massa_trekken_ongeremd() {
+        return maximum_massa_trekken_ongeremd;
     }
 
-    @JsonProperty("maximum_massa_trekken_ongeremd")
-    public void setMaximumMassaTrekkenOngeremd(String maximumMassaTrekkenOngeremd) {
-        this.maximumMassaTrekkenOngeremd = maximumMassaTrekkenOngeremd;
+    public void setMaximum_massa_trekken_ongeremd(String maximum_massa_trekken_ongeremd) {
+        this.maximum_massa_trekken_ongeremd = maximum_massa_trekken_ongeremd;
     }
 
-    @JsonProperty("maximum_trekken_massa_geremd")
-    public String getMaximumTrekkenMassaGeremd() {
-        return maximumTrekkenMassaGeremd;
+    public String getMaximum_trekken_massa_geremd() {
+        return maximum_trekken_massa_geremd;
     }
 
-    @JsonProperty("maximum_trekken_massa_geremd")
-    public void setMaximumTrekkenMassaGeremd(String maximumTrekkenMassaGeremd) {
-        this.maximumTrekkenMassaGeremd = maximumTrekkenMassaGeremd;
+    public void setMaximum_trekken_massa_geremd(String maximum_trekken_massa_geremd) {
+        this.maximum_trekken_massa_geremd = maximum_trekken_massa_geremd;
     }
 
-    @JsonProperty("merk")
     public String getMerk() {
         return merk;
     }
 
-    @JsonProperty("merk")
     public void setMerk(String merk) {
         this.merk = merk;
     }
 
-    @JsonProperty("openstaande_terugroepactie_indicator")
-    public String getOpenstaandeTerugroepactieIndicator() {
-        return openstaandeTerugroepactieIndicator;
+    public String getOpenstaande_terugroepactie_indicator() {
+        return openstaande_terugroepactie_indicator;
     }
 
-    @JsonProperty("openstaande_terugroepactie_indicator")
-    public void setOpenstaandeTerugroepactieIndicator(String openstaandeTerugroepactieIndicator) {
-        this.openstaandeTerugroepactieIndicator = openstaandeTerugroepactieIndicator;
+    public void setOpenstaande_terugroepactie_indicator(String openstaande_terugroepactie_indicator) {
+        this.openstaande_terugroepactie_indicator = openstaande_terugroepactie_indicator;
     }
 
-    @JsonProperty("plaats_chassisnummer")
-    public String getPlaatsChassisnummer() {
-        return plaatsChassisnummer;
+    public String getPlaats_chassisnummer() {
+        return plaats_chassisnummer;
     }
 
-    @JsonProperty("plaats_chassisnummer")
-    public void setPlaatsChassisnummer(String plaatsChassisnummer) {
-        this.plaatsChassisnummer = plaatsChassisnummer;
+    public void setPlaats_chassisnummer(String plaats_chassisnummer) {
+        this.plaats_chassisnummer = plaats_chassisnummer;
     }
 
-    @JsonProperty("taxi_indicator")
-    public String getTaxiIndicator() {
-        return taxiIndicator;
+    public String getTaxi_indicator() {
+        return taxi_indicator;
     }
 
-    @JsonProperty("taxi_indicator")
-    public void setTaxiIndicator(String taxiIndicator) {
-        this.taxiIndicator = taxiIndicator;
+    public void setTaxi_indicator(String taxi_indicator) {
+        this.taxi_indicator = taxi_indicator;
     }
 
-    @JsonProperty("technische_max_massa_voertuig")
-    public String getTechnischeMaxMassaVoertuig() {
-        return technischeMaxMassaVoertuig;
+    public String getTechnische_max_massa_voertuig() {
+        return technische_max_massa_voertuig;
     }
 
-    @JsonProperty("technische_max_massa_voertuig")
-    public void setTechnischeMaxMassaVoertuig(String technischeMaxMassaVoertuig) {
-        this.technischeMaxMassaVoertuig = technischeMaxMassaVoertuig;
+    public void setTechnische_max_massa_voertuig(String technische_max_massa_voertuig) {
+        this.technische_max_massa_voertuig = technische_max_massa_voertuig;
     }
 
-    @JsonProperty("toegestane_maximum_massa_voertuig")
-    public String getToegestaneMaximumMassaVoertuig() {
-        return toegestaneMaximumMassaVoertuig;
+    public String getToegestane_maximum_massa_voertuig() {
+        return toegestane_maximum_massa_voertuig;
     }
 
-    @JsonProperty("toegestane_maximum_massa_voertuig")
-    public void setToegestaneMaximumMassaVoertuig(String toegestaneMaximumMassaVoertuig) {
-        this.toegestaneMaximumMassaVoertuig = toegestaneMaximumMassaVoertuig;
+    public void setToegestane_maximum_massa_voertuig(String toegestane_maximum_massa_voertuig) {
+        this.toegestane_maximum_massa_voertuig = toegestane_maximum_massa_voertuig;
     }
 
-    @JsonProperty("tweede_kleur")
-    public String getTweedeKleur() {
-        return tweedeKleur;
+    public String getTweede_kleur() {
+        return tweede_kleur;
     }
 
-    @JsonProperty("tweede_kleur")
-    public void setTweedeKleur(String tweedeKleur) {
-        this.tweedeKleur = tweedeKleur;
+    public void setTweede_kleur(String tweede_kleur) {
+        this.tweede_kleur = tweede_kleur;
     }
 
-    @JsonProperty("typegoedkeuringsnummer")
     public String getTypegoedkeuringsnummer() {
         return typegoedkeuringsnummer;
     }
 
-    @JsonProperty("typegoedkeuringsnummer")
     public void setTypegoedkeuringsnummer(String typegoedkeuringsnummer) {
         this.typegoedkeuringsnummer = typegoedkeuringsnummer;
     }
 
-    @JsonProperty("uitvoering")
     public String getUitvoering() {
         return uitvoering;
     }
 
-    @JsonProperty("uitvoering")
     public void setUitvoering(String uitvoering) {
         this.uitvoering = uitvoering;
     }
 
-    @JsonProperty("variant")
     public String getVariant() {
         return variant;
     }
 
-    @JsonProperty("variant")
     public void setVariant(String variant) {
         this.variant = variant;
     }
 
-    @JsonProperty("vermogen_massarijklaar")
-    public String getVermogenMassarijklaar() {
-        return vermogenMassarijklaar;
+    public String getVermogen_massarijklaar() {
+        return vermogen_massarijklaar;
     }
 
-    @JsonProperty("vermogen_massarijklaar")
-    public void setVermogenMassarijklaar(String vermogenMassarijklaar) {
-        this.vermogenMassarijklaar = vermogenMassarijklaar;
+    public void setVermogen_massarijklaar(String vermogen_massarijklaar) {
+        this.vermogen_massarijklaar = vermogen_massarijklaar;
     }
 
-    @JsonProperty("vervaldatum_apk")
-    public String getVervaldatumApk() {
-        return vervaldatumApk;
+    public String getVervaldatum_apk() {
+        return vervaldatum_apk;
     }
 
-    @JsonProperty("vervaldatum_apk")
-    public void setVervaldatumApk(String vervaldatumApk) {
-        this.vervaldatumApk = vervaldatumApk;
+    public void setVervaldatum_apk(String vervaldatum_apk) {
+        this.vervaldatum_apk = vervaldatum_apk;
     }
 
-    @JsonProperty("voertuigsoort")
     public String getVoertuigsoort() {
         return voertuigsoort;
     }
 
-    @JsonProperty("voertuigsoort")
     public void setVoertuigsoort(String voertuigsoort) {
         this.voertuigsoort = voertuigsoort;
     }
 
-    @JsonProperty("volgnummer_wijziging_eu_typegoedkeuring")
-    public String getVolgnummerWijzigingEuTypegoedkeuring() {
-        return volgnummerWijzigingEuTypegoedkeuring;
+    public String getVolgnummer_wijziging_eu_typegoedkeuring() {
+        return volgnummer_wijziging_eu_typegoedkeuring;
     }
 
-    @JsonProperty("volgnummer_wijziging_eu_typegoedkeuring")
-    public void setVolgnummerWijzigingEuTypegoedkeuring(String volgnummerWijzigingEuTypegoedkeuring) {
-        this.volgnummerWijzigingEuTypegoedkeuring = volgnummerWijzigingEuTypegoedkeuring;
+    public void setVolgnummer_wijziging_eu_typegoedkeuring(String volgnummer_wijziging_eu_typegoedkeuring) {
+        this.volgnummer_wijziging_eu_typegoedkeuring = volgnummer_wijziging_eu_typegoedkeuring;
     }
 
-    @JsonProperty("wacht_op_keuren")
-    public String getWachtOpKeuren() {
-        return wachtOpKeuren;
+    public String getWacht_op_keuren() {
+        return wacht_op_keuren;
     }
 
-    @JsonProperty("wacht_op_keuren")
-    public void setWachtOpKeuren(String wachtOpKeuren) {
-        this.wachtOpKeuren = wachtOpKeuren;
+    public void setWacht_op_keuren(String wacht_op_keuren) {
+        this.wacht_op_keuren = wacht_op_keuren;
     }
 
-    @JsonProperty("wam_verzekerd")
-    public String getWamVerzekerd() {
-        return wamVerzekerd;
+    public String getWam_verzekerd() {
+        return wam_verzekerd;
     }
 
-    @JsonProperty("wam_verzekerd")
-    public void setWamVerzekerd(String wamVerzekerd) {
-        this.wamVerzekerd = wamVerzekerd;
+    public void setWam_verzekerd(String wam_verzekerd) {
+        this.wam_verzekerd = wam_verzekerd;
     }
 
-    @JsonProperty("wielbasis")
     public String getWielbasis() {
         return wielbasis;
     }
 
-    @JsonProperty("wielbasis")
     public void setWielbasis(String wielbasis) {
         this.wielbasis = wielbasis;
     }
 
-    @JsonProperty("zuinigheidslabel")
     public String getZuinigheidslabel() {
         return zuinigheidslabel;
     }
 
-    @JsonProperty("zuinigheidslabel")
     public void setZuinigheidslabel(String zuinigheidslabel) {
         this.zuinigheidslabel = zuinigheidslabel;
     }
@@ -665,4 +468,5 @@ public class RDW extends BaseEntity {
         this.additionalProperties.put(name, value);
     }
 
+    //</editor-fold>
 }

@@ -2,10 +2,9 @@ package main.service;
 
 import main.dao.CarDao;
 import main.dao.JPA;
-import main.domain.Car;
-import main.domain.Owner;
-import main.domain.Ownership;
-import main.domain.RDW;
+import main.dao.RDWDao;
+import main.dao.RDWFuelDao;
+import main.domain.*;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -27,16 +26,27 @@ public class CarService {
     private CarDao carDao;
 
     @Inject
-    private RDWService rdwService;
+    @JPA
+    private RDWDao rdwDao;
+
+    @Inject
+    @JPA
+    private RDWFuelDao rdwFuelDao;
 
     public CarService() {
     }
 
     public Car createOrUpdate(Car car) {
-        RDW rdwData = rdwService.findByLicensePlate(car.getLicensePlate());
-        if (rdwData != null) {
+        RDW rdwData = this.rdwDao.findByLicensePlate(car.getLicensePlate());
+        if (rdwData != null && car.getRdwData() == null) {
             car.setRdwData(rdwData);
         }
+
+        RDWFuel rdwFuelData = this.rdwFuelDao.findByLicensePlate(car.getLicensePlate());
+        if (rdwFuelData != null && car.getRdwFuelData() == null) {
+            car.setRdwFuelData(rdwFuelData);
+        }
+
         return this.carDao.createOrUpdate(car);
     }
 
@@ -90,17 +100,15 @@ public class CarService {
     /**
      * Removes Ownerships older than 5 years and returns a List of old Owners (till 5 years ago)
      *
-     * @returns a List of past Owners or null.
+     * @returns a List of past owners or an empty list when there are no past owners.
      */
     public List<Ownership> getAndUpdatePastOwnerships(Car car) {
-//        Car foundCar = this.carDao.findById(car.getId());
-
         for (Ownership ownership : car.getPastOwnerships()) {
             if (isLongerThanFiveYearsAgo(ownership.getEndDate())) {
                 car.getPastOwnerships().remove(ownership);
             }
         }
-        car = this.createOrUpdate(car);
+        this.createOrUpdate(car);
 
         return car.getPastOwnerships();
     }
@@ -120,10 +128,11 @@ public class CarService {
 
     /**
      * Assign a Car to a new Ownership.
+     * Previous cartracker is added to past ownerships and the new cartracker will be assigned.
      *
      * @param car          is the Car that gets a new Ownership.
      * @param newOwnership is the new Ownership
-     * @returns the updated Car.
+     * @returns the updated Car, if something went wrong null will be returned.
      */
     public Car assignToNewOwner(Car car, Ownership newOwnership) {
         if (car != null && newOwnership != null) {
@@ -136,15 +145,20 @@ public class CarService {
                 newOwnership.setStartDate(new Date());
                 newOwnership.setOwner(newOwnership.getOwner());
                 newOwnership.setCar(car);
-                car.setOwner(newOwnership.getOwner());
                 car.setCurrentOwnership(newOwnership);
             }
+            this.createOrUpdate(car);
+            return car;
         }
-        car = this.createOrUpdate(car);
-        return car;
+        return null;
     }
+
 
     public void setCarDao(CarDao carDao) {
         this.carDao = carDao;
+    }
+
+    public void setRdwDao(RDWDao rdwDao) {
+        this.rdwDao = rdwDao;
     }
 }

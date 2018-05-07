@@ -11,7 +11,7 @@
 
         <p:megaMenu orientation="horizontal">
 
-            <p:menuitem value="Dashboard" url="/pages/profile/dashboard.xhtml" icon="ui-icon-check"/>
+            <p:menuitem value="Dashboard" url="/pages/profile/dashboard.xhtml"/>
 
             <p:submenu label="Gebruiker">
                 <p:column>
@@ -24,7 +24,7 @@
             <p:submenu label="Factuur">
                 <p:column>
                     <p:submenu>
-                        <p:menuitem value="Overzicht" url="/pages/invoice/invoiceOverview.xhtml"/>
+                        <p:menuitem value="Overzicht" url="/pages/invoice/overview.xhtml"/>
                     </p:submenu>
                 </p:column>
             </p:submenu>
@@ -32,7 +32,15 @@
             <p:submenu label="Auto's">
                 <p:column>
                     <p:submenu>
-                        <p:menuitem value="Overzicht" url="/pages/cars/carOverview.xhtml"/>
+                        <p:menuitem value="Overzicht" url="/pages/cars/overview.xhtml"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Cartrackers">
+                <p:column>
+                    <p:submenu>
+                        <p:menuitem value="Overzicht" url="/pages/cartracker/overview.xhtml"/>
                     </p:submenu>
                 </p:column>
             </p:submenu>
@@ -40,13 +48,13 @@
             <p:submenu label="Tarieven">
                 <p:column>
                     <p:submenu>
-                        <p:menuitem value="Overzicht" url="/pages/tariff/tariffOverview.xhtml"/>
-                        <p:menuitem value="Toevoegen" url="/pages/tariff/manageTariffs.xhtml"/>
+                        <p:menuitem value="Overzicht" url="/pages/tariff/overview.xhtml"/>
+                        <p:menuitem value="Toevoegen" url="/pages/tariff/add.xhtml"/>
                     </p:submenu>
                 </p:column>
             </p:submenu>
 
-            <p:menuitem value="Uitloggen" action="#{sessionBean.logout()}" icon="ui-icon-close"/>
+            <p:menuitem value="Uitloggen" action="#{sessionBean.logout()}"/>
 
         </p:megaMenu>
 

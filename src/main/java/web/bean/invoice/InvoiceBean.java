@@ -19,11 +19,15 @@ public class InvoiceBean extends BaseBean {
     private InvoiceService invoiceService;
 
     private Invoice invoice;
-    private Long invoiceId;
+    private Long invoiceNr;
+    private String monthName;
 
     @Override
     public void init() {
-        this.invoice = this.invoiceService.findById(this.invoiceId);
+        this.invoice = this.invoiceService.findByInvoiceNr(this.invoiceNr);
+        if (this.invoice != null) {
+            this.monthName = this.invoiceService.getMonthName(this.invoice.getPeriod());
+        }
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
@@ -35,13 +39,20 @@ public class InvoiceBean extends BaseBean {
         this.invoice = invoice;
     }
 
-    public Long getInvoiceId() {
-        return invoiceId;
+    public Long getInvoiceNr() {
+        return invoiceNr;
     }
 
-    public void setInvoiceId(Long invoiceId) {
-        this.invoiceId = invoiceId;
+    public void setInvoiceNr(Long invoiceNr) {
+        this.invoiceNr = invoiceNr;
     }
 
+    public String getMonthName() {
+        return monthName;
+    }
+
+    public void setMonthName(String monthName) {
+        this.monthName = monthName;
+    }
     //</editor-fold>
 }

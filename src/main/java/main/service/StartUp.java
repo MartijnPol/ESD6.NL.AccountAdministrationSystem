@@ -7,8 +7,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Thom van de Pas on 8-3-2018
@@ -44,8 +47,20 @@ public class StartUp {
         Address address2 = new Address("Tilburgseweg", "12", "5074FK", "Tilburg", "Nederland");
         Owner owner1 = ownerService.createOrUpdate(new Owner("Henk", "van der Pol", new Date(), address));
         Owner owner2 = ownerService.createOrUpdate(new Owner("Frits", "Jansen", new Date(), address2));
-        Car car1 = new Car("08-SK-PX", owner1);
-        Car car2 = new Car("00-01-ES", owner2);
+
+        Ownership ownership = new Ownership();
+        ownership.setOwner(owner1);
+
+        Ownership ownership2 = new Ownership();
+        ownership2.setOwner(owner2);
+
+        Car car1 = new Car("08-SK-PX", ownership);
+        Car car2 = new Car("00-01-ES", ownership2);
+
+        ownership.setCar(car1);
+        ownership2.setCar(car2);
+        this.ownershipService.createOrUpdate(ownership);
+        this.ownershipService.createOrUpdate(ownership2);
 
         car1.setCarTrackerId(1L);
         car2.setCarTrackerId(2L);
@@ -59,16 +74,6 @@ public class StartUp {
         userGroup.addUser(smolders);
         userService.createOrUpdate(smolders);
         this.userGroupService.create(userGroup);
-
-        Ownership ownership = new Ownership();
-        ownership.setOwner(owner1);
-        ownership.setCar(car1);
-        this.ownershipService.createOrUpdate(ownership);
-
-        Ownership ownership2 = new Ownership();
-        ownership2.setOwner(owner2);
-        ownership2.setCar(car2);
-        this.ownershipService.createOrUpdate(ownership2);
 
         Invoice invoice = new Invoice();
         invoice.setInvoiceNr(20180001L);
@@ -95,9 +100,27 @@ public class StartUp {
         this.invoiceService.createOrUpdate(invoice3);
 
         Tariff tariff1 = new Tariff(0.07, false);
-        Tariff tariff2 = new Tariff(0.13, true);
+
+        Map<String, Double> carLabels = new HashMap<>();
+        carLabels.put("A", -20.0);
+        carLabels.put("B", -15.0);
+        carLabels.put("C", -10.0);
+        carLabels.put("D", 0.0);
+        carLabels.put("E", 10.0);
+        carLabels.put("F", 20.0);
+        carLabels.put("G", 30.0);
+
+        Map<String, Double> carFuels = new HashMap<>();
+        carFuels.put("Diesel", 20.0);
+        carFuels.put("Benzine", 10.0);
+        carFuels.put("LPG", 0.0);
+        carFuels.put("Electric", 10.0);
+        carFuels.put("Waterstof", 20.0);
+
+        tariff1.setCarLabels(carLabels);
+        tariff1.setCarFuels(carFuels);
 
         this.tariffService.createOrUpdate(tariff1);
-        this.tariffService.createOrUpdate(tariff2);
+
     }
 }

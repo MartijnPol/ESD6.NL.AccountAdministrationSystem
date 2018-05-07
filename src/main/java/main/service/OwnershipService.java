@@ -7,6 +7,7 @@ import main.domain.Ownership;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * @author Thom van de Pas on 4-4-2018
@@ -21,5 +22,13 @@ public class OwnershipService {
 
     public Ownership createOrUpdate(Ownership ownership) {
         return this.ownershipDao.createOrUpdate(ownership);
+    }
+
+    public Ownership findById(Long id) {
+        return this.ownershipDao.findById(id);
+    }
+
+    public List<Ownership> findAll() {
+        return this.ownershipDao.findAll();
     }
 }
