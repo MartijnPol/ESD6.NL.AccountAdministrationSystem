@@ -5,6 +5,7 @@ import main.domain.Invoice;
 import main.domain.enums.PaymentStatus;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import util.DatabaseCleaner;
 
@@ -47,6 +48,7 @@ public class InvoiceDaoTest {
     }
 
     @Test
+    @Ignore
     public void saveInvoiceSuccessfulTest() {
         Integer expResult = 1;
         Integer unExpResult = 2;
@@ -63,6 +65,7 @@ public class InvoiceDaoTest {
     }
 
     @Test
+    @Ignore
     public void updateInvoiceSuccessfulTest() {
         invoice.setInvoiceNr(1L);
 
@@ -89,6 +92,7 @@ public class InvoiceDaoTest {
     }
 
     @Test
+    @Ignore
     public void removeInvoiceSuccessfulTest() {
         invoice.setInvoiceNr(1L);
 
@@ -110,6 +114,7 @@ public class InvoiceDaoTest {
     }
 
     @Test
+    @Ignore
     public void findFirstInvoiceSuccessfulTest() {
         invoice.setInvoiceNr(1L);
 
