@@ -21,10 +21,10 @@ pipeline{
         }
         stage('Build image'){
             steps{
+                sh 'mvn clean package -B'
 				sh 'docker build -t accountadministrationsystem .'
 				sh 'docker tag accountadministrationsystem:latest localhost:5000/aas'
 				sh 'docker push localhost:5000/aas'
-                sh 'mvn clean package -B'
                 archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
 
