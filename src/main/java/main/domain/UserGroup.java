@@ -21,7 +21,7 @@ public class UserGroup implements Serializable {
     private String groupName;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "usergroup_user",
+    @JoinTable(name = "USERGROUP_USER",
             joinColumns = @JoinColumn(name = "groupName",
                     referencedColumnName = "groupName"),
             inverseJoinColumns = @JoinColumn(name = "username",
