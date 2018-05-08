@@ -3,7 +3,6 @@ package main.dao;
 import main.domain.Invoice;
 import main.domain.enums.PaymentStatus;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.AdditionalMatchers;
@@ -14,7 +13,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.hamcrest.CoreMatchers.is;
 

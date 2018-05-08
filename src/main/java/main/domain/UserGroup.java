@@ -37,6 +37,8 @@ public class UserGroup implements Serializable {
         this.groupName = groupName;
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
+
     public String getGroupName() {
         return groupName;
     }
@@ -56,4 +58,6 @@ public class UserGroup implements Serializable {
     public void addMultipleUsers(List<User> users) {
         this.users.addAll(users);
     }
+
+    //</editor-fold>
 }
