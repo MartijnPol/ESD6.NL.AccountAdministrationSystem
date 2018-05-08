@@ -12,6 +12,7 @@ import main.domain.Invoice;
 import main.domain.Ownership;
 import main.domain.Tariff;
 import main.utils.StringHelper;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -23,6 +24,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Thom van de Pas on 4-4-2018
@@ -71,7 +73,8 @@ public class InvoiceService {
     public String getMonthName(Date date) {
         String monthName;
 
-        Format formatter = new SimpleDateFormat("MMMM");
+        Locale loc = new Locale.Builder().setLanguage("nl").setRegion("NL").build();
+        Format formatter = new SimpleDateFormat("MMMM",loc);
         monthName = formatter.format(date);
 
         return monthName;
