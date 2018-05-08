@@ -161,4 +161,8 @@ public class CarService {
     public void setRdwDao(RDWDao rdwDao) {
         this.rdwDao = rdwDao;
     }
+
+    public void setRdwFuelDao(RDWFuelDao rdwFuelDao) {
+        this.rdwFuelDao = rdwFuelDao;
+    }
 }
