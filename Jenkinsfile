@@ -21,7 +21,7 @@ pipeline{
         }
         stage('Build image'){
             when{
-                anyof{
+                anyOf{
                     branch 'master'
                     branch 'release'
                 }
@@ -37,7 +37,7 @@ pipeline{
         }
 		stage('Push image'){
             when{
-                anyof{
+                anyOf{
                     branch 'master'
                     branch 'release'
                 }
