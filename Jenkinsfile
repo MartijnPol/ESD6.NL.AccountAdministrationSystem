@@ -24,9 +24,10 @@ pipeline{
                 sh 'mvn clean package -B'
 				sh 'docker build -t accountadministrationsystem .'
 				sh 'docker tag accountadministrationsystem:latest esd6nl/aas'
-				withDockerRegistry([ credentialsId: "dacebdd2-3f17-4ea6-93dd-2892e8ada2ef", url: "" ]) {
+				withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'dockerPassword', usernameVariable: 'dockerUser')]) {
+					sh "docker login -u ${env.dockerUser} -p ${env.dockerPassword}"
 					sh 'docker push esd6nl/aas'
-				}
+			}
                 archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
 
