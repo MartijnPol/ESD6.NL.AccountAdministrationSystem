@@ -46,8 +46,8 @@ pipeline{
                 }
             }
             when{
+			     branch 'development'
             }
-                branch 'development'
             steps{
                 sh 'echo Deploying woop woop'
             }
