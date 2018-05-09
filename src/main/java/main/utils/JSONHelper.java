@@ -2,6 +2,7 @@ package main.utils;
 
 import com.google.gson.Gson;
 import main.domain.RDW;
+import main.domain.RDWFuel;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -20,13 +21,26 @@ public final class JSONHelper {
      * @param url
      * @return
      */
-    public static RDW getJSONObjectFromUrl(String url) {
+    public static RDW getRDWJSONObjectFromUrl(String url) {
         try {
             Gson gson = new Gson();
             String json = IOUtils.toString(new URL(url), Charset.forName("UTF-8"))
                     .replace("[", "")
                     .replace("]", "");
             return gson.fromJson(json, (Type) RDW.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static RDWFuel getRDWFuelJSONObjectFromUrl(String url) {
+        try {
+            Gson gson = new Gson();
+            String json = IOUtils.toString(new URL(url), Charset.forName("UTF-8"))
+                    .replace("[", "")
+                    .replace("]", "");
+            return gson.fromJson(json, (Type) RDWFuel.class);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

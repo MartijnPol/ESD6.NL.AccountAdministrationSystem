@@ -45,4 +45,8 @@ public class TariffService {
     public Tariff findById(Long id) {
         return this.tariffDao.findById(id);
     }
+
+    public void setTariffDao(TariffDao tariffDao) {
+        this.tariffDao = tariffDao;
+    }
 }

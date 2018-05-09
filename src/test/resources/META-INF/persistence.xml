@@ -9,6 +9,8 @@
         <class>main.domain.Owner</class>
         <class>main.domain.Ownership</class>
         <class>main.domain.Tariff</class>
+        <class>main.domain.RDW</class>
+        <class>main.domain.RDWFuel</class>
         <class>main.domain.User</class>
         <class>main.domain.UserGroup</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>

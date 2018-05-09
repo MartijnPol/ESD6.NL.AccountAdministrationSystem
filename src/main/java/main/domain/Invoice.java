@@ -4,10 +4,8 @@ import main.domain.enums.PaymentStatus;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * @author Thom van de Pas on 4-4-2018
@@ -15,7 +13,8 @@ import java.util.Objects;
 @XmlRootElement
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "invoice.findByInvoiceNr", query = "SELECT i FROM Invoice i WHERE i.invoiceNr = :invoiceNr")
+        @NamedQuery(name = "invoice.findByInvoiceNr", query = "SELECT i FROM Invoice i WHERE i.invoiceNr = :invoiceNr"),
+        @NamedQuery(name = "invoice.findFirstInvoice", query = "SELECT i FROM Invoice i ORDER BY i.id ASC")
 })
 public class Invoice extends BaseEntity {
 
@@ -38,6 +37,7 @@ public class Invoice extends BaseEntity {
     public Invoice() {
         this.paymentStatus = PaymentStatus.OPEN;
         this.totalAmount = BigDecimal.ZERO;
+        this.period = new Date();
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">

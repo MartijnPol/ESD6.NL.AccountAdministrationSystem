@@ -1,140 +1,103 @@
 package main.dao;
 
-import main.dao.implementation.CarDaoImpl;
-import main.dao.implementation.OwnerDaoImpl;
-import main.dao.implementation.OwnershipDaoImpl;
-import main.domain.Address;
 import main.domain.Car;
 import main.domain.Owner;
 import main.domain.Ownership;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import util.DatabaseCleaner;
+import org.junit.runner.RunWith;
+import org.mockito.AdditionalMatchers;
+import org.mockito.Matchers;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import java.sql.SQLException;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.when;
 
-/**
- * @author Thom van de Pas on 8-3-2018
- */
+@RunWith(MockitoJUnitRunner.class)
 public class CarDaoTest {
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccountAdministrationTestPU");
-    private EntityManager em;
-    private EntityTransaction tx;
-    private CarDaoImpl carDao;
-    private OwnerDaoImpl ownerDao;
-    private OwnershipDaoImpl ownershipDao;
-    private Car car = null;
-    private Owner owner = null;
-    private Ownership ownership = null;
+    private Car car;
+    private List<Car> cars;
+    private Ownership ownership;
+    private Owner owner;
 
-    public CarDaoTest() {
-    }
+    @Mock
+    private CarDao carDao;
 
     @Before
     public void setUp() {
-        try {
-            new DatabaseCleaner(emf.createEntityManager()).clean();
-        } catch (SQLException ex) {
-            Logger.getLogger(CarDaoTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        em = emf.createEntityManager();
-        tx = em.getTransaction();
+        MockitoAnnotations.initMocks(this);
 
-        carDao = new CarDaoImpl();
-        carDao.setEntityManager(em);
-        ownerDao = new OwnerDaoImpl();
-        ownerDao.setEntityManager(em);
-        ownershipDao = new OwnershipDaoImpl();
-        ownershipDao.setEntityManager(em);
-        owner = new Owner("Herman", "de Schermman", new Date(), new Address());
+        car = new Car();
         ownership = new Ownership();
+        owner = new Owner();
+
+        owner.setFirstName("DuckDuckGo");
         ownership.setOwner(owner);
-        car = new Car("HT-328-W", owner);
-        car.setOwner(owner);
         car.setCurrentOwnership(ownership);
-    }
-
-    @After
-    public void tearDown() {
-    }
-
-    @Test
-    public void saveCarSuccessfulTest() {
-        Integer expResult = 1;
-        tx.begin();
-        ownerDao.createOrUpdate(owner);
-        carDao.createOrUpdate(car);
-        ownership.setOwner(owner);
-        ownership.setCar(car);
-        ownershipDao.createOrUpdate(ownership);
-        tx.commit();
-        tx.begin();
-        int size = carDao.findAll().size();
-        assertThat(size, is(expResult));
+        car.setLicensePlate("08-SK-PX");
+        car.setCarTrackerId(1L);
+        cars = new ArrayList<>();
+        cars.add(car);
     }
 
     @Test
-    public void findByOwnerSuccessfulTest() {
-        Owner testOwner = new Owner("Pietje", "Bell", new Date(), new Address());
-        Car test = new Car("PT-EI-82", testOwner);
-        Car test2 = new Car("SR-206-P", owner);
-        tx.begin();
+    public void createCarTest() {
         carDao.createOrUpdate(car);
-        carDao.createOrUpdate(test);
-        carDao.createOrUpdate(test2);
-        List<Car> cars = carDao.findByOwner(owner);
-        List<Car> otherCars = carDao.findByOwner(testOwner);
-        tx.commit();
-        assertEquals(2L, cars.size());
-        assertEquals(1L, otherCars.size());
+
+        when(carDao.findByOwner(Matchers.eq(owner))).thenReturn(cars);
+        when(carDao.findByOwner(AdditionalMatchers.not(Matchers.eq(owner)))).thenReturn(null);
+
+        Owner differentOwner = new Owner();
+        differentOwner.setFirstName("Google");
+
+        List<Car> carsFromOwner = carDao.findByOwner(owner);
+        List<Car> emptypCarsFromOwner = carDao.findByOwner(differentOwner);
+
+        assertThat(carsFromOwner.get(0).getLicensePlate(), is("08-SK-PX"));
+        assertThat(emptypCarsFromOwner, is(nullValue()));
     }
 
-//    @Test
-//    public void updateCarSuccessfulTest(){
-//        Integer expResult = 1;
-//        Owner testOwner = new Owner("Pietje", "Bell", new Date());
-//        tx.begin();
-//        carDao.create(car);
-//        car.setOwner(testOwner);
-//        carDao.update(car);
-//        List<Car> result = carDao.findByOwner(testOwner);
-//        tx.commit();
-//        assertThat(result.size(), is(expResult));
-//    }
-
-    @Ignore
     @Test
-    public void removeCarSuccessfulTest() {
-        Car test = new Car("PT-EI-82", owner);
-        tx.begin();
+    public void findByCarTrackerId() {
         carDao.createOrUpdate(car);
-        carDao.createOrUpdate(test);
-        List<Car> cars = carDao.findByOwner(owner);
-        tx.commit();
 
-        assertThat(cars.size(), is(2));
+        when(carDao.findByCarTrackerId(Matchers.eq(1L))).thenReturn(car);
+        when(carDao.findByCarTrackerId(AdditionalMatchers.not(Matchers.eq(1L)))).thenReturn(null);
 
-        tx.begin();
-        carDao.delete(car);
-        carDao.deleteById(test.getId());
-        cars = carDao.findByOwner(owner);
-        tx.commit();
+        Car carByCarTrackerId = carDao.findByCarTrackerId(1L);
+        Car emptyCarByCarTrackerId = carDao.findByCarTrackerId(2L);
 
-        assertThat(cars.size(), is(0));
+        assertThat(carByCarTrackerId.getLicensePlate(), is("08-SK-PX"));
+        assertThat(carByCarTrackerId.getCarTrackerId(), is(1L));
+        assertThat(emptyCarByCarTrackerId, is(nullValue()));
+    }
+
+    @Test
+    public void deleteCarByLicensePlateTest() {
+        carDao.createOrUpdate(car);
+
+        when(carDao.findById(Matchers.eq(1L))).thenReturn(car);
+        when(carDao.findById(AdditionalMatchers.not(Matchers.eq(1L)))).thenReturn(null);
+
+        Car carById = carDao.findById(1L);
+        Car emptyCarById = carDao.findById(2L);
+
+        assertThat(carById.getLicensePlate(), is("08-SK-PX"));
+        assertThat(emptyCarById, is(nullValue()));
+
+        carDao.deleteByLicensePlate("08-SK-PX");
+
+        when(carDao.findById(Matchers.eq(1L))).thenReturn(null);
+
+        Car emptyCar = carDao.findById(1L);
+        assertThat(emptyCar, is(nullValue()));
     }
 }

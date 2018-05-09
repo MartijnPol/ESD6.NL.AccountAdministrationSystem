@@ -1,6 +1,5 @@
 package web.bean.invoice;
 
-import io.swagger.models.auth.In;
 import main.domain.Invoice;
 import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
@@ -13,7 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -56,18 +55,39 @@ public class InvoiceOverviewBean extends BaseBean {
         this.filteredInvoices = filteredInvoices;
     }
 
+    /**
+     * This method is fired when a row is selected in the data table.
+     * The user is redirected to the invoice page where master details are displayed.
+     *
+     * @param event Select event from data table
+     */
     public void onRowSelect(SelectEvent event) {
         Invoice selectedInvoice = (Invoice) event.getObject();
         RedirectHelper.redirect("/pages/invoice/invoice.xhtml?invoiceNr=" + selectedInvoice.getInvoiceNr());
     }
 
+    /**
+     * Delete an invoice from the database.
+     * When invoice represents a null value a error message is pushed to the front-end.
+     *
+     * @param invoice Invoice that should be deleted
+     */
     public void deleteInvoice(Invoice invoice) {
         if (invoice != null) {
             invoiceService.delete(invoice);
-            RedirectHelper.redirect("/pages/invoice/invoiceOverview.xhtml");
+            RedirectHelper.redirect("/pages/invoice/overview.xhtml");
         } else {
             FrontendHelper.displayErrorSmallMessage("Er ging iets mis.", "Probeer het opnieuw.");
         }
+    }
+
+    /**
+     * Generate pdf file for an invoice.
+     *
+     * @param invoice Invoice that should be used for generation
+     */
+    public void generateInvoicePdf(Invoice invoice) {
+        invoiceService.generateInvoicePdf(invoice);
     }
 
     public void setSelectedInvoice(Invoice selectedInvoice) {

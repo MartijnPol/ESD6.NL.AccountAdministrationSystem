@@ -4,6 +4,7 @@ import main.dao.JPA;
 import main.dao.RDWDao;
 import main.domain.RDW;
 import main.utils.JSONHelper;
+import main.utils.StringHelper;
 
 import javax.ejb.Stateless;
 
@@ -14,7 +15,7 @@ import javax.ejb.Stateless;
 @JPA
 public class RDWDaoImpl implements RDWDao {
 
-    private String baseUrl = "http://opendata.rdw.nl/resource/m9d7-ebf2.json";
+    private final String baseUrl = "http://opendata.rdw.nl/resource/m9d7-ebf2.json";
 
     /**
      * Function to get RDW data from a given license plate
@@ -23,17 +24,7 @@ public class RDWDaoImpl implements RDWDao {
      */
     @Override
     public RDW findByLicensePlate(String licensePlate) {
-        String url = baseUrl + "?kenteken=" + trimLicensePlate(licensePlate);
-        return JSONHelper.getJSONObjectFromUrl(url);
-    }
-
-    /**
-     * Function to trim the license plate to match RDW constraints
-     *
-     * @param licensePlate the license plate of the car
-     * @return trimmed string
-     */
-    private String trimLicensePlate(String licensePlate) {
-        return licensePlate.replace("-", "");
+        String url = baseUrl + "?kenteken=" + StringHelper.replace(licensePlate, "-", "");
+        return JSONHelper.getRDWJSONObjectFromUrl(url);
     }
 }

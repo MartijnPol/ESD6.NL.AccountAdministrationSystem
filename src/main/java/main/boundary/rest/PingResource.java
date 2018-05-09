@@ -11,4 +11,8 @@ public class PingResource {
 	public String getPing(){
 		return "AccountAdministrationSystem OK";
 	}
+
+	@GET
+	@Path("/v2")
+	public String getAdvancedPing(){return "pong";}
 }

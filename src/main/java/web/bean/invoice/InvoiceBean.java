@@ -25,7 +25,9 @@ public class InvoiceBean extends BaseBean {
     @Override
     public void init() {
         this.invoice = this.invoiceService.findByInvoiceNr(this.invoiceNr);
-        this.monthName = this.invoiceService.getMonthName(invoice.getPeriod());
+        if (this.invoice != null) {
+            this.monthName = this.invoiceService.getMonthName(this.invoice.getPeriod());
+        }
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">

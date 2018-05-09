@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                template="/templates/template.xhtml">
+
+    <ui:define name="title">Cartracker overzicht</ui:define>
+
+    <ui:define name="content">
+
+        <div class="container">
+
+            <header class="header">
+                <h1>Cartracker overzicht</h1>
+                <h5 class="text-muted">Overzicht van alle cartrackers</h5>
+            </header>
+
+            <div class="content-container">
+
+                <h:form>
+
+                    <p:dataTable emptyMessage="Er zijn geen cartrackers gevonden die voldoen aan de criteria"
+                                 filteredValue="#{carTrackerOverviewBean.filteredCartrackers}"
+                                 paginator="true"
+                                 tableStyleClass="table"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10, 20, 50"
+                                 selectionMode="single"
+                                 selection="#{carTrackerOverviewBean.selectedCar}"
+                                 rowKey="#{car.id}"
+                                 value="#{carTrackerOverviewBean.cars}" var="car"
+                                 widgetVar="carOverviewDataTable">
+
+                        <p:ajax event="rowSelect" listener="#{carTrackerOverviewBean.onRowSelect}"/>
+
+                        <p:column headerText="ID" filterBy="#{car.carTrackerId}" filterMatchMode="contains">
+                            <h:outputText value="#{car.id}"/>
+                        </p:column>
+
+                        <p:column headerText="Kenteken" filterBy="#{car.licensePlate}" filterMatchMode="contains">
+                            <h:outputText value="#{car.licensePlate}"/>
+                        </p:column>
+
+                        <p:column headerText="Merk" filterBy="#{car.rdwData.merk}" filterMatchMode="contains">
+                            <h:outputText value="#{car.rdwData.merk}"/>
+                        </p:column>
+
+                        <p:column headerText="Eigenaar" filterBy="#{car.currentOwnership.owner.fullName}" filterMatchMode="contains">
+                            <h:outputText value="#{car.currentOwnership.owner.fullName}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </h:form>
+
+            </div>
+
+        </div>
+
+    </ui:define>
+</ui:composition>

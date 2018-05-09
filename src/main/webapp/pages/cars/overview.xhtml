@@ -20,14 +20,19 @@
                 <h:form>
 
                     <p:dataTable emptyMessage="Er zijn geen auto's gevonden die voldoen aan de criteria"
-                                 filteredValue="#{carBean.filteredCars}"
+                                 filteredValue="#{carOverviewBean.filteredCars}"
                                  paginator="true"
                                  tableStyleClass="table"
                                  paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10, 20, 50"
-                                 value="#{carBean.cars}" var="car"
+                                 selectionMode="single"
+                                 selection="#{carOverviewBean.selectedCar}"
+                                 rowKey="#{car.id}"
+                                 value="#{carOverviewBean.cars}" var="car"
                                  widgetVar="carOverviewDataTable">
+
+                        <p:ajax event="rowSelect" listener="#{carOverviewBean.onRowSelect}"/>
 
                         <p:column headerText="Kenteken" filterBy="#{car.licensePlate}" filterMatchMode="contains">
                             <h:outputText value="#{car.licensePlate}"/>
@@ -45,8 +50,8 @@
                             <h:outputText value="#{car.rdwData.handelsbenaming}"/>
                         </p:column>
 
-                        <p:column headerText="Eigenaar" filterBy="#{car.owner.fullName}" filterMatchMode="contains">
-                            <h:outputText value="#{car.owner.fullName}"/>
+                        <p:column headerText="Eigenaar" filterBy="#{car.currentOwnership.owner.fullName}" filterMatchMode="contains">
+                            <h:outputText value="#{car.currentOwnership.owner.fullName}"/>
                         </p:column>
 
                     </p:dataTable>
