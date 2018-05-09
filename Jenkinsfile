@@ -20,6 +20,12 @@ pipeline{
             }
         }
         stage('Build image'){
+            when{
+                anyof{
+                    branch 'master'
+                    branch 'release'
+                }
+            }
             steps{
                 sh 'mvn clean package -B'
 				sh 'docker build -t accountadministrationsystem .'
@@ -30,6 +36,12 @@ pipeline{
 
         }
 		stage('Push image'){
+            when{
+                anyof{
+                    branch 'master'
+                    branch 'release'
+                }
+            }
 			steps{
 				withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'dockerPassword', usernameVariable: 'dockerUser')]) {
 					sh "docker login -u ${env.dockerUser} -p ${env.dockerPassword}"
