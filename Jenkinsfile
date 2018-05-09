@@ -23,8 +23,8 @@ pipeline{
             steps{
                 sh 'mvn clean package -B'
 				sh 'docker build -t accountadministrationsystem .'
-				sh 'docker tag accountadministrationsystem:latest localhost:5000/aas'
-				sh 'docker push localhost:5000/aas'
+				sh 'docker tag accountadministrationsystem:latest esd6nl/aas'
+				sh 'docker push esd6nl/aas'
                 archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
 
@@ -47,7 +47,7 @@ pipeline{
                 branch 'development'
             }
             steps{
-                sh 'docker stack deploy -c dev.yml accountadministrationsystem'
+                sh 'Deploying woop woop'
             }
         }
         stage('Deploy master'){
