@@ -24,7 +24,9 @@ pipeline{
                 sh 'mvn clean package -B'
 				sh 'docker build -t accountadministrationsystem .'
 				sh 'docker tag accountadministrationsystem:latest esd6nl/aas'
-				sh 'docker push esd6nl/aas'
+				withDockerRegistry([ credentialsId: "dacebdd2-3f17-4ea6-93dd-2892e8ada2ef", url: "" ]) {
+					sh 'docker push esd6nl/aas'
+				}
                 archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
 
@@ -44,10 +46,10 @@ pipeline{
                 }
             }
             when{
-                branch 'development'
             }
+                branch 'development'
             steps{
-                sh 'Deploying woop woop'
+                sh 'echo Deploying woop woop'
             }
         }
         stage('Deploy master'){
