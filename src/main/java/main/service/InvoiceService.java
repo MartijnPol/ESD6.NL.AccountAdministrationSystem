@@ -125,7 +125,7 @@ public class InvoiceService {
         double carFuelAddition = getCarFuelAddition(car, tariff);
 
         BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition));
-        return result.setScale(2, RoundingMode.HALF_UP);
+        return preventNegativeAmount(result);
     }
 
     /**
@@ -137,11 +137,11 @@ public class InvoiceService {
      * @param tariff Tariff used for calculation
      * @return Addition based on the economical label of the car when there is no label found 0.0 is returned
      */
-    private double getEconomicalAddition(Car car, Tariff tariff) {
+    public double getEconomicalAddition(Car car, Tariff tariff) {
         String economicalLabel = car.getRdwData().getZuinigheidslabel();
         Double addition = 0.0;
 
-        if (!StringHelper.isEmpty(economicalLabel)) {
+        if (!StringHelper.isEmpty(economicalLabel) && tariff.getCarLabels().get(economicalLabel) != null) {
             addition = tariff.getCarLabels().get(economicalLabel);
         }
 
@@ -157,15 +157,32 @@ public class InvoiceService {
      * @param tariff Tariff used for calculation
      * @return Addition based on car fuel when there is no fuel found 0.0 is returned
      */
-    private double getCarFuelAddition(Car car, Tariff tariff) {
+    public double getCarFuelAddition(Car car, Tariff tariff) {
         String carFuel = car.getRdwFuelData().getBrandstof_omschrijving();
         Double addition = 0.0;
 
-        if (!StringHelper.isEmpty(carFuel)) {
+        if (!StringHelper.isEmpty(carFuel) && tariff.getCarFuels().get(carFuel) != null) {
             addition = tariff.getCarFuels().get(carFuel);
         }
 
         return addition;
+    }
+
+    /**
+     * Prevent negative invoice amounts.
+     * When amount is evaluated as negative BigDecimal.ZERO is returned.
+     *
+     * @param amount Amount to check for negative value
+     * @return Amount or BigDecimal.ZERO when amount is evaluated as negative
+     */
+    public BigDecimal preventNegativeAmount(BigDecimal amount) {
+        BigDecimal roundedAmount = amount.setScale(2, RoundingMode.HALF_UP);
+
+        if(roundedAmount.compareTo(BigDecimal.ZERO)  < 0) {
+            roundedAmount = BigDecimal.ZERO;
+        }
+
+        return roundedAmount;
     }
 
     //</editor-fold>
@@ -330,7 +347,6 @@ public class InvoiceService {
         return table;
     }
     //</editor-fold>
-
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
 
