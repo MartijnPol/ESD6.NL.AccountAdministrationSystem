@@ -24,32 +24,23 @@ pipeline{
                 sh 'mvn clean package -B'
 				sh 'docker build -t accountadministrationsystem .'
 				sh 'docker tag accountadministrationsystem:latest esd6nl/aas'
-				withDockerRegistry([ credentialsId: "dacebdd2-3f17-4ea6-93dd-2892e8ada2ef", url: "" ]) {
-					sh 'docker push esd6nl/aas'
-				}
+
                 archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
 
         }
+		stage('Push image'){
+			steps{
+				withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'dockerPassword', usernameVariable: 'dockerUser')]) {
+					sh "docker login -u ${env.dockerUser} -p ${env.dockerPassword}"
+					sh 'docker push esd6nl/aas'
+			}
+			}
+		}
         stage('Test sonarqube'){
             steps{
                 sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.25.126:9000 -Dsonar.login=74881713522900d0ec5dc5a0ad9e303480b307a8'
 
-            }
-        }
-        stage('Deploy development'){
-            agent {
-                docker {
-                    image 'docker:17.12-dind'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
-                    reuseNode true
-                }
-            }
-            when{
-			     branch 'development'
-            }
-            steps{
-                sh 'echo Deploying woop woop'
             }
         }
         stage('Deploy master'){
