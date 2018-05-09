@@ -10,50 +10,55 @@
 
         <div class="container">
 
-            <header class="header">
-                <h1>Cartracker overzicht</h1>
-                <h5 class="text-muted">Overzicht van alle cartrackers</h5>
-            </header>
+            <div class="row">
+                <div class="col-lg-12">
+                    <header class="header">
+                        <h1>Cartracker overzicht</h1>
+                        <h5 class="text-muted">Overzicht van alle cartrackers</h5>
+                    </header>
+                </div>
+            </div>
 
-            <div class="content-container">
+            <div class="row content-container">
+                <div class="col-lg-12">
+                    <h:form>
 
-                <h:form>
+                        <p:dataTable emptyMessage="Er zijn geen cartrackers gevonden die voldoen aan de criteria"
+                                     filteredValue="#{carTrackerOverviewBean.filteredCartrackers}"
+                                     paginator="true"
+                                     tableStyleClass="table"
+                                     paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10, 20, 50"
+                                     selectionMode="single"
+                                     selection="#{carTrackerOverviewBean.selectedCar}"
+                                     rowKey="#{car.id}"
+                                     value="#{carTrackerOverviewBean.cars}" var="car"
+                                     widgetVar="carOverviewDataTable">
 
-                    <p:dataTable emptyMessage="Er zijn geen cartrackers gevonden die voldoen aan de criteria"
-                                 filteredValue="#{carTrackerOverviewBean.filteredCartrackers}"
-                                 paginator="true"
-                                 tableStyleClass="table"
-                                 paginatorPosition="bottom"
-                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="10, 20, 50"
-                                 selectionMode="single"
-                                 selection="#{carTrackerOverviewBean.selectedCar}"
-                                 rowKey="#{car.id}"
-                                 value="#{carTrackerOverviewBean.cars}" var="car"
-                                 widgetVar="carOverviewDataTable">
+                            <p:ajax event="rowSelect" listener="#{carTrackerOverviewBean.onRowSelect}"/>
 
-                        <p:ajax event="rowSelect" listener="#{carTrackerOverviewBean.onRowSelect}"/>
+                            <p:column headerText="ID" filterBy="#{car.carTrackerId}" filterMatchMode="contains">
+                                <h:outputText value="#{car.id}"/>
+                            </p:column>
 
-                        <p:column headerText="ID" filterBy="#{car.carTrackerId}" filterMatchMode="contains">
-                            <h:outputText value="#{car.id}"/>
-                        </p:column>
+                            <p:column headerText="Kenteken" filterBy="#{car.licensePlate}" filterMatchMode="contains">
+                                <h:outputText value="#{car.licensePlate}"/>
+                            </p:column>
 
-                        <p:column headerText="Kenteken" filterBy="#{car.licensePlate}" filterMatchMode="contains">
-                            <h:outputText value="#{car.licensePlate}"/>
-                        </p:column>
+                            <p:column headerText="Merk" filterBy="#{car.rdwData.merk}" filterMatchMode="contains">
+                                <h:outputText value="#{car.rdwData.merk}"/>
+                            </p:column>
 
-                        <p:column headerText="Merk" filterBy="#{car.rdwData.merk}" filterMatchMode="contains">
-                            <h:outputText value="#{car.rdwData.merk}"/>
-                        </p:column>
+                            <p:column headerText="Eigenaar" filterBy="#{car.currentOwnership.owner.fullName}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{car.currentOwnership.owner.fullName}"/>
+                            </p:column>
 
-                        <p:column headerText="Eigenaar" filterBy="#{car.currentOwnership.owner.fullName}" filterMatchMode="contains">
-                            <h:outputText value="#{car.currentOwnership.owner.fullName}"/>
-                        </p:column>
+                        </p:dataTable>
 
-                    </p:dataTable>
-
-                </h:form>
-
+                    </h:form>
+                </div>
             </div>
 
         </div>

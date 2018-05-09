@@ -9,52 +9,55 @@
     <ui:define name="content">
 
         <div class="container">
-
-            <header class="header">
-                <h1>Toevoegen</h1>
-                <h5 class="text-muted">Maak een nieuwe gebruiker aan</h5>
-            </header>
+            <div class="row">
+                <div class="col-lg-12">
+                    <header class="header">
+                        <h1>Toevoegen</h1>
+                        <h5 class="text-muted">Maak een nieuwe gebruiker aan</h5>
+                    </header>
+                </div>
+            </div>
 
             <div class="content-container">
+                <div class="col-lg-12">
+                    <h:form>
 
-                <h:form>
+                        <div class="form-group">
+                            <p:inputText id="username"
+                                         placeholder="Gebruikersnaam"
+                                         required="true"
+                                         requiredMessage="Vul uw gebruikersnaam in."
+                                         styleClass="form-control"
+                                         value="#{registrationBean.username}"/>
+                        </div>
 
-                    <div class="form-group">
-                        <p:inputText id="username"
-                                     placeholder="Gebruikersnaam"
-                                     required="true"
-                                     requiredMessage="Vul uw gebruikersnaam in."
-                                     styleClass="form-control"
-                                     value="#{registrationBean.username}"/>
-                    </div>
+                        <div class="form-group">
+                            <p:inputText id="email"
+                                         placeholder="Email"
+                                         required="true"
+                                         requiredMessage="Vul uw emailadres in."
+                                         styleClass="form-control"
+                                         type="email"
+                                         value="#{registrationBean.emailAddress}"/>
+                        </div>
 
-                    <div class="form-group">
-                        <p:inputText id="email"
-                                     placeholder="Email"
-                                     required="true"
-                                     requiredMessage="Vul uw emailadres in."
-                                     styleClass="form-control"
-                                     type="email"
-                                     value="#{registrationBean.emailAddress}"/>
-                    </div>
+                        <div class="form-group">
+                            <p:password id="password"
+                                        placeholder="Wachtwoord"
+                                        required="true"
+                                        requiredMessage="Vul uw wachtwoord in."
+                                        styleClass="form-control"
+                                        type="password"
+                                        value="#{registrationBean.password}"/>
+                        </div>
 
-                    <div class="form-group">
-                        <p:password id="password"
-                                    placeholder="Wachtwoord"
-                                    required="true"
-                                    requiredMessage="Vul uw wachtwoord in."
-                                    styleClass="form-control"
-                                    type="password"
-                                    value="#{registrationBean.password}"/>
-                    </div>
+                        <p:commandButton action="#{registrationBean.register}"
+                                         id="register"
+                                         value="Registreer"
+                                         styleClass="btn btn-success"/>
 
-                    <p:commandButton action="#{registrationBean.register}"
-                                     id="register"
-                                     value="Registreer"
-                                     styleClass="btn btn-success"/>
-
-                </h:form>
-
+                    </h:form>
+                </div>
             </div>
 
         </div>
