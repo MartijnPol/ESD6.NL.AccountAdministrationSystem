@@ -1,21 +1,12 @@
 version: "3.1"
 services:
-  mysql-dev:
-    image: mysql
-    environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: "accountadministration_system"
-      MYSQL_USER: "root"
-      MYSQL_PASSWORD: "root"
-    volumes:
-      - aas-mysql-dev:/var/lib/mysql
   aas-dev:
     image: localhost:5000/aas
-    depends_on:
-      - mysql-dev
+    deploy:
+      replicas:1
+      restart_policy:
+      condition: on-failure
     ports:
-      - "8100:8080"
-      - "8282:8181"
+      - "8080:8080"
+      - "8181:8181"
       - "4848:4848"
-volumes:
-  aas-mysql-dev:
