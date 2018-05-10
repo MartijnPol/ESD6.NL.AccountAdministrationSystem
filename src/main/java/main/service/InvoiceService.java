@@ -120,12 +120,16 @@ public class InvoiceService {
         Car car = ownership.getCar();
         Tariff tariff = tariffService.findById(1L);
 
-        double mainTariff = tariff.getTariffInEuro();
-        double economicalAddition = getEconomicalAddition(car, tariff);
-        double carFuelAddition = getCarFuelAddition(car, tariff);
+        if(tariff != null) {
+            double mainTariff = tariff.getTariffInEuro();
+            double economicalAddition = getEconomicalAddition(car, tariff);
+            double carFuelAddition = getCarFuelAddition(car, tariff);
 
-        BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition));
-        return preventNegativeAmount(result);
+            BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition));
+            return preventNegativeAmount(result);
+        }
+
+        return BigDecimal.ZERO;
     }
 
     /**

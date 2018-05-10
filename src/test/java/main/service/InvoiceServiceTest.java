@@ -42,6 +42,9 @@ public class InvoiceServiceTest {
     @Mock
     private InvoiceDao invoiceDao;
 
+    @Mock
+    private TariffService tariffService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -71,6 +74,7 @@ public class InvoiceServiceTest {
         tariff.addCarFuel("Benzine", 10.0);
         tariff.addCarFuel("Diesel", 20.0);
         this.invoice.setPeriod(calendar.getTime());
+        this.invoiceService.setTariffService(tariffService);
     }
 
     @Test
@@ -101,7 +105,7 @@ public class InvoiceServiceTest {
         Assert.assertNotEquals(unexpectedResult, economicalAddition, 0);
 
         RDW rdwData = this.car.getRdwData();
-        rdwData.setZuinigheidslabel("A");
+        rdwData.setZuinigheidslabel("");
         this.car.setRdwData(rdwData);
 
         double economicalAdditionEmpty = this.invoiceService.getEconomicalAddition(this.car, this.tariff);
@@ -121,7 +125,7 @@ public class InvoiceServiceTest {
         Assert.assertNotEquals(unexpectedResult, carFuelAddition, 0);
 
         RDWFuel rdwFuelData = this.car.getRdwFuelData();
-        rdwFuelData.setBrandstof_omschrijving("Waterstof");
+        rdwFuelData.setBrandstof_omschrijving("");
         this.car.setRdwFuelData(rdwFuelData);
 
         double carFuelAdditionEmpty = this.invoiceService.getCarFuelAddition(this.car, this.tariff);
@@ -145,5 +149,25 @@ public class InvoiceServiceTest {
         BigDecimal preventedNegativeAmountZero = this.invoiceService.preventNegativeAmount(inputNegative);
 
         Assert.assertEquals(expectedResultZero, preventedNegativeAmountZero);
+    }
+
+    @Test
+    public void generateTotalInvoiceAmountTest() {
+        BigDecimal expectedResult = new BigDecimal(1.47).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal unexpectedResult = new BigDecimal(-1.47).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal expectedResultZero = BigDecimal.ZERO;
+
+        when(this.tariffService.findById(1L)).thenReturn(tariff);
+
+        BigDecimal generatedTotalInvoiceAmount = this.invoiceService.generateTotalInvoiceAmount(this.ownership);
+
+        Assert.assertEquals(expectedResult, generatedTotalInvoiceAmount);
+        Assert.assertNotEquals(unexpectedResult, generatedTotalInvoiceAmount);
+
+        when(this.tariffService.findById(1L)).thenReturn(null);
+
+        BigDecimal generatedTotalInvoiceAmountZero = this.invoiceService.generateTotalInvoiceAmount(this.ownership);
+
+        Assert.assertEquals(expectedResultZero, generatedTotalInvoiceAmountZero);
     }
 }
