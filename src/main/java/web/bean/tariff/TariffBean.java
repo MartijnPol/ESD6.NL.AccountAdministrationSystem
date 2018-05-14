@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 @Named
 @ViewScoped
-public class TariffBean implements Serializable{
+public class TariffBean implements Serializable {
 
     @Inject
     private TariffService tariffService;
@@ -22,7 +22,7 @@ public class TariffBean implements Serializable{
     private double tariffInEuro;
     private boolean ridingDuringRushHour;
 
-    public void create(){
+    public void create() {
         if (tariffInEuro != 0) {
             Tariff newTariff = new Tariff(this.tariffInEuro, this.ridingDuringRushHour);
             tariffService.createOrUpdate(newTariff);
@@ -32,7 +32,7 @@ public class TariffBean implements Serializable{
         }
     }
 
-    public void remove(Tariff tariff){
+    public void remove(Tariff tariff) {
         if (tariff != null) {
             tariffService.delete(tariff);
             RedirectHelper.redirect("/pages/tariff/overview.xhtml");
@@ -49,7 +49,7 @@ public class TariffBean implements Serializable{
         this.tariffInEuro = tariffInEuro;
     }
 
-    public boolean isRidingDuringRushHour(){
+    public boolean isRidingDuringRushHour() {
         return this.ridingDuringRushHour;
     }
 

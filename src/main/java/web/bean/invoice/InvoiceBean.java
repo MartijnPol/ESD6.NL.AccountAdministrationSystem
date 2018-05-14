@@ -1,7 +1,6 @@
 package web.bean.invoice;
 
 import main.domain.Invoice;
-import main.domain.Ownership;
 import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
 import web.bean.BaseBean;
