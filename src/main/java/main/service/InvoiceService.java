@@ -16,6 +16,7 @@ import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
@@ -74,7 +75,7 @@ public class InvoiceService {
         String monthName;
 
         Locale loc = new Locale.Builder().setLanguage("nl").setRegion("NL").build();
-        Format formatter = new SimpleDateFormat("MMMM",loc);
+        Format formatter = new SimpleDateFormat("MMMM", loc);
         monthName = formatter.format(date);
 
         return monthName;
@@ -102,10 +103,6 @@ public class InvoiceService {
         return this.invoiceDao.findFirstInvoice();
     }
 
-    public void setInvoiceDao(InvoiceDao invoiceDao) {
-        this.invoiceDao = invoiceDao;
-    }
-
     //<editor-fold defaultstate="collapsed" desc="Invoice amount generation methods">
 
     /**
@@ -120,7 +117,7 @@ public class InvoiceService {
         Car car = ownership.getCar();
         Tariff tariff = tariffService.findById(1L);
 
-        if(tariff != null) {
+        if (tariff != null) {
             double mainTariff = tariff.getTariffInEuro();
             double economicalAddition = getEconomicalAddition(car, tariff);
             double carFuelAddition = getCarFuelAddition(car, tariff);
@@ -157,7 +154,7 @@ public class InvoiceService {
      * The car fuel is retrieved form the RDWFuel data and the matching addition is searched in the tariff entity.
      * When this search return empty a default addition of 0.0 is returned.
      *
-     * @param car Car that should be checked
+     * @param car    Car that should be checked
      * @param tariff Tariff used for calculation
      * @return Addition based on car fuel when there is no fuel found 0.0 is returned
      */
@@ -182,7 +179,7 @@ public class InvoiceService {
     public BigDecimal preventNegativeAmount(BigDecimal amount) {
         BigDecimal roundedAmount = amount.setScale(2, RoundingMode.HALF_UP);
 
-        if(roundedAmount.compareTo(BigDecimal.ZERO)  < 0) {
+        if (roundedAmount.compareTo(BigDecimal.ZERO) < 0) {
             roundedAmount = BigDecimal.ZERO;
         }
 
@@ -199,11 +196,12 @@ public class InvoiceService {
      *
      * @param invoice Invoice containing all the necessary data
      */
-    public void generateInvoicePdf(Invoice invoice) {
+    public ByteArrayOutputStream generateInvoicePdf(Invoice invoice) {
         Document document = new Document();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("C:/Users/Gebruiker/Documents/Development/invoice.pdf"));
+            PdfWriter.getInstance(document, byteArrayOutputStream);
             document.open();
 
             document.addTitle("Factuur" + invoice.getInvoiceNr());
@@ -220,11 +218,12 @@ public class InvoiceService {
             document.add(getTariffTable());
 
             document.add(getTotalAmountTable(invoice));
-        } catch (DocumentException | FileNotFoundException e) {
+        } catch (DocumentException e) {
             e.printStackTrace();
         }
 
         document.close();
+        return byteArrayOutputStream;
     }
 
     /**
@@ -356,6 +355,11 @@ public class InvoiceService {
 
     public void setTariffService(TariffService tariffService) {
         this.tariffService = tariffService;
+    }
+
+
+    public void setInvoiceDao(InvoiceDao invoiceDao) {
+        this.invoiceDao = invoiceDao;
     }
 
     //</editor-fold>

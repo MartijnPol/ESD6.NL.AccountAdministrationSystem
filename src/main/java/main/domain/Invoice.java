@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author Thom van de Pas on 4-4-2018
@@ -90,4 +91,17 @@ public class Invoice extends BaseEntity {
     }
 
     //</editor-fold>
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Invoice invoice = (Invoice) o;
+        return Objects.equals(invoiceNr, invoice.invoiceNr) &&
+                paymentStatus == invoice.paymentStatus &&
+                Objects.equals(period, invoice.period) &&
+                Objects.equals(totalAmount, invoice.totalAmount) &&
+                Objects.equals(ownership, invoice.ownership);
+    }
 }
