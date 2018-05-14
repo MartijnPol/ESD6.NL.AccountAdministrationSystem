@@ -153,6 +153,24 @@ public class CarService {
         return null;
     }
 
+    public Car assignNewCarTracker(Car car, CarTracker newCartracker) {
+        if (car != null && newCartracker != null) {
+            if (!car.getCurrentCartracker().equals(newCartracker)) {
+                CarTracker pastCartracker = car.getCurrentCartracker();
+                if (pastCartracker != null) {
+                    pastCartracker.setEndDate(new Date());
+                    car.addPastCartracker(pastCartracker);
+                }
+                newCartracker.setStartDate(new Date());
+                newCartracker.setCar(car);
+                car.setCurrentCartracker(newCartracker);
+            }
+            this.createOrUpdate(car);
+            return car;
+        }
+        return null;
+    }
+
 
     public void setCarDao(CarDao carDao) {
         this.carDao = carDao;

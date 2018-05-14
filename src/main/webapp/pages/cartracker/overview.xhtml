@@ -38,6 +38,10 @@
                             <h:outputText value="#{car.id}"/>
                         </p:column>
 
+                        <p:column headerText="Fabrikant" filterBy="#{car.currentCartracker.manufacturer}" filterMatchMode="contains">
+                            <h:outputText value="#{car.currentCartracker.manufacturer}"/>
+                        </p:column>
+
                         <p:column headerText="Kenteken" filterBy="#{car.licensePlate}" filterMatchMode="contains">
                             <h:outputText value="#{car.licensePlate}"/>
                         </p:column>
@@ -52,6 +56,27 @@
 
                     </p:dataTable>
 
+                </h:form>
+
+            </div>
+
+        </div>
+
+        <div class="container">
+
+            <header class="header">
+                <h1>Toevoegen</h1>
+                <h5 class="text-muted">Maak een nieuwe cartracker aan</h5>
+            </header>
+
+            <div class="content-container">
+
+                <h:form>
+
+                    <p:commandButton action="#{carTrackerOverviewBean.createCartracker}"
+                                     id="Aanmaken"
+                                     value="Aanmaken"
+                                     styleClass="btn btn-success"/>
                 </h:form>
 
             </div>

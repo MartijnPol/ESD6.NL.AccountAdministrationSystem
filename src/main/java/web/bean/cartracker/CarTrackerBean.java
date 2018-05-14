@@ -3,9 +3,8 @@ package web.bean.cartracker;
 import main.domain.Car;
 import main.domain.Ownership;
 import main.service.CarService;
-import main.service.OwnershipService;
+import main.service.CarOwnershipService;
 import web.bean.BaseBean;
-import web.core.helper.FrontendHelper;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -20,7 +19,7 @@ public class CarTrackerBean extends BaseBean {
     @Inject
     private CarService carService;
     @Inject
-    private OwnershipService ownershipService;
+    private CarOwnershipService carOwnershipService;
 
     private Long carId;
     private Car car;
@@ -29,7 +28,7 @@ public class CarTrackerBean extends BaseBean {
 
     @Override
     public void init() {
-        this.ownerships = this.ownershipService.findAll();
+        this.ownerships = this.carOwnershipService.findAll();
         this.car = this.carService.findById(this.carId);
     }
 

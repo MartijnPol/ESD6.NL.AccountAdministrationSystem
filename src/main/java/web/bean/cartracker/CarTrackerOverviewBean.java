@@ -1,18 +1,16 @@
 package web.bean.cartracker;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import main.domain.Car;
+import main.domain.Ownership;
 import main.domain.CarTracker;
 import main.domain.Owner;
-import main.domain.Ownership;
-import main.service.CarService;
-import main.service.OwnerService;
-import main.service.OwnershipService;
-import main.service.RDWService;
+import main.service.*;
 import org.json.JSONArray;
 import org.primefaces.event.SelectEvent;
 import web.core.helper.RedirectHelper;
@@ -22,6 +20,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -33,10 +33,10 @@ public class CarTrackerOverviewBean implements Serializable {
     private CarService carService;
 
     @Inject
-    private OwnershipService ownershipService;
+    private CarTrackerService carTracerService;
 
     @Inject
-    private OwnerService ownerService;
+    private CarOwnershipService carOwnershipService;
 
     @Inject
     private RDWService rdwService;
@@ -47,7 +47,6 @@ public class CarTrackerOverviewBean implements Serializable {
 
     private Car selectedCar;
 
-    private List<Owner> owners;
     private List<Car>  cars;
 
 
@@ -63,18 +62,6 @@ public class CarTrackerOverviewBean implements Serializable {
 //        }
         cars = carService.findAll();
 //        addCars();
-//        addOwners();
-    }
-
-
-    public void updateOwner (Owner owner){
-        Owner knownOwner = ownerService.findById(owner.getId());
-        knownOwner.setAddress(owner.getAddress());
-        knownOwner.setBirthDay(owner.getBirthDay());
-        knownOwner.setFirstName(owner.getFirstName());
-        knownOwner.setLastName(owner.getLastName());
-        knownOwner.setOwnerships(owner.getOwnerships());
-        ownerService.createOrUpdate(knownOwner);
     }
 
     public void updateCar (Car car){
@@ -109,18 +96,33 @@ public class CarTrackerOverviewBean implements Serializable {
         return carService.findByCarTrackerId(cartrackerID);
     }
 
-    public Response getAllCartrackers() throws UnirestException {
+    public List<CarTracker> getAllCartrackers() throws UnirestException {
         HttpResponse<JsonNode> getResponse = Unirest.get("http://localhost:8080/DisplacementSystem/api/CarTrackers").asJson();
         JSONArray array = getResponse.getBody().getArray();
-        return Response.ok(array.toString()).build();
+        List<CarTracker> carTrackers = null;
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            for (Object obj: array) {
+                CarTracker carTracker = mapper.readValue(new File(String.valueOf(obj)), CarTracker.class);
+                carTrackers.add(carTracker);
+                System.out.println("TEST:   " + carTracker.toString());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return carTrackers;
     }
 
     public Response createCartracker () throws UnirestException {
+        // aanpassen naar het simulatie systeem
             HttpResponse<JsonNode> getResponse = Unirest.get("http://localhost:8080/DisplacementSystem/api/CarTrackers/Create").asJson();
             JSONArray array = getResponse.getBody().getArray();
             System.out.println("array = " + array);
             return Response.ok(array.toString()).build();
-        }
+    }
 
     public void onRowSelect(SelectEvent event) {
         Car selectedCar = (Car) event.getObject();
@@ -151,23 +153,12 @@ public class CarTrackerOverviewBean implements Serializable {
         this.selectedCar = selectedCar;
     }
 
-    public void addOwners(){
-        for (Car car: cars) {
-            Owner owner = car.getCurrentOwnership().getOwner();
-            owners.add(owner);
-        }
-    }
-
     public void addCars(){
         for (CarTracker carTracker : carTrackers)
         {
            Car car = carService.findByCarTrackerId(carTracker.getId());
            cars.add(car);
         }
-    }
-
-    public List<Owner> getOwners() {
-        return owners;
     }
 
     public List<Car> getCars() {

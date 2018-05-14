@@ -1,7 +1,7 @@
 package main.batch;
 
 import main.domain.Ownership;
-import main.service.OwnershipService;
+import main.service.CarOwnershipService;
 
 import javax.batch.api.chunk.ItemReader;
 import javax.enterprise.context.Dependent;
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class OwnershipReader implements ItemReader {
 
     @Inject
-    private OwnershipService ownershipService;
+    private CarOwnershipService carOwnershipService;
 
     private static final Logger logger = Logger.getLogger(OwnershipReader.class.getName());
 
@@ -48,7 +48,7 @@ public class OwnershipReader implements ItemReader {
     @Override
     public Object readItem() throws Exception {
         this.ownership = null;
-        this.ownership = ownershipService.findById(idCount);
+        this.ownership = carOwnershipService.findById(idCount);
         if (this.ownership != null) {
             this.logger.log(Level.INFO, "Reading item");
             this.idCount = idCount + 1L;

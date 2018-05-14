@@ -1,8 +1,6 @@
 package main.service;
 
 import main.dao.implementation.InvoiceDaoImpl;
-import main.dao.implementation.OwnershipDaoImpl;
-import main.dao.implementation.TariffDaoImpl;
 import main.domain.*;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.MatcherAssert.*;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

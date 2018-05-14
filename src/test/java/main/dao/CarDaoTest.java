@@ -2,11 +2,11 @@ package main.dao;
 
 import main.dao.implementation.CarDaoImpl;
 import main.dao.implementation.OwnerDaoImpl;
-import main.dao.implementation.OwnershipDaoImpl;
+import main.dao.implementation.CarOwnershipDaoImpl;
 import main.domain.Address;
 import main.domain.Car;
-import main.domain.Owner;
 import main.domain.Ownership;
+import main.domain.Owner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -37,7 +37,7 @@ public class CarDaoTest {
     private EntityTransaction tx;
     private CarDaoImpl carDao;
     private OwnerDaoImpl ownerDao;
-    private OwnershipDaoImpl ownershipDao;
+    private CarOwnershipDaoImpl ownershipDao;
     private Car car = null;
     private Owner owner = null;
     private Ownership ownership = null;
@@ -59,7 +59,7 @@ public class CarDaoTest {
         carDao.setEntityManager(em);
         ownerDao = new OwnerDaoImpl();
         ownerDao.setEntityManager(em);
-        ownershipDao = new OwnershipDaoImpl();
+        ownershipDao = new CarOwnershipDaoImpl();
         ownershipDao.setEntityManager(em);
         owner = new Owner("Herman", "de Schermman", new Date(), new Address());
         ownership = new Ownership();

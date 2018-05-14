@@ -4,8 +4,8 @@ import main.dao.implementation.CarDaoImpl;
 import main.dao.implementation.RDWDaoImpl;
 import main.domain.Address;
 import main.domain.Car;
-import main.domain.Owner;
 import main.domain.Ownership;
+import main.domain.Owner;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -110,7 +110,7 @@ public class CarServiceTest {
     public void assignCarToNewOwnerTest() {
         assertThat(car.getCurrentOwnership(), is(this.currentOwnership));
 
-        this.car = carService.assignToNewOwner(car, newOwnership);
+        this.car = carService.assignToNewOwner(car, this.newOwnership);
         Ownership newOwnership = this.car.getCurrentOwnership();
         Assert.assertEquals(this.newOwnership, newOwnership);
     }

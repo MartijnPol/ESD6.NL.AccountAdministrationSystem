@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +24,7 @@ public class StartUp {
     @Inject
     private InvoiceService invoiceService;
     @Inject
-    private OwnershipService ownershipService;
+    private CarOwnershipService carOwnershipService;
     @Inject
     private OwnerService ownerService;
     @Inject
@@ -59,8 +58,12 @@ public class StartUp {
 
         ownership.setCar(car1);
         ownership2.setCar(car2);
-        this.ownershipService.createOrUpdate(ownership);
-        this.ownershipService.createOrUpdate(ownership2);
+        this.carOwnershipService.createOrUpdate(ownership);
+        this.carOwnershipService.createOrUpdate(ownership2);
+
+        CarTracker carTracker1 = new CarTracker();
+        CarTracker carTracker2 = new CarTracker();
+
 
         car1.setCarTrackerId(1L);
         car2.setCarTrackerId(2L);

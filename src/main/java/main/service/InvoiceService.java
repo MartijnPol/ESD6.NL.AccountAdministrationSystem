@@ -1,15 +1,14 @@
 package main.service;
 
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.PdfCell;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import main.dao.InvoiceDao;
 import main.dao.JPA;
 import main.domain.Car;
-import main.domain.Invoice;
 import main.domain.Ownership;
+import main.domain.Invoice;
 import main.domain.Tariff;
 import main.utils.StringHelper;
 

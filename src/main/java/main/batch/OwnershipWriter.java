@@ -1,7 +1,7 @@
 package main.batch;
 
-import main.domain.Invoice;
 import main.domain.Ownership;
+import main.domain.Invoice;
 import main.service.InvoiceService;
 
 import javax.batch.api.chunk.ItemWriter;

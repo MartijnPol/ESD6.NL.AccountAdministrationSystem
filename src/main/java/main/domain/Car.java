@@ -19,10 +19,17 @@ import java.util.List;
         @NamedQuery(name = "car.findByCarTrackerId", query = "SELECT c FROM Car c WHERE c.carTrackerId = :carTrackerId"),
         @NamedQuery(name = "car.deleteByLicencePlate", query = "DELETE FROM Car c WHERE c.licensePlate = :licensePlate")
 })
+
 public class Car extends BaseEntity {
 
     private Long carTrackerId;
     private String licensePlate;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private CarTracker currentCartracker;
+
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+    private List<CarTracker> pastCartrackers;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<Ownership> pastOwnerships;
@@ -36,8 +43,10 @@ public class Car extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private RDWFuel rdwFuelData;
 
+
     public Car() {
         this.pastOwnerships = new ArrayList<>();
+        this.pastCartrackers = new ArrayList<>();
     }
 
     public Car(String licensePlate, Ownership currentOwnership) {
@@ -46,13 +55,14 @@ public class Car extends BaseEntity {
         this.currentOwnership = currentOwnership;
     }
 
-    public void addPastOwnership(Ownership ownership) {
-        this.pastOwnerships.add(ownership);
+    public Car(String licensePlate, Ownership currentOwnership, CarTracker currentCartracker) {
+        this();
+        this.licensePlate = licensePlate;
+        this.currentOwnership = currentOwnership;
+        this.currentCartracker = currentCartracker;
+        this.carTrackerId = currentCartracker.getId();
     }
 
-    public void addMultiplePastOwnerships(List<Ownership> ownerships) {
-        this.pastOwnerships.addAll(ownerships);
-    }
 
     public JsonObject toJson() {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -64,6 +74,22 @@ public class Car extends BaseEntity {
                         .add("fullname", this.getCurrentOwnership().getOwner().getFullName())
                         .add("birthday", date).build())
                 .build();
+    }
+
+    public void addPastOwnership(Ownership ownership) {
+        this.pastOwnerships.add(ownership);
+    }
+
+    public void addMultiplePastOwnerships(List<Ownership> ownerships) {
+        this.pastOwnerships.addAll(ownerships);
+    }
+
+    public void addPastCartracker(CarTracker carTracker) {
+        this.pastCartrackers.add(carTracker);
+    }
+
+    public void addMultiplePastCartrackers(List<CarTracker> carTrackers) {
+        this.pastCartrackers.addAll(carTrackers);
     }
 
     //<editor-fold desc="Getters/Setters">
@@ -113,5 +139,21 @@ public class Car extends BaseEntity {
         this.rdwFuelData = rdwFuelData;
     }
 
+    public CarTracker getCurrentCartracker() {
+        return currentCartracker;
+    }
+
+    public void setCurrentCartracker(CarTracker newCartracker) {
+        this.currentCartracker = newCartracker;
+        this.currentCartracker.setId(newCartracker.getId());
+    }
+
+    public List<CarTracker> getPastCartrackers() {
+        return pastCartrackers;
+    }
+
+    public void setPastCartrackers(List<CarTracker> pastCartrackers) {
+        this.pastCartrackers = pastCartrackers;
+    }
     //</editor-fold>
 }
