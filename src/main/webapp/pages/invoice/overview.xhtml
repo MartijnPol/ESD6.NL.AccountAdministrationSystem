@@ -88,10 +88,10 @@
                                     <p:confirm header="Weet u het zeker?"
                                                message="Wil u deze factuur echt verwijderen?"/>
                                 </p:commandButton>
-                                <p:commandButton action="#{invoiceOverviewBean.generateInvoicePdf(invoice)}"
+                                <h:commandLink action="#{invoiceOverviewBean.generateInvoicePdf(invoice)}"
                                                  value="Download"
                                                  styleClass="btn btn-primary actionlink">
-                                </p:commandButton>
+                                </h:commandLink>
                             </p:column>
 
                         </p:dataTable>

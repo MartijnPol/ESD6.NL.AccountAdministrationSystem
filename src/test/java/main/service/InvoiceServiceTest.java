@@ -5,24 +5,31 @@ import main.dao.implementation.InvoiceDaoImpl;
 import main.dao.implementation.OwnershipDaoImpl;
 import main.dao.implementation.TariffDaoImpl;
 import main.domain.*;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.AdditionalMatchers;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.MatcherAssert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * @author Thom van de Pas on 16-4-2018
@@ -74,7 +81,9 @@ public class InvoiceServiceTest {
         tariff.addCarFuel("Benzine", 10.0);
         tariff.addCarFuel("Diesel", 20.0);
         this.invoice.setPeriod(calendar.getTime());
+        this.invoice.setInvoiceNr(1L);
         this.invoiceService.setTariffService(tariffService);
+        this.invoiceService.setInvoiceDao(invoiceDao);
     }
 
     @Test
@@ -169,5 +178,80 @@ public class InvoiceServiceTest {
         BigDecimal generatedTotalInvoiceAmountZero = this.invoiceService.generateTotalInvoiceAmount(this.ownership);
 
         Assert.assertEquals(expectedResultZero, generatedTotalInvoiceAmountZero);
+    }
+
+    @Test
+    public void findByIdTest() {
+        when(this.invoiceService.findById(Matchers.eq(1L))).thenReturn(invoice);
+        when(this.invoiceService.findById(AdditionalMatchers.not(Matchers.eq(1L)))).thenReturn(null);
+
+        Invoice invoiceFoundByIdNull = this.invoiceService.findById(null);
+        Invoice invoiceFoundById = this.invoiceService.findById(1L);
+        Invoice invoiceFoundByIdEmpty = this.invoiceService.findById(2L);
+
+        Assert.assertEquals(null, invoiceFoundByIdNull);
+        Assert.assertEquals(invoice, invoiceFoundById);
+        Assert.assertEquals(null, invoiceFoundByIdEmpty);
+    }
+
+    @Test
+    public void findAllTest() {
+        List<Invoice> expectedResult = new ArrayList<>();
+        expectedResult.add(invoice);
+
+        when(this.invoiceService.findAll()).thenReturn(expectedResult);
+
+        assertEquals(1, expectedResult.size());
+    }
+
+    @Test
+    public void findByInvoiceNrTest() {
+        when(this.invoiceService.findByInvoiceNr(Matchers.eq(1L))).thenReturn(invoice);
+        when(this.invoiceService.findByInvoiceNr(AdditionalMatchers.not(Matchers.eq(1L)))).thenReturn(null);
+
+        Invoice invoiceFoundByInvoiceNr = this.invoiceService.findByInvoiceNr(1L);
+        Invoice invoiceFoundByInvoiceNrEmpty = this.invoiceService.findByInvoiceNr(2L);
+        Invoice invoiceFoundByInvoiceNrNull = this.invoiceService.findByInvoiceNr(null);
+
+        Assert.assertEquals(invoice, invoiceFoundByInvoiceNr);
+        Assert.assertEquals(null, invoiceFoundByInvoiceNrEmpty);
+        Assert.assertEquals(null, invoiceFoundByInvoiceNrNull);
+    }
+
+    @Test
+    public void findFirstInvoiceTest() {
+        when(this.invoiceService.createOrUpdate(invoice)).thenReturn(invoice);
+        this.invoiceService.createOrUpdate(invoice);
+
+        Invoice invoiceSecond = new Invoice();
+        invoiceSecond.setInvoiceNr(2L);
+
+        when(this.invoiceService.createOrUpdate(invoiceSecond)).thenReturn(invoiceSecond);
+        invoiceDao.createOrUpdate(invoiceSecond);
+
+        when(this.invoiceService.findFirstInvoice()).thenReturn(invoice);
+
+        Invoice firstInvoiceFound = this.invoiceService.findFirstInvoice();
+
+        Assert.assertEquals(invoice, firstInvoiceFound);
+    }
+
+    @Test
+    public void deleteTest() {
+        when(this.invoiceService.createOrUpdate(invoice)).thenReturn(invoice);
+        this.invoiceService.createOrUpdate(invoice);
+
+        when(this.invoiceService.findByInvoiceNr(Matchers.eq(1L))).thenReturn(invoice);
+
+        Invoice invoiceByNr = this.invoiceService.findByInvoiceNr(1L);
+        assertThat(invoiceByNr.getInvoiceNr(), CoreMatchers.is(1L));
+
+        this.invoiceService.delete(invoiceByNr);
+
+        when(this.invoiceService.findByInvoiceNr(Matchers.eq(1L))).thenReturn(null);
+
+        Invoice invoiceEmpty = this.invoiceService.findByInvoiceNr(1L);
+
+        assertThat(invoiceEmpty, CoreMatchers.is(nullValue()));
     }
 }
