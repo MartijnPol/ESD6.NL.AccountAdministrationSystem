@@ -4,6 +4,7 @@ import main.domain.Invoice;
 import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
 import web.bean.BaseBean;
+import web.core.helper.FrontendHelper;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -32,14 +33,11 @@ public class InvoiceBean extends BaseBean {
         }
     }
 
-    public void onItemChange(PaymentStatus selectedPaymentStatus) {
-        this.paymentStatus = selectedPaymentStatus;
-    }
-
     public void update() {
         if (this.invoice != null && this.paymentStatus != null) {
             this.invoice.setPaymentStatus(this.paymentStatus);
             this.invoiceService.createOrUpdate(this.invoice);
+            FrontendHelper.displaySuccessSmallMessage("De betaalstatus is succesvol geüpdatet!");
         }
     }
 
