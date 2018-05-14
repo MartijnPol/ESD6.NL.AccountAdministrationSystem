@@ -28,7 +28,7 @@
 
             <div class="row content-container">
                 <div class="col-lg-12">
-                    <h:form rendered="#{not empty invoiceBean.invoice}">
+                    <h:form id="form" rendered="#{not empty invoiceBean.invoice}">
 
                         <div class="form-group">
                             <p:outputLabel for="totalAmountText" value="Totaalbedrag: "/>
@@ -48,9 +48,10 @@
 
                         <div class="form-group">
                             <p:outputLabel for="paymentStatusText" value="Betaalstatus: "/>
-                            <p:selectOneMenu id="paymentStatusText" value="#{invoiceBean.paymentStatus}"
-                                             disabled="#{not invoiceBean.invoice.paymentStatus.valueOf('OPEN')}">
-                                <f:selectItem value="#{invoiceBean.invoice.paymentStatus.toString()}" itemDisabled="true"/>
+                            <p:selectOneMenu id="paymentStatusText" value="#{invoiceBean.invoice.paymentStatus}"
+                                             disabled="#{invoiceBean.invoice.paymentStatus.toString() ne 'Open'}">
+                                <f:selectItem itemLabel="#{invoiceBean.invoice.paymentStatus.toString()}"
+                                              itemDisabled="true"/>
                                 <f:selectItem itemLabel="Open" itemValue="OPEN"/>
                                 <f:selectItem itemLabel="Betaald" itemValue="PAID"/>
                                 <f:selectItem itemLabel="Gecanceld" itemValue="CANCELLED"/>
@@ -66,10 +67,15 @@
                         <p:commandButton action="#{invoiceBean.update}"
                                          ajax="true"
                                          id="update"
+                                         process="@form"
                                          styleClass="btn btn-success"
                                          value="Update betaalstatus"/>
                     </h:form>
+                </div>
+            </div>
 
+            <div class="row content-container">
+                <div class="col-lg-12">
                     <h:form id="emptyForm" rendered="#{empty invoiceBean.invoice}">
                         <p:outputLabel id="mistake" value="Er is iets mis gegaan."/>
                     </h:form>

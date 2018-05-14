@@ -1,6 +1,7 @@
 package web.bean.invoice;
 
 import main.domain.Invoice;
+import main.domain.Ownership;
 import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
 import web.bean.BaseBean;
@@ -32,9 +33,14 @@ public class InvoiceBean extends BaseBean {
         }
     }
 
+    public void onItemChange(PaymentStatus selectedPaymentStatus) {
+        this.paymentStatus = selectedPaymentStatus;
+    }
+
     public void update() {
         if (this.invoice != null && this.paymentStatus != null) {
             this.invoice.setPaymentStatus(this.paymentStatus);
+            this.invoiceService.createOrUpdate(this.invoice);
         }
     }
 
