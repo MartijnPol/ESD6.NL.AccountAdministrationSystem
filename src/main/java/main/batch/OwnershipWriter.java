@@ -2,12 +2,14 @@ package main.batch;
 
 import main.domain.Invoice;
 import main.domain.Ownership;
+import main.interceptor.LoggingInterceptor;
 import main.service.InvoiceService;
 
 import javax.batch.api.chunk.ItemWriter;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.logging.Logger;
  */
 @Dependent
 @Named("OwnershipWriter")
+@Interceptors(LoggingInterceptor.class)
 public class OwnershipWriter implements ItemWriter {
 
     @Inject

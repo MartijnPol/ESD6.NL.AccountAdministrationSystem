@@ -1,12 +1,15 @@
 package main.batch;
 
 import main.domain.Ownership;
+import main.interceptor.LoggingInterceptor;
 import main.service.OwnershipService;
 
 import javax.batch.api.chunk.ItemReader;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptor;
+import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +19,7 @@ import java.util.logging.Logger;
  */
 @Dependent
 @Named("OwnershipReader")
+@Interceptors(LoggingInterceptor.class)
 public class OwnershipReader implements ItemReader {
 
     @Inject
@@ -31,37 +35,37 @@ public class OwnershipReader implements ItemReader {
     }
 
     @Override
-    public void open(Serializable serializable) throws Exception {
+    public void open(Serializable serializable) {
         if (checkpoint == null) {
             this.checkpoint = new ItemNumberCheckpoint();
         } else {
-            this.checkpoint = (ItemNumberCheckpoint) checkpoint;
+            this.checkpoint = checkpoint;
         }
-        this.logger.log(Level.INFO, "Reader open");
+        logger.log(Level.INFO, "Reader open");
     }
 
     @Override
-    public void close() throws Exception {
-        this.logger.log(Level.INFO, "Reader closed");
+    public void close() {
+        logger.log(Level.INFO, "Reader closed");
     }
 
     @Override
-    public Object readItem() throws Exception {
+    public Object readItem() {
         this.ownership = null;
         this.ownership = ownershipService.findById(idCount);
         if (this.ownership != null) {
-            this.logger.log(Level.INFO, "Reading item");
+            logger.log(Level.INFO, "Reading item");
             this.idCount = idCount + 1L;
             return this.ownership;
         } else {
-            this.logger.log(Level.INFO, "No items found");
+            logger.log(Level.INFO, "No items found");
             return null;
         }
     }
 
     @Override
-    public Serializable checkpointInfo() throws Exception {
-        this.logger.log(Level.INFO, "Checkpoint Info");
+    public Serializable checkpointInfo() {
+        logger.log(Level.INFO, "Checkpoint Info");
         return checkpoint.getItemNumber();
     }
 }
