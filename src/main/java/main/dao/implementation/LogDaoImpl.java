@@ -2,7 +2,7 @@ package main.dao.implementation;
 
 import main.dao.JPA;
 import main.dao.LogDao;
-import main.domain.Log;
+import main.domain.BatchLog;
 
 import javax.ejb.Stateless;
 
@@ -11,7 +11,7 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @JPA
-public class LogDaoImpl extends GenericDaoJPAImpl<Log> implements LogDao {
+public class LogDaoImpl extends GenericDaoJPAImpl<BatchLog> implements LogDao {
 
     public LogDaoImpl() {
     }

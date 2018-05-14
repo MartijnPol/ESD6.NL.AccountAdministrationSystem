@@ -1,12 +1,13 @@
 package main.batch;
 
 import main.domain.Ownership;
-import main.interceptor.LoggingInterceptor;
+import main.service.BatchLogService;
 
 import javax.batch.api.chunk.ItemProcessor;
+import javax.batch.runtime.context.JobContext;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,8 +16,8 @@ import java.util.logging.Logger;
  */
 @Dependent
 @Named("OwnershipProcessor")
-@Interceptors(LoggingInterceptor.class)
 public class OwnershipProcessor implements ItemProcessor {
+
 
     private static final Logger logger = Logger.getLogger(OwnershipProcessor.class.getName());
 

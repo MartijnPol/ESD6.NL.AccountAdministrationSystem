@@ -1,15 +1,15 @@
 package main.batch;
 
+import main.domain.BatchLog;
 import main.domain.Ownership;
-import main.interceptor.LoggingInterceptor;
+import main.service.BatchLogService;
 import main.service.OwnershipService;
 
 import javax.batch.api.chunk.ItemReader;
+import javax.batch.runtime.context.JobContext;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.interceptor.Interceptor;
-import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,11 +19,14 @@ import java.util.logging.Logger;
  */
 @Dependent
 @Named("OwnershipReader")
-@Interceptors(LoggingInterceptor.class)
 public class OwnershipReader implements ItemReader {
 
     @Inject
+    private JobContext jobContext;
+    @Inject
     private OwnershipService ownershipService;
+    @Inject
+    private BatchLogService batchLogService;
 
     private static final Logger logger = Logger.getLogger(OwnershipReader.class.getName());
 
@@ -42,11 +45,13 @@ public class OwnershipReader implements ItemReader {
             this.checkpoint = checkpoint;
         }
         logger.log(Level.INFO, "Reader open");
+        this.batchLogService.createOrUpdate(new BatchLog(jobContext.getJobName(), "De ownership reader is open.", jobContext.getExecutionId()));
     }
 
     @Override
     public void close() {
         logger.log(Level.INFO, "Reader closed");
+        this.batchLogService.createOrUpdate(new BatchLog(jobContext.getJobName(), "De ownership reader is gesloten.", jobContext.getExecutionId()));
     }
 
     @Override
@@ -55,6 +60,7 @@ public class OwnershipReader implements ItemReader {
         this.ownership = ownershipService.findById(idCount);
         if (this.ownership != null) {
             logger.log(Level.INFO, "Reading item");
+            this.batchLogService.createOrUpdate(new BatchLog(jobContext.getJobName(), "Bezig met het lezen van ownership met id: " + ownership.getId().toString() , jobContext.getExecutionId()));
             this.idCount = idCount + 1L;
             return this.ownership;
         } else {
