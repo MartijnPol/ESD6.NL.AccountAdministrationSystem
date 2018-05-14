@@ -23,9 +23,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Thom van de Pas on 4-4-2018
@@ -41,7 +40,11 @@ public class InvoiceService {
     private TariffService tariffService;
 
     public Invoice createOrUpdate(Invoice invoice) {
-        return this.invoiceDao.createOrUpdate(invoice);
+        if (invoice.getInvoiceNr() == null) {
+            return this.invoiceDao.create(invoice);
+        } else {
+            return this.invoiceDao.update(invoice);
+        }
     }
 
     public void delete(Invoice invoice) {
@@ -91,6 +94,39 @@ public class InvoiceService {
         if (invoiceNr != null) {
             return this.invoiceDao.findByInvoiceNr(invoiceNr);
         }
+        return null;
+    }
+
+    /**
+     * Find last used invoice number.
+     *
+     * @return Long invoice number.
+     */
+    public Long findLastInvoiceNr() {
+        return this.invoiceDao.findLastInvoiceNr();
+    }
+
+    /**
+     * Get the next invoice number that should be used.
+     *
+     * @param lastUsedInvoiceNr Last used invoice number.
+     * @return Next Long invoice number that should be used as identifier.
+     */
+    public Long getNextInvoiceNr(Long lastUsedInvoiceNr) {
+        if (lastUsedInvoiceNr != null) {
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+            String invoiceNrText = Objects.toString(lastUsedInvoiceNr);
+            String currentYearText = Objects.toString(currentYear);
+            String replacedInvoiceNr = invoiceNrText.replace(currentYearText, "");
+
+            Long subtractedNr = Long.valueOf(replacedInvoiceNr) + 1;
+
+            String nextInvoiceNrText = currentYearText + subtractedNr.toString();
+
+            return Long.valueOf(nextInvoiceNrText);
+        }
+
         return null;
     }
 

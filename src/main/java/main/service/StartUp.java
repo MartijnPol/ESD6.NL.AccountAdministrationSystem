@@ -76,7 +76,7 @@ public class StartUp {
 //        this.userGroupService.create(userGroup);
 //
 //        Invoice invoice = new Invoice();
-//        invoice.setInvoiceNr(20180001L);
+//        invoice.setInvoiceNr(20181L);
 //        invoice.setPaymentStatus(PaymentStatus.OPEN);
 //        invoice.setPeriod(new Date());
 //        invoice.setTotalAmount(new BigDecimal(250.30));
@@ -84,7 +84,7 @@ public class StartUp {
 //        this.invoiceService.createOrUpdate(invoice);
 //
 //        Invoice invoice2 = new Invoice();
-//        invoice2.setInvoiceNr(20180002L);
+//        invoice2.setInvoiceNr(20182L);
 //        invoice2.setPaymentStatus(PaymentStatus.PAID);
 //        invoice2.setPeriod(new Date());
 //        invoice2.setTotalAmount(new BigDecimal(121.12));
@@ -92,7 +92,7 @@ public class StartUp {
 //        this.invoiceService.createOrUpdate(invoice2);
 //
 //        Invoice invoice3 = new Invoice();
-//        invoice3.setInvoiceNr(20180003L);
+//        invoice3.setInvoiceNr(20183L);
 //        invoice3.setPaymentStatus(PaymentStatus.OPEN);
 //        invoice3.setPeriod(new Date());
 //        invoice3.setTotalAmount(new BigDecimal(166.25));

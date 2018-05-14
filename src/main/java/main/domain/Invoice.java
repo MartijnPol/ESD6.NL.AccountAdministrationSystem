@@ -4,6 +4,7 @@ import main.domain.enums.PaymentStatus;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
@@ -15,10 +16,13 @@ import java.util.Objects;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "invoice.findByInvoiceNr", query = "SELECT i FROM Invoice i WHERE i.invoiceNr = :invoiceNr"),
-        @NamedQuery(name = "invoice.findFirstInvoice", query = "SELECT i FROM Invoice i ORDER BY i.id ASC")
+        @NamedQuery(name = "invoice.findFirstInvoice", query = "SELECT i FROM Invoice i ORDER BY i.invoiceNr ASC"),
+        @NamedQuery(name = "invoice.findLastInvoiceNr", query = "SELECT MAX(i.invoiceNr) FROM Invoice i")
 })
-public class Invoice extends BaseEntity {
+public class Invoice implements Serializable {
 
+    @Id
+    @GeneratedValue(generator = "invoicenr")
     private Long invoiceNr;
 
     @Enumerated(EnumType.STRING)
