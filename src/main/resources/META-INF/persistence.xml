@@ -3,6 +3,9 @@
 
     <persistence-unit name="AccountAdministrationPU" transaction-type="JTA">
         <jta-data-source>jdbc/AccountAdministrationSystem</jta-data-source>
+        <properties>
+            <property name="eclipselink.session.customizer" value="main.utils.InvoiceNrGenerator"/>
+        </properties>
     </persistence-unit>
 
 </persistence>
