@@ -1,13 +1,14 @@
 package main.domain;
 
-import javax.persistence.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 @XmlRootElement
-@Entity
+@Entity(name = "TARIFF")
 public class Tariff extends BaseEntity {
 
     private double tariffInEuro;

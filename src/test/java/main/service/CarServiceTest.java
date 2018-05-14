@@ -1,5 +1,6 @@
 package main.service;
 
+import main.dao.RDWFuelDao;
 import main.dao.implementation.CarDaoImpl;
 import main.dao.implementation.RDWDaoImpl;
 import main.domain.Address;
@@ -45,6 +46,8 @@ public class CarServiceTest {
     @Mock
     private RDWDaoImpl rdwDao;
     @Mock
+    private RDWFuelDao rdwFuelDao;
+    @Mock
     private CarService carServiceMock;
 
     @Before
@@ -53,6 +56,7 @@ public class CarServiceTest {
         carService = new CarService();
         carService.setCarDao(carDao);
         carService.setRdwDao(rdwDao);
+        carService.setRdwFuelDao(rdwFuelDao);
 
         currentOwner = new Owner("Thom", "van de Pas", new Date(), new Address());
         currentOwnership = new Ownership();
@@ -71,7 +75,6 @@ public class CarServiceTest {
     }
 
     @Test
-    @Ignore
     public void getAndUpdatePastOwnershipsTest() {
         List<Ownership> ownerships = new ArrayList<>();
 
@@ -106,7 +109,6 @@ public class CarServiceTest {
     }
 
     @Test
-    @Ignore
     public void assignCarToNewOwnerTest() {
         assertThat(car.getCurrentOwnership(), is(this.currentOwnership));
 

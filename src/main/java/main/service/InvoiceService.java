@@ -11,6 +11,7 @@ import main.domain.Ownership;
 import main.domain.Invoice;
 import main.domain.Tariff;
 import main.utils.StringHelper;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -22,6 +23,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Thom van de Pas on 4-4-2018
@@ -70,7 +72,8 @@ public class InvoiceService {
     public String getMonthName(Date date) {
         String monthName;
 
-        Format formatter = new SimpleDateFormat("MMMM");
+        Locale loc = new Locale.Builder().setLanguage("nl").setRegion("NL").build();
+        Format formatter = new SimpleDateFormat("MMMM",loc);
         monthName = formatter.format(date);
 
         return monthName;
@@ -116,12 +119,16 @@ public class InvoiceService {
         Car car = ownership.getCar();
         Tariff tariff = tariffService.findById(1L);
 
-        double mainTariff = tariff.getTariffInEuro();
-        double economicalAddition = getEconomicalAddition(car, tariff);
-        double carFuelAddition = getCarFuelAddition(car, tariff);
+        if(tariff != null) {
+            double mainTariff = tariff.getTariffInEuro();
+            double economicalAddition = getEconomicalAddition(car, tariff);
+            double carFuelAddition = getCarFuelAddition(car, tariff);
 
-        BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition));
-        return result.setScale(2, RoundingMode.HALF_UP);
+            BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition));
+            return preventNegativeAmount(result);
+        }
+
+        return BigDecimal.ZERO;
     }
 
     /**
@@ -133,11 +140,11 @@ public class InvoiceService {
      * @param tariff Tariff used for calculation
      * @return Addition based on the economical label of the car when there is no label found 0.0 is returned
      */
-    private double getEconomicalAddition(Car car, Tariff tariff) {
+    public double getEconomicalAddition(Car car, Tariff tariff) {
         String economicalLabel = car.getRdwData().getZuinigheidslabel();
         Double addition = 0.0;
 
-        if (!StringHelper.isEmpty(economicalLabel)) {
+        if (!StringHelper.isEmpty(economicalLabel) && tariff.getCarLabels().get(economicalLabel) != null) {
             addition = tariff.getCarLabels().get(economicalLabel);
         }
 
@@ -153,15 +160,32 @@ public class InvoiceService {
      * @param tariff Tariff used for calculation
      * @return Addition based on car fuel when there is no fuel found 0.0 is returned
      */
-    private double getCarFuelAddition(Car car, Tariff tariff) {
+    public double getCarFuelAddition(Car car, Tariff tariff) {
         String carFuel = car.getRdwFuelData().getBrandstof_omschrijving();
         Double addition = 0.0;
 
-        if (!StringHelper.isEmpty(carFuel)) {
+        if (!StringHelper.isEmpty(carFuel) && tariff.getCarFuels().get(carFuel) != null) {
             addition = tariff.getCarFuels().get(carFuel);
         }
 
         return addition;
+    }
+
+    /**
+     * Prevent negative invoice amounts.
+     * When amount is evaluated as negative BigDecimal.ZERO is returned.
+     *
+     * @param amount Amount to check for negative value
+     * @return Amount or BigDecimal.ZERO when amount is evaluated as negative
+     */
+    public BigDecimal preventNegativeAmount(BigDecimal amount) {
+        BigDecimal roundedAmount = amount.setScale(2, RoundingMode.HALF_UP);
+
+        if(roundedAmount.compareTo(BigDecimal.ZERO)  < 0) {
+            roundedAmount = BigDecimal.ZERO;
+        }
+
+        return roundedAmount;
     }
 
     //</editor-fold>
@@ -326,7 +350,6 @@ public class InvoiceService {
         return table;
     }
     //</editor-fold>
-
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
 

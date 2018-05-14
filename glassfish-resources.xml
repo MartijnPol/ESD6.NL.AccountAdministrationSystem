@@ -6,8 +6,8 @@
     <jdbc-connection-pool datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlDataSource" name="AccountAdministrationPU"
                           res-type="javax.sql.DataSource">
         <property name="password" value="root"></property>
-        <property name="databaseName" value="accountadministration_system"></property>
-        <property name="serverName" value="localhost"></property>
+        <property name="databaseName" value="AccountAdministrationSystem"></property>
+        <property name="serverName" value="35.195.226.127"></property>
         <property name="user" value="root"></property>
         <property name="portNumber" value="3306"></property>
     </jdbc-connection-pool>

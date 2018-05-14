@@ -17,41 +17,46 @@
 
         <div class="container">
 
-            <header class="header">
-                <h1>Autodetails</h1>
-                <h5 class="text-muted">Details van de auto</h5>
-            </header>
+            <div class="row">
+                <div class="col-lg-12">
+                    <header class="header">
+                        <h1>Autodetails</h1>
+                        <h5 class="text-muted">Details van de auto</h5>
+                    </header>
+                </div>
+            </div>
 
-            <div class="content-container">
+            <div class="row content-container">
+                <div class="col-lg-12">
+                    <h:form rendered="#{not empty carBean.car}">
 
-                <h:form rendered="#{not empty carBean.car}">
+                        <div class="form-control">
+                            <p:outputLabel for="licensePlateText" value="Kenteken: "/>
+                            <h:outputText id="licensePlateText" value="#{carBean.car.licensePlate}"/>
+                        </div>
 
-                    <div class="form-control">
-                        <p:outputLabel for="licensePlateText" value="Kenteken: "/>
-                        <h:outputText id="licensePlateText" value="#{carBean.car.licensePlate}"/>
-                    </div>
+                        <div class="form-control">
+                            <p:outputLabel for="selectOneMenu" value="Eigenaar: "/>
+                            <p:selectOneMenu id="selectOneMenu" value="#{carBean.selectedOwnership}" filter="true"
+                                             converter="omnifaces.SelectItemsIndexConverter"
+                                             filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="#{carBean.car.currentOwnership.owner.fullName}"
+                                              itemDisabled="true"/>
+                                <f:selectItems itemLabel="#{ownership.owner.getFullName()}"
+                                               itemValue="#{ownership}"
+                                               value="#{carBean.ownerships}"
+                                               var="ownership"/>
+                                <p:ajax listener="#{carBean.onItemChange(ownership)}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <p:commandButton action="#{carBean.update}"
+                                         ajax="true"
+                                         id="update"
+                                         styleClass="btn btn-success"
+                                         value="Update"/>
 
-                    <div class="form-control">
-                        <p:outputLabel for="selectOneMenu" value="Eigenaar: "/>
-                        <p:selectOneMenu id="selectOneMenu" value="#{carBean.selectedOwnership}" filter="true"
-                                         converter="omnifaces.SelectItemsIndexConverter"
-                                         filterMatchMode="startsWith">
-                            <f:selectItem itemLabel="#{carBean.car.currentOwnership.owner.fullName}"
-                                          itemDisabled="true"/>
-                            <f:selectItems itemLabel="#{ownership.owner.getFullName()}"
-                                           itemValue="#{ownership}"
-                                           value="#{carBean.ownerships}"
-                                           var="ownership"/>
-                            <p:ajax listener="#{carBean.onItemChange(ownership)}"/>
-                        </p:selectOneMenu>
-                    </div>
-                    <p:commandButton action="#{carBean.update}"
-                                     ajax="true"
-                                     id="update"
-                                     styleClass="btn btn-success"
-                                     value="Update"/>
-
-                </h:form>
+                    </h:form>
+                </div>
             </div>
 
         </div>

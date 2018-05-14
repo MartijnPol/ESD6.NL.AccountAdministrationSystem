@@ -102,4 +102,18 @@ public class Owner extends BaseEntity {
     }
 
     //</editor-fold>
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Owner owner = (Owner) o;
+        return Objects.equals(firstName, owner.firstName) &&
+                Objects.equals(lastName, owner.lastName) &&
+                Objects.equals(birthDay, owner.birthDay) &&
+                Objects.equals(address, owner.address) &&
+                Objects.equals(ownerships, owner.ownerships);
+    }
 }

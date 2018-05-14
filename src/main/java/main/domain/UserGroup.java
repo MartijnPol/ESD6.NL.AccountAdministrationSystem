@@ -21,7 +21,7 @@ public class UserGroup implements Serializable {
     private String groupName;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "usergroup_user",
+    @JoinTable(name = "USERGROUP_USER",
             joinColumns = @JoinColumn(name = "groupName",
                     referencedColumnName = "groupName"),
             inverseJoinColumns = @JoinColumn(name = "username",
@@ -36,6 +36,8 @@ public class UserGroup implements Serializable {
         this();
         this.groupName = groupName;
     }
+
+    //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
 
     public String getGroupName() {
         return groupName;
@@ -56,4 +58,6 @@ public class UserGroup implements Serializable {
     public void addMultipleUsers(List<User> users) {
         this.users.addAll(users);
     }
+
+    //</editor-fold>
 }

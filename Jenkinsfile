@@ -14,46 +14,45 @@ pipeline{
             }
         }
         stage('Build project'){
-            agent {
-                docker {
-                    image 'maven:3.5.2-jdk-8'
-                    reuseNode true
-                }
-            }        
             steps {
                 sh 'mvn compile'
                 archiveArtifacts artifacts: 'target/', fingerprint: true
             }
         }
         stage('Build image'){
+            when{
+                anyOf{
+                    branch 'master'
+                    branch 'release'
+                }
+            }
             steps{
-				sh 'docker build -t accountadministrationsystem .'
-				sh 'docker tag accountadministrationsystem:latest localhost:5000/aas'
-				sh 'docker push localhost:5000/aas'
                 sh 'mvn clean package -B'
+				sh 'docker build -t accountadministrationsystem .'
+				sh 'docker tag accountadministrationsystem:latest esd6nl/aas'
+
                 archiveArtifacts artifacts: 'target/AccountAdministrationSystem.war', fingerprint: true
             }
 
         }
-        stage('Test sonarqube'){
-            steps{
-                sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.25.121:9000 -Dsonar.login=33d2bf0931e4ba870789a1cf8e6276a20de55fe1'
-
-            }
-        }
-        stage('Deploy development'){
-            agent {
-                docker {
-                    image 'docker:17.12-dind'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
-                    reuseNode true
+		stage('Push image'){
+            when{
+                anyOf{
+                    branch 'master'
+                    branch 'release'
                 }
             }
-            when{
-                branch 'development'
-            }
+			steps{
+				withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'dockerPassword', usernameVariable: 'dockerUser')]) {
+					sh "docker login -u ${env.dockerUser} -p ${env.dockerPassword}"
+					sh 'docker push esd6nl/aas'
+			}
+			}
+		}
+        stage('Test sonarqube'){
             steps{
-                sh 'docker stack deploy -c dev.yml accountadministrationsystem'
+                sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.25.126:9000 -Dsonar.login=74881713522900d0ec5dc5a0ad9e303480b307a8'
+
             }
         }
         stage('Deploy master'){
