@@ -1,10 +1,13 @@
 package main.batch;
 
+import main.domain.BatchLog;
 import main.domain.Invoice;
 import main.domain.Ownership;
+import main.service.BatchLogService;
 import main.service.InvoiceService;
 
 import javax.batch.api.chunk.ItemWriter;
+import javax.batch.runtime.context.JobContext;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,7 +25,11 @@ import java.util.logging.Logger;
 public class OwnershipWriter implements ItemWriter {
 
     @Inject
+    private JobContext jobContext;
+    @Inject
     private InvoiceService invoiceService;
+    @Inject
+    private BatchLogService batchLogService;
 
     private static final Logger logger = Logger.getLogger(OwnershipWriter.class.getName());
 
@@ -38,6 +45,9 @@ public class OwnershipWriter implements ItemWriter {
 
     @Override
     public void writeItems(List<Object> items) throws Exception {
+
+        this.batchLogService.createOrUpdate(new BatchLog(jobContext.getJobName(), "Bezig met het schrijven van de items." , jobContext.getExecutionId()));
+
 
         for (Object item : items) {
             Ownership ownership = (Ownership) item;
