@@ -7,11 +7,12 @@ import java.util.Date;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "cartracker.findByCar", query = "SELECT c FROM CarTracker c WHERE c.car = :car"),
+        @NamedQuery(name = "carTracker.findById", query = "SELECT c FROM CarTracker  c WHERE c.id = :id")
 })
 public class CarTracker implements Serializable {
 
     @Id
-    private Long id;
+    private String id;
 
     @Temporal(TemporalType.DATE)
     private Date startDate;
@@ -24,14 +25,24 @@ public class CarTracker implements Serializable {
     @ManyToOne
     private Car car;
 
+    private boolean enabled;
+
     public CarTracker(){
+        this.enabled = true;
     }
 
-    public Long getId() {
+    public CarTracker(String id , String manufacturer){
+        this();
+        this.id = id;
+        this.manufacturer = manufacturer;
+        this.startDate = new Date();
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -65,6 +76,14 @@ public class CarTracker implements Serializable {
 
     public void setManufacturer(String fabric) {
         this.manufacturer = fabric;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

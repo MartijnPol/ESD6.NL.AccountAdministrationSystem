@@ -22,36 +22,48 @@
                     <p:dataTable emptyMessage="Er zijn geen cartrackers gevonden die voldoen aan de criteria"
                                  filteredValue="#{carTrackerOverviewBean.filteredCartrackers}"
                                  paginator="true"
+                                 id="TestDataTable"
                                  tableStyleClass="table"
                                  paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10, 20, 50"
                                  selectionMode="single"
-                                 selection="#{carTrackerOverviewBean.selectedCar}"
-                                 rowKey="#{car.id}"
-                                 value="#{carTrackerOverviewBean.cars}" var="car"
-                                 widgetVar="carOverviewDataTable">
+                                 selection="#{carTrackerOverviewBean.selectedCartracker}"
+                                 rowKey="#{cartracker.id}"
+                                 value="#{carTrackerOverviewBean.carTrackers}" var="cartracker"
+                                 widgetVar="cartrackerOverviewDataTable">
 
                         <p:ajax event="rowSelect" listener="#{carTrackerOverviewBean.onRowSelect}"/>
 
-                        <p:column headerText="ID" filterBy="#{car.carTrackerId}" filterMatchMode="contains">
-                            <h:outputText value="#{car.id}"/>
+                        <p:column headerText="ID" filterBy="#{cartracker.id}" filterMatchMode="contains">
+                            <h:outputText value="#{cartracker.id}"/>
                         </p:column>
 
-                        <p:column headerText="Fabrikant" filterBy="#{car.currentCartracker.manufacturer}" filterMatchMode="contains">
-                            <h:outputText value="#{car.currentCartracker.manufacturer}"/>
+                        <p:column headerText="Fabrikant" filterBy="#{cartracker.manufacturer}" filterMatchMode="contains">
+                            <h:outputText value="#{cartracker.manufacturer}"/>
                         </p:column>
 
-                        <p:column headerText="Kenteken" filterBy="#{car.licensePlate}" filterMatchMode="contains">
-                            <h:outputText value="#{car.licensePlate}"/>
+                        <p:column headerText="Kenteken" filterBy="#{cartracker.car.licensePlate}" filterMatchMode="contains">
+                            <h:outputText value="#{cartracker.car.licensePlate}"/>
                         </p:column>
 
-                        <p:column headerText="Merk" filterBy="#{car.rdwData.merk}" filterMatchMode="contains">
-                            <h:outputText value="#{car.rdwData.merk}"/>
+                        <p:column headerText="Merk" filterBy="#{cartracker.car.rdwData.merk}" filterMatchMode="contains">
+                            <h:outputText value="#{cartracker.car.rdwData.merk}"/>
                         </p:column>
 
-                        <p:column headerText="Eigenaar" filterBy="#{car.currentOwnership.owner.fullName}" filterMatchMode="contains">
-                            <h:outputText value="#{car.currentOwnership.owner.fullName}"/>
+                        <p:column headerText="Eigenaar" filterBy="#{cartracker.car.currentOwnership.owner.fullName}" filterMatchMode="contains">
+                            <h:outputText value="#{cartracker.car.currentOwnership.owner.fullName}"/>
+                        </p:column>
+
+                        <p:column styleClass="text-align-center" width="20%">
+                            <p:commandButton action="#{carTrackerOverviewBean.disableCartracker(cartracker)}"
+                                             update="TestDataTable"
+                                             value="Deactiveer"
+                                             rendered="#{carTrackerBean.carTracker.car eq null and carTrackerBean.carTracker.enabled  eq 0}"
+                                             styleClass="btn btn-danger actionlink">
+                                <p:confirm header="Weet u het zeker?"
+                                           message="Wil u deze cartracker echt deactiveren?"/>
+                            </p:commandButton>
                         </p:column>
 
                     </p:dataTable>
@@ -72,6 +84,26 @@
             <div class="content-container">
 
                 <h:form>
+
+                    <div class="form-group">
+                        <p:inputText id="CartrackerID"
+                                     placeholder="cartracker ID"
+                                     required="true"
+                                     requiredMessage="Vul uw cartracker ID in."
+                                     styleClass="form-control"
+                                     value="#{carTrackerOverviewBean.cartrackerId}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <p:inputText id="Manufacturer"
+                                     placeholder="Fabrikant"
+                                     required="true"
+                                     requiredMessage="Vul de fabrikant in."
+                                     styleClass="form-control"
+                                     type="email"
+                                     value="#{carTrackerOverviewBean.manufacturer}"/>
+                    </div>
+
 
                     <p:commandButton action="#{carTrackerOverviewBean.createCartracker}"
                                      id="Aanmaken"

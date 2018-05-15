@@ -36,6 +36,9 @@ public class StartUp {
     @Inject
     private UserService userService;
 
+    @Inject
+    private CarTrackerService carTrackerService;
+
     public StartUp() {
 
     }
@@ -58,18 +61,25 @@ public class StartUp {
 
         ownership.setCar(car1);
         ownership2.setCar(car2);
-        this.carOwnershipService.createOrUpdate(ownership);
-        this.carOwnershipService.createOrUpdate(ownership2);
 
-        CarTracker carTracker1 = new CarTracker();
-        CarTracker carTracker2 = new CarTracker();
+        CarTracker carTracker1 = new CarTracker("1","Nico");
+        CarTracker carTracker2 = new CarTracker("2", "Sony");
+        CarTracker carTracker3 = new CarTracker("3", "Apple");
 
-
-        car1.setCarTrackerId(1L);
-        car2.setCarTrackerId(2L);
+        car1.setCurrentCartracker(carTracker1);
+        car2.setCurrentCartracker(carTracker2);
+        carTracker1.setCar(car1);
+        carTracker2.setCar(car2);
 
         carService.createOrUpdate(car1);
         carService.createOrUpdate(car2);
+
+        carTrackerService.create(carTracker1);
+        carTrackerService.create(carTracker2);
+        carTrackerService.create(carTracker3);
+
+        this.carOwnershipService.createOrUpdate(ownership);
+        this.carOwnershipService.createOrUpdate(ownership2);
 
         User smolders = new User("smolders", "1234", "smolders@gmail.com");
 

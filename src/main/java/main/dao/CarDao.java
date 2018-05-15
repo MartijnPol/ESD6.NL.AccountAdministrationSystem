@@ -13,7 +13,7 @@ public interface CarDao extends GenericDao<Car> {
 
     List<Car> findByOwner(Owner owner);
 
-    Car findByCarTrackerId(Long carTrackerId);
+    Car findByCarTrackerId(String carTrackerId);
 
     void deleteByLicensePlate(String licensePlate);
 }

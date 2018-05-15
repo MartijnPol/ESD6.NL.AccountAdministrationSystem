@@ -19,7 +19,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -33,7 +32,7 @@ public class CarTrackerOverviewBean implements Serializable {
     private CarService carService;
 
     @Inject
-    private CarTrackerService carTracerService;
+    private CarTrackerService carTrackerService;
 
     @Inject
     private CarOwnershipService carOwnershipService;
@@ -45,54 +44,49 @@ public class CarTrackerOverviewBean implements Serializable {
 
     private List<CarTracker> filteredCartrackers;
 
-    private Car selectedCar;
+    private CarTracker selectedCartracker;
 
     private List<Car>  cars;
 
+    private String cartrackerId;
+
+    private String manufacturer;
+
 
     public CarTrackerOverviewBean() {
+
     }
 
     @PostConstruct
     public void init() {
-//        try {
-//            this.carTrackers = (List<CarTracker>) getAllCartrackers();
-//        } catch (UnirestException e) {
-//            e.printStackTrace();
-//        }
-        cars = carService.findAll();
-//        addCars();
+
+        this.cars = carService.findAll();
+        this.carTrackers = carTrackerService.findAll();
+
     }
 
-    public void updateCar (Car car){
-        Car knownCar = carService.findById(car.getId());
-        knownCar.setCarTrackerId(car.getCarTrackerId());
-
-        if (knownCar.getLicensePlate().equals(car.getLicensePlate()))
-        {
-            knownCar.setLicensePlate(car.getLicensePlate());
-        }
-        else {
-            knownCar.setRdwData(rdwService.findByLicensePlate(car.getLicensePlate()));
-        }
-
-        if (knownCar.getCurrentOwnership().equals(car.getCurrentOwnership())){
-            knownCar.setCurrentOwnership(car.getCurrentOwnership());
-        }
-        else {
-            knownCar.setCurrentOwnership(car.getCurrentOwnership());
-            knownCar.addPastOwnership(knownCar.getCurrentOwnership());
+    public void createCartracker (){
+        if (!this.cartrackerId.isEmpty() && !this.manufacturer.isEmpty()) {
+            CarTracker carTracker = new CarTracker(cartrackerId , manufacturer);
+            carTrackerService.create(carTracker);
+            // Post naar simulatie systeem met id
+            //Unirest.post("http://localhost:8080/DisplacementSystem/api/CarTrackers")
         }
     }
 
+    public void disableCartracker(CarTracker carTracker){
+        carTracker.setEnabled(false);
+        carTrackerService.update(carTracker);
+    }
 
-    public Owner getOwnerDetails (long cartrackerID){
+
+    public Owner getOwnerDetails (String cartrackerID){
         Car car = carService.findByCarTrackerId(cartrackerID);
         Ownership ownership = car.getCurrentOwnership();
         return  ownership.getOwner();
     }
 
-    public Car getCarDetails (long cartrackerID){
+    public Car getCarDetails (String cartrackerID){
         return carService.findByCarTrackerId(cartrackerID);
     }
 
@@ -116,17 +110,9 @@ public class CarTrackerOverviewBean implements Serializable {
         return carTrackers;
     }
 
-    public Response createCartracker () throws UnirestException {
-        // aanpassen naar het simulatie systeem
-            HttpResponse<JsonNode> getResponse = Unirest.get("http://localhost:8080/DisplacementSystem/api/CarTrackers/Create").asJson();
-            JSONArray array = getResponse.getBody().getArray();
-            System.out.println("array = " + array);
-            return Response.ok(array.toString()).build();
-    }
-
     public void onRowSelect(SelectEvent event) {
-        Car selectedCar = (Car) event.getObject();
-        RedirectHelper.redirect("/pages/cartracker/cartracker.xhtml?carId=" + selectedCar.getId());
+        CarTracker selectedCarTracker = (CarTracker) event.getObject();
+        RedirectHelper.redirect("/pages/cartracker/cartracker.xhtml?cartrackerId=" + selectedCarTracker.getId());
     }
 
     public List<CarTracker> getCarTrackers() {
@@ -145,12 +131,12 @@ public class CarTrackerOverviewBean implements Serializable {
         this.filteredCartrackers = filteredCartrackers;
     }
 
-    public Car getSelectedCar() {
-        return selectedCar;
+    public CarTracker getSelectedCartracker() {
+        return selectedCartracker;
     }
 
-    public void setSelectedCar(Car selectedCar) {
-        this.selectedCar = selectedCar;
+    public void setSelectedCartracker(CarTracker selectedCartracker) {
+        this.selectedCartracker = selectedCartracker;
     }
 
     public void addCars(){
@@ -163,5 +149,21 @@ public class CarTrackerOverviewBean implements Serializable {
 
     public List<Car> getCars() {
         return cars;
+    }
+
+    public String getCartrackerId() {
+        return cartrackerId;
+    }
+
+    public void setCartrackerId(String cartrackerId) {
+        this.cartrackerId = cartrackerId;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 }

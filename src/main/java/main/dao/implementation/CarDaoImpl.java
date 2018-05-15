@@ -25,6 +25,11 @@ public class CarDaoImpl extends GenericDaoJPAImpl<Car> implements CarDao {
                 .getResultList();
     }
 
+    @Override
+    public Car findByCarTrackerId(String carTrackerId) {
+        return null;
+    }
+
     public Car findByCarTrackerId(Long carTrackerId) {
         TypedQuery<Car> query = getEntityManager().createNamedQuery("car.findByCarTrackerId", Car.class)
                 .setParameter("carTrackerId", carTrackerId);

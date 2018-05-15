@@ -16,13 +16,12 @@ import java.util.List;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "car.findByOwner", query = "SELECT c FROM Car c WHERE c.currentOwnership.owner = :owner"),
-        @NamedQuery(name = "car.findByCarTrackerId", query = "SELECT c FROM Car c WHERE c.carTrackerId = :carTrackerId"),
+        @NamedQuery(name = "car.findByCarTrackerId", query = "SELECT c FROM Car c WHERE c.currentCartracker.id = :carTrackerId"),
         @NamedQuery(name = "car.deleteByLicencePlate", query = "DELETE FROM Car c WHERE c.licensePlate = :licensePlate")
 })
 
 public class Car extends BaseEntity {
 
-    private Long carTrackerId;
     private String licensePlate;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -49,6 +48,11 @@ public class Car extends BaseEntity {
         this.pastCartrackers = new ArrayList<>();
     }
 
+    public Car(String licensePlate) {
+        this();
+        this.licensePlate = licensePlate;
+    }
+
     public Car(String licensePlate, Ownership currentOwnership) {
         this();
         this.licensePlate = licensePlate;
@@ -60,7 +64,6 @@ public class Car extends BaseEntity {
         this.licensePlate = licensePlate;
         this.currentOwnership = currentOwnership;
         this.currentCartracker = currentCartracker;
-        this.carTrackerId = currentCartracker.getId();
     }
 
 
@@ -68,7 +71,7 @@ public class Car extends BaseEntity {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String date = dateFormat.format(this.getCurrentOwnership().getOwner().getBirthDay());
         return Json.createObjectBuilder()
-                .add("carTrackerId", this.carTrackerId)
+                .add("carTrackerId", this.currentCartracker.getId())
                 .add("licensePlate", this.licensePlate)
                 .add("owner", Json.createObjectBuilder()
                         .add("fullname", this.getCurrentOwnership().getOwner().getFullName())
@@ -93,11 +96,6 @@ public class Car extends BaseEntity {
     }
 
     //<editor-fold desc="Getters/Setters">
-    public Long getCarTrackerId() { return carTrackerId; }
-
-    public void setCarTrackerId(Long carTrackerId) {
-        this.carTrackerId = carTrackerId;
-    }
 
     public String getLicensePlate() {
         return licensePlate;

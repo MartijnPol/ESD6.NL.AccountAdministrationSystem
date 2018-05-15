@@ -3,10 +3,7 @@ package main.service;
 import main.dao.RDWFuelDao;
 import main.dao.implementation.CarDaoImpl;
 import main.dao.implementation.RDWDaoImpl;
-import main.domain.Address;
-import main.domain.Car;
-import main.domain.Ownership;
-import main.domain.Owner;
+import main.domain.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -40,6 +37,7 @@ public class CarServiceTest {
     private Owner newOwner;
     private Ownership newOwnership;
     private Ownership currentOwnership;
+    private CarTracker carTracker;
 
     @Mock
     private CarDaoImpl carDao;
@@ -72,6 +70,8 @@ public class CarServiceTest {
         newOwner.addOwnership(newOwnership);
         newOwnership.setOwner(newOwner);
         newOwnership.setId(2L);
+
+        carTracker = new CarTracker("1" , "Sony");
     }
 
     @Test
@@ -97,7 +97,7 @@ public class CarServiceTest {
         car.addMultiplePastOwnerships(ownerships);
 
         car.setCurrentOwnership(currentOwnership);
-        car.setCarTrackerId(1L);
+        car.setCurrentCartracker(carTracker);
 
         List<Ownership> theOwnerships = car.getPastOwnerships();
         assertThat(theOwnerships.size(), is(2));

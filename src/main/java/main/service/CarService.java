@@ -70,7 +70,7 @@ public class CarService {
         return this.carDao.findAll();
     }
 
-    public Car findByCarTrackerId(Long carTrackerId) {
+    public Car findByCarTrackerId(String carTrackerId) {
         return this.carDao.findByCarTrackerId(carTrackerId);
     }
 
