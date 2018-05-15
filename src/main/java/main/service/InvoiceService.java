@@ -15,15 +15,15 @@ import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Thom van de Pas on 4-4-2018
@@ -39,7 +39,11 @@ public class InvoiceService {
     private TariffService tariffService;
 
     public Invoice createOrUpdate(Invoice invoice) {
-        return this.invoiceDao.createOrUpdate(invoice);
+        if (invoice.getInvoiceNr() == null) {
+            return this.invoiceDao.create(invoice);
+        } else {
+            return this.invoiceDao.update(invoice);
+        }
     }
 
     public void delete(Invoice invoice) {
@@ -73,7 +77,7 @@ public class InvoiceService {
         String monthName;
 
         Locale loc = new Locale.Builder().setLanguage("nl").setRegion("NL").build();
-        Format formatter = new SimpleDateFormat("MMMM",loc);
+        Format formatter = new SimpleDateFormat("MMMM", loc);
         monthName = formatter.format(date);
 
         return monthName;
@@ -93,16 +97,45 @@ public class InvoiceService {
     }
 
     /**
+     * Find last used invoice number.
+     *
+     * @return Long invoice number.
+     */
+    public Long findLastInvoiceNr() {
+        return this.invoiceDao.findLastInvoiceNr();
+    }
+
+    /**
+     * Get the next invoice number that should be used.
+     *
+     * @param lastUsedInvoiceNr Last used invoice number.
+     * @return Next Long invoice number that should be used as identifier.
+     */
+    public Long getNextInvoiceNr(Long lastUsedInvoiceNr) {
+        if (lastUsedInvoiceNr != null) {
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+            String invoiceNrText = Objects.toString(lastUsedInvoiceNr);
+            String currentYearText = Objects.toString(currentYear);
+            String replacedInvoiceNr = invoiceNrText.replace(currentYearText, "");
+
+            Long subtractedNr = Long.valueOf(replacedInvoiceNr) + 1;
+
+            String nextInvoiceNrText = currentYearText + subtractedNr.toString();
+
+            return Long.valueOf(nextInvoiceNrText);
+        }
+
+        return null;
+    }
+
+    /**
      * Find the first Invoice that exists in the database.
      *
      * @return The found Invoice or null if there was nothing retrieved from the database.
      */
     public Invoice findFirstInvoice() {
         return this.invoiceDao.findFirstInvoice();
-    }
-
-    public void setInvoiceDao(InvoiceDao invoiceDao) {
-        this.invoiceDao = invoiceDao;
     }
 
     //<editor-fold defaultstate="collapsed" desc="Invoice amount generation methods">
@@ -119,7 +152,7 @@ public class InvoiceService {
         Car car = ownership.getCar();
         Tariff tariff = tariffService.findById(1L);
 
-        if(tariff != null) {
+        if (tariff != null) {
             double mainTariff = tariff.getTariffInEuro();
             double economicalAddition = getEconomicalAddition(car, tariff);
             double carFuelAddition = getCarFuelAddition(car, tariff);
@@ -156,7 +189,7 @@ public class InvoiceService {
      * The car fuel is retrieved form the RDWFuel data and the matching addition is searched in the tariff entity.
      * When this search return empty a default addition of 0.0 is returned.
      *
-     * @param car Car that should be checked
+     * @param car    Car that should be checked
      * @param tariff Tariff used for calculation
      * @return Addition based on car fuel when there is no fuel found 0.0 is returned
      */
@@ -181,7 +214,7 @@ public class InvoiceService {
     public BigDecimal preventNegativeAmount(BigDecimal amount) {
         BigDecimal roundedAmount = amount.setScale(2, RoundingMode.HALF_UP);
 
-        if(roundedAmount.compareTo(BigDecimal.ZERO)  < 0) {
+        if (roundedAmount.compareTo(BigDecimal.ZERO) < 0) {
             roundedAmount = BigDecimal.ZERO;
         }
 
@@ -198,11 +231,12 @@ public class InvoiceService {
      *
      * @param invoice Invoice containing all the necessary data
      */
-    public void generateInvoicePdf(Invoice invoice) {
+    public ByteArrayOutputStream generateInvoicePdf(Invoice invoice) {
         Document document = new Document();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("C:/Users/Gebruiker/Documents/Development/invoice.pdf"));
+            PdfWriter.getInstance(document, byteArrayOutputStream);
             document.open();
 
             document.addTitle("Factuur" + invoice.getInvoiceNr());
@@ -219,11 +253,12 @@ public class InvoiceService {
             document.add(getTariffTable());
 
             document.add(getTotalAmountTable(invoice));
-        } catch (DocumentException | FileNotFoundException e) {
+        } catch (DocumentException e) {
             e.printStackTrace();
         }
 
         document.close();
+        return byteArrayOutputStream;
     }
 
     /**
@@ -355,6 +390,11 @@ public class InvoiceService {
 
     public void setTariffService(TariffService tariffService) {
         this.tariffService = tariffService;
+    }
+
+
+    public void setInvoiceDao(InvoiceDao invoiceDao) {
+        this.invoiceDao = invoiceDao;
     }
 
     //</editor-fold>

@@ -1,8 +1,10 @@
 package web.bean.invoice;
 
 import main.domain.Invoice;
+import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
 import web.bean.BaseBean;
+import web.core.helper.FrontendHelper;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -21,12 +23,21 @@ public class InvoiceBean extends BaseBean {
     private Invoice invoice;
     private Long invoiceNr;
     private String monthName;
+    private PaymentStatus paymentStatus;
 
     @Override
     public void init() {
         this.invoice = this.invoiceService.findByInvoiceNr(this.invoiceNr);
         if (this.invoice != null) {
             this.monthName = this.invoiceService.getMonthName(this.invoice.getPeriod());
+        }
+    }
+
+    public void update() {
+        if (this.invoice != null && this.paymentStatus != null) {
+            this.invoice.setPaymentStatus(this.paymentStatus);
+            this.invoiceService.createOrUpdate(this.invoice);
+            FrontendHelper.displaySuccessSmallMessage("De betaalstatus is succesvol geüpdatet!");
         }
     }
 
@@ -54,5 +65,14 @@ public class InvoiceBean extends BaseBean {
     public void setMonthName(String monthName) {
         this.monthName = monthName;
     }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
     //</editor-fold>
 }

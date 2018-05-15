@@ -5,6 +5,10 @@ import org.jasypt.util.text.StrongTextEncryptor;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Random;
+
 import org.apache.commons.codec.binary.Base64;
 
 /**
@@ -48,7 +52,10 @@ public final class EncryptionHelper {
 
 
     private static String saltData(String data) {
-        return "Q4R@d8Lb2UP-qts%ndnVh_G7N-"
-                + data;
+        Random random = new SecureRandom();
+        int size = 32;
+        byte[] salt = new byte[size];
+        random.nextBytes(salt);
+        return Arrays.toString(salt) + data;
     }
 }

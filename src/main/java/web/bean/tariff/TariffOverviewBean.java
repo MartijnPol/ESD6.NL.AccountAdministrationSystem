@@ -2,9 +2,7 @@ package web.bean.tariff;
 
 import main.domain.Tariff;
 import main.service.TariffService;
-import org.primefaces.event.CellEditEvent;
 import web.core.helper.FrontendHelper;
-import web.core.helper.RedirectHelper;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;

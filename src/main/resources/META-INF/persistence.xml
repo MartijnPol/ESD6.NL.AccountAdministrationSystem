@@ -3,8 +3,20 @@
 
     <persistence-unit name="AccountAdministrationPU" transaction-type="JTA">
         <jta-data-source>jdbc/AccountAdministrationSystem</jta-data-source>
+        <class>main.domain.Address</class>
+        <class>main.domain.BatchLog</class>
+        <class>main.domain.Car</class>
+        <class>main.domain.Invoice</class>
+        <class>main.domain.Owner</class>
+        <class>main.domain.Ownership</class>
+        <class>main.domain.RDW</class>
+        <class>main.domain.RDWFuel</class>
+        <class>main.domain.Tariff</class>
+        <class>main.domain.User</class>
+        <class>main.domain.UserGroup</class>
         <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="eclipselink.session.customizer" value="main.utils.InvoiceNrGenerator"/>
+            <property name="javax.persistence.schema-generation.database.action" value="create"/>
         </properties>
     </persistence-unit>
 

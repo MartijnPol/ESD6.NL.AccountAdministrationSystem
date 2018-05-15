@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/template.xhtml">
+
+    <ui:define name="title">Batch log overzicht</ui:define>
+
+    <ui:define name="content">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <header class="header">
+                        <h1>Batch log overzicht</h1>
+                        <h5 class="text-muted">Overzicht van alle acties binnen de batches</h5>
+                    </header>
+                </div>
+            </div>
+
+            <div class="row content-container">
+                <div class="col-lg-12">
+                    <h:form id="batchOverviewForm">
+
+                        <p:dataTable emptyMessage="Er zijn geen facturen gevonden die voldoen aan de criteria"
+                                     id="batchLogsOverviewDataTable"
+                                     paginator="true"
+                                     paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10, 20, 50"
+                                     value="#{batchLogOverviewBean.batchLogs}" var="batchLog"
+                                     widgetVar="batchLogOverviewDataTable">
+
+                            <p:column headerText="Batchnaam">
+                                <h:outputText value="#{batchLog.batchJobName}"/>
+                            </p:column>
+
+                            <p:column headerText="Batchnummer">
+                                <h:outputText value="#{batchLog.executionId}"/>
+                            </p:column>
+
+                            <p:column headerText="Omschrijving">
+                                <h:outputText value="#{batchLog.detailedMessage}"/>
+                            </p:column>
+
+                            <p:column headerText="Datum">
+                                <h:outputText value="#{batchLog.time}">
+                                    <f:convertDateTime pattern="dd-MM-yyyy"/>
+                                </h:outputText>
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </h:form>
+                </div>
+            </div>
+
+        </div>
+
+    </ui:define>
+</ui:composition>
