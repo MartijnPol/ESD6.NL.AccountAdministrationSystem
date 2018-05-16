@@ -1,8 +1,9 @@
 package web.bean.cars;
 
-import main.domain.Car;
-import main.domain.Invoice;
+import main.domain.*;
 import main.service.CarService;
+import main.service.CarTrackerService;
+import main.service.OwnershipService;
 import org.primefaces.event.SelectEvent;
 import web.core.helper.RedirectHelper;
 
@@ -10,6 +11,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,14 +26,30 @@ public class CarOverviewBean implements Serializable {
 
     @Inject
     private CarService carService;
+    @Inject
+    private OwnershipService ownershipService;
+    @Inject
+    private CarTrackerService carTrackerService;
 
+    private String licensePlate;
     private Car selectedCar;
     private List<Car> cars;
     private List<Car> filteredCars;
 
+    private List<CarTracker> carTrackers;
+    private CarTracker currentCartracker;
+    private CarTracker selectedCartracker;
+
+    private List<Ownership> ownerships;
+    private Ownership currentOwnership;
+    private Ownership selectedOwnership;
+
+
     @PostConstruct
     public void init() {
         this.cars = this.carService.findAll();
+        this.carTrackers = this.carTrackerService.findAll();
+        this.ownerships = this.ownershipService.findAll();
     }
 
     /**
@@ -41,6 +61,21 @@ public class CarOverviewBean implements Serializable {
     public void onRowSelect(SelectEvent event) {
         Car selectedCar = (Car) event.getObject();
         RedirectHelper.redirect("/pages/cars/car.xhtml?carId=" + selectedCar.getId());
+    }
+
+    public void onOwnershipChange(Ownership selectedOwnership) {
+        this.selectedOwnership = selectedOwnership;
+    }
+
+    public void onCartrackerChange(CarTracker selectedCartracker) {
+        this.selectedCartracker = selectedCartracker;
+    }
+
+    public void CreateCar(){
+        Ownership foundOwnership = this.ownershipService.findById(selectedOwnership.getId());
+        CarTracker foundCarTracker = this.carTrackerService.findById(this.selectedCartracker.getId());
+        Car car = new Car(this.licensePlate , foundOwnership , foundCarTracker);
+        carService.createOrUpdate(car);
     }
 
     public List<Car> getCars() {
@@ -65,5 +100,61 @@ public class CarOverviewBean implements Serializable {
 
     public void setSelectedCar(Car selectedCar) {
         this.selectedCar = selectedCar;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public CarTracker getCurrentCartracker() {
+        return currentCartracker;
+    }
+
+    public void setCurrentCartracker(CarTracker currentCartracker) {
+        this.currentCartracker = currentCartracker;
+    }
+
+    public Ownership getCurrentOwnership() {
+        return currentOwnership;
+    }
+
+    public void setCurrentOwnership(Ownership currentOwnership) {
+        this.currentOwnership = currentOwnership;
+    }
+
+    public List<CarTracker> getCarTrackers() {
+        return carTrackers;
+    }
+
+    public void setCarTrackers(List<CarTracker> carTrackers) {
+        this.carTrackers = carTrackers;
+    }
+
+    public CarTracker getSelectedCartracker() {
+        return selectedCartracker;
+    }
+
+    public void setSelectedCartracker(CarTracker selectedCartracker) {
+        this.selectedCartracker = selectedCartracker;
+    }
+
+    public List<Ownership> getOwnerships() {
+        return ownerships;
+    }
+
+    public void setOwnerships(List<Ownership> ownerships) {
+        this.ownerships = ownerships;
+    }
+
+    public Ownership getSelectedOwnership() {
+        return selectedOwnership;
+    }
+
+    public void setSelectedOwnership(Ownership selectedOwnership) {
+        this.selectedOwnership = selectedOwnership;
     }
 }

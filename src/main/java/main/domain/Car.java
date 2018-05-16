@@ -24,7 +24,7 @@ public class Car extends BaseEntity {
 
     private String licensePlate;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.MERGE})
     private CarTracker currentCartracker;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)

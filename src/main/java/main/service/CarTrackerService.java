@@ -29,8 +29,8 @@ public class CarTrackerService {
      *
      * @param carTracker is the CarTracker object that needs to be saved
      */
-    public void create(CarTracker carTracker) {
-        carTrackerDao.create(carTracker);
+    private CarTracker create(CarTracker carTracker) {
+        return this.carTrackerDao.create(carTracker);
     }
 
     /**
@@ -38,10 +38,18 @@ public class CarTrackerService {
      *
      * @param carTracker is the CarTracker object that needs to be updated
      */
-    public CarTracker update(CarTracker carTracker) {
+    private CarTracker update(CarTracker carTracker) {
         return this.carTrackerDao.update(carTracker);
     }
 
+
+    public CarTracker createOrUpdate(CarTracker carTracker) {
+        if (carTracker.getId() == null) {
+            return this.create(carTracker);
+        } else {
+            return this.update(carTracker);
+        }
+    }
     /**
      * Function to find CarTracker data by it's Id
      *

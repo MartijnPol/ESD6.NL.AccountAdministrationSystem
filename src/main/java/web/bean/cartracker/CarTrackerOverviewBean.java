@@ -68,7 +68,7 @@ public class CarTrackerOverviewBean implements Serializable {
     public void createCartracker (){
         if (!this.cartrackerId.isEmpty() && !this.manufacturer.isEmpty()) {
             CarTracker carTracker = new CarTracker(cartrackerId , manufacturer);
-            carTrackerService.create(carTracker);
+            carTrackerService.createOrUpdate(carTracker);
             // Post naar simulatie systeem met id
             //Unirest.post("http://localhost:8080/DisplacementSystem/api/CarTrackers")
         }
@@ -76,7 +76,7 @@ public class CarTrackerOverviewBean implements Serializable {
 
     public void disableCartracker(CarTracker carTracker){
         carTracker.setEnabled(false);
-        carTrackerService.update(carTracker);
+        carTrackerService.createOrUpdate(carTracker);
     }
 
 

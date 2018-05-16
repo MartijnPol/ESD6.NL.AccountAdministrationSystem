@@ -1,6 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 template="/templates/template.xhtml">
 
@@ -64,6 +65,67 @@
 
                     </h:form>
                 </div>
+            </div>
+
+        </div>
+
+        <div class="container">
+
+            <header class="header">
+                <h1>Toevoegen</h1>
+                <h5 class="text-muted">Maak een nieuwe auto aan</h5>
+            </header>
+
+            <div class="content-container">
+
+                <h:form>
+
+                    <div class="form-group">
+                        <p:inputText id="Kenteken"
+                                     placeholder="Kenteken"
+                                     required="true"
+                                     requiredMessage="Vul uw Kenteken in."
+                                     styleClass="form-control"
+                                     value="#{carOverviewBean.licensePlate}"/>
+                    </div>
+
+                    <div class="form-control">
+                        <p:outputLabel for="selectOwnerMenu" value="Eigenaar: "/>
+                        <p:selectOneMenu id="selectOwnerMenu" value="#{carOverviewBean.selectedOwnership}" filter="true"
+                                         converter="omnifaces.SelectItemsIndexConverter"
+                                         filterMatchMode="startsWith">
+                            <f:selectItem itemLabel="Selecteer een eigenaar"
+                                          itemDisabled="true"/>
+                            <f:selectItems itemLabel="#{ownership.owner.getFullName()}"
+                                           itemValue="#{ownership}"
+                                           value="#{carOverviewBean.ownerships}"
+                                           var="ownership"/>
+                            <p:ajax listener="#{carOverviewBean.onOwnershipChange(ownership)}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-control">
+                        <p:outputLabel for="selectCartrackerMenu" value="Cartracker: "/>
+                        <p:selectOneMenu id="selectCartrackerMenu" value= "#{carOverviewBean.selectedCartracker}" filter="true"
+                                         converter="omnifaces.SelectItemsIndexConverter"
+                                         filterMatchMode="startsWith">
+                            <f:selectItem itemLabel="Selecteer een cartracker"
+                                          itemDisabled="true"/>
+                            <f:selectItems itemLabel="#{cartracker.id}"
+                                           itemValue="#{cartracker}"
+                                           value="#{carOverviewBean.carTrackers}"
+                                           var="cartracker"/>
+                            <p:ajax listener="#{carOverviewBean.onCartrackerChange(cartracker)}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+
+                    <p:commandButton action="#{carOverviewBean.CreateCar}"
+                                     id="Aanmaken"
+                                     value="Aanmaken"
+                                     styleClass="btn btn-success"/>
+                </h:form>
+
             </div>
 
         </div>
