@@ -6,7 +6,6 @@ import main.dao.implementation.RDWDaoImpl;
 import main.domain.*;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -97,7 +96,7 @@ public class CarServiceTest {
         car.addMultiplePastOwnerships(ownerships);
 
         car.setCurrentOwnership(currentOwnership);
-        car.setCurrentCartracker(carTracker);
+        car.setCurrentCarTracker(carTracker);
 
         List<Ownership> theOwnerships = car.getPastOwnerships();
         assertThat(theOwnerships.size(), is(2));

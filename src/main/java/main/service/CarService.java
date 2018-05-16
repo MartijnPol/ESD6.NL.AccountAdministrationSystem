@@ -155,15 +155,15 @@ public class CarService {
 
     public Car assignNewCarTracker(Car car, CarTracker newCartracker) {
         if (car != null && newCartracker != null) {
-            if (!car.getCurrentCartracker().equals(newCartracker)) {
-                CarTracker pastCartracker = car.getCurrentCartracker();
+            if (!car.getCurrentCarTracker().equals(newCartracker)) {
+                CarTracker pastCartracker = car.getCurrentCarTracker();
                 if (pastCartracker != null) {
                     pastCartracker.setEndDate(new Date());
-                    car.addPastCartracker(pastCartracker);
+                    car.addPastCarTracker(pastCartracker);
                 }
                 newCartracker.setStartDate(new Date());
                 newCartracker.setCar(car);
-                car.setCurrentCartracker(newCartracker);
+                car.setCurrentCarTracker(newCartracker);
             }
             this.createOrUpdate(car);
             return car;

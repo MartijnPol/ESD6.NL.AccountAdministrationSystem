@@ -47,7 +47,7 @@ public class CarDaoTest {
         ownership.setOwner(owner);
         car.setCurrentOwnership(ownership);
         car.setLicensePlate("08-SK-PX");
-        car.setCurrentCartracker(carTracker);
+        car.setCurrentCarTracker(carTracker);
         cars = new ArrayList<>();
         cars.add(car);
     }
@@ -80,7 +80,7 @@ public class CarDaoTest {
         Car emptyCarByCarTrackerId = carDao.findByCarTrackerId("2");
 
         assertThat(carByCarTrackerId.getLicensePlate(), is("08-SK-PX"));
-        assertThat(carByCarTrackerId.getCurrentCartracker().getId(), is("1"));
+        assertThat(carByCarTrackerId.getCurrentCarTracker().getId(), is("1"));
         assertThat(emptyCarByCarTrackerId, is(nullValue()));
     }
 

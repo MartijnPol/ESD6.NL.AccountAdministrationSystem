@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "car.findByOwner", query = "SELECT c FROM Car c WHERE c.currentOwnership.owner = :owner"),
-        @NamedQuery(name = "car.findByCarTrackerId", query = "SELECT c FROM Car c WHERE c.currentCartracker.id = :carTrackerId"),
+        @NamedQuery(name = "car.findByCarTrackerId", query = "SELECT c FROM Car c WHERE c.currentCarTracker.id = :carTrackerId"),
         @NamedQuery(name = "car.deleteByLicencePlate", query = "DELETE FROM Car c WHERE c.licensePlate = :licensePlate")
 })
 
@@ -25,10 +25,10 @@ public class Car extends BaseEntity {
     private String licensePlate;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private CarTracker currentCartracker;
+    private CarTracker currentCarTracker;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-    private List<CarTracker> pastCartrackers;
+    private List<CarTracker> pastCarTrackers;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<Ownership> pastOwnerships;
@@ -45,7 +45,7 @@ public class Car extends BaseEntity {
 
     public Car() {
         this.pastOwnerships = new ArrayList<>();
-        this.pastCartrackers = new ArrayList<>();
+        this.pastCarTrackers = new ArrayList<>();
     }
 
     public Car(String licensePlate) {
@@ -59,11 +59,11 @@ public class Car extends BaseEntity {
         this.currentOwnership = currentOwnership;
     }
 
-    public Car(String licensePlate, Ownership currentOwnership, CarTracker currentCartracker) {
+    public Car(String licensePlate, Ownership currentOwnership, CarTracker currentCarTracker) {
         this();
         this.licensePlate = licensePlate;
         this.currentOwnership = currentOwnership;
-        this.currentCartracker = currentCartracker;
+        this.currentCarTracker = currentCarTracker;
     }
 
 
@@ -71,10 +71,10 @@ public class Car extends BaseEntity {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String date = dateFormat.format(this.getCurrentOwnership().getOwner().getBirthDay());
         return Json.createObjectBuilder()
-                .add("carTrackerId", this.currentCartracker.getId())
+                .add("carTrackerId", this.currentCarTracker.getId())
                 .add("licensePlate", this.licensePlate)
                 .add("owner", Json.createObjectBuilder()
-                        .add("fullname", this.getCurrentOwnership().getOwner().getFullName())
+                        .add("fullName", this.getCurrentOwnership().getOwner().getFullName())
                         .add("birthday", date).build())
                 .build();
     }
@@ -87,12 +87,12 @@ public class Car extends BaseEntity {
         this.pastOwnerships.addAll(ownerships);
     }
 
-    public void addPastCartracker(CarTracker carTracker) {
-        this.pastCartrackers.add(carTracker);
+    public void addPastCarTracker(CarTracker carTracker) {
+        this.pastCarTrackers.add(carTracker);
     }
 
     public void addMultiplePastCartrackers(List<CarTracker> carTrackers) {
-        this.pastCartrackers.addAll(carTrackers);
+        this.pastCarTrackers.addAll(carTrackers);
     }
 
     //<editor-fold desc="Getters/Setters">
@@ -137,21 +137,21 @@ public class Car extends BaseEntity {
         this.rdwFuelData = rdwFuelData;
     }
 
-    public CarTracker getCurrentCartracker() {
-        return currentCartracker;
+    public CarTracker getCurrentCarTracker() {
+        return currentCarTracker;
     }
 
-    public void setCurrentCartracker(CarTracker newCartracker) {
-        this.currentCartracker = newCartracker;
-        this.currentCartracker.setId(newCartracker.getId());
+    public void setCurrentCarTracker(CarTracker newCarTracker) {
+        this.currentCarTracker = newCarTracker;
+        this.currentCarTracker.setId(newCarTracker.getId());
     }
 
-    public List<CarTracker> getPastCartrackers() {
-        return pastCartrackers;
+    public List<CarTracker> getPastCarTrackers() {
+        return pastCarTrackers;
     }
 
-    public void setPastCartrackers(List<CarTracker> pastCartrackers) {
-        this.pastCartrackers = pastCartrackers;
+    public void setPastCarTrackers(List<CarTracker> pastCarTrackers) {
+        this.pastCarTrackers = pastCarTrackers;
     }
     //</editor-fold>
 }
