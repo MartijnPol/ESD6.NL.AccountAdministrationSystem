@@ -12,7 +12,9 @@ import main.domain.CarTracker;
 import main.domain.Owner;
 import main.service.*;
 import org.json.JSONArray;
+import org.omnifaces.util.Ajax;
 import org.primefaces.event.SelectEvent;
+import web.core.helper.FrontendHelper;
 import web.core.helper.RedirectHelper;
 
 import javax.annotation.PostConstruct;
@@ -71,6 +73,8 @@ public class CarTrackerOverviewBean implements Serializable {
             carTrackerService.createOrUpdate(carTracker);
             // Post naar simulatie systeem met id
             //Unirest.post("http://localhost:8080/DisplacementSystem/api/CarTrackers")
+            this.carTrackers = this.carTrackerService.findAll();
+            FrontendHelper.displaySuccessSmallMessage("De CarTracker is succesvol toegevoegd.");
         }
     }
 
