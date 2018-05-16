@@ -8,4 +8,6 @@ import main.domain.Owner;
 public interface OwnerDao extends GenericDao<Owner> {
 
     Owner findByFullNameAndCSN(String firstName, String lastName, Long citizenServiceNumber);
+
+    Owner findByCSN(Long citizenServiceNumber);
 }

@@ -80,6 +80,7 @@ public class InvoiceOverviewBean extends BaseBean {
         if (invoice != null) {
             invoiceService.delete(invoice);
             this.invoices = invoiceService.findAll();
+            FrontendHelper.displaySuccessSmallMessage("Factuur is succesvol verwijderd!");
         } else {
             FrontendHelper.displayErrorSmallMessage("Er ging iets mis.", "Probeer het opnieuw.");
         }
