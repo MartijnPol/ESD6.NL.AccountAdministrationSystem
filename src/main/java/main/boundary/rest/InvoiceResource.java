@@ -4,12 +4,14 @@ import main.domain.Invoice;
 import main.domain.Owner;
 import main.service.InvoiceService;
 import main.service.OwnerService;
+import org.apache.http.client.utils.DateUtils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +29,7 @@ public class InvoiceResource {
     @GET
     @Path("{citizenServiceNumber}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getInvoicesForOwner(@PathParam("citizenServiceNumber")Long citizenServiceNumber) {
+    public Response getInvoicesForOwner(@PathParam("citizenServiceNumber") Long citizenServiceNumber) {
 
         if (citizenServiceNumber == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -42,5 +44,24 @@ public class InvoiceResource {
         List<Invoice> foundInvoices = invoiceService.findByOwner(foundOwner);
 
         return Response.ok(foundInvoices).build();
+    }
+
+    // TODO-Thom: Finish this method
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getDailyDetailsFromInvoice(Invoice invoice) {
+
+        if (null == invoice || null == invoice.getPeriod() || null == invoice.getInvoiceNr()) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+
+        Invoice foundInvoice = this.invoiceService.findByInvoiceNr(invoice.getInvoiceNr());
+        if (null == foundInvoice) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+
+
+        return Response.ok().build();
     }
 }
