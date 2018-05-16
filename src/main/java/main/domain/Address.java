@@ -1,5 +1,7 @@
 package main.domain;
 
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,6 +27,16 @@ public class Address extends BaseEntity {
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
+    }
+
+    public JsonObject toJson() {
+        return Json.createObjectBuilder()
+                .add("street", this.getStreet())
+                .add("streetNr", this.getStreetNr())
+                .add("postalCode", this.getPostalCode())
+                .add("city", this.getCity())
+                .add("country", this.getCountry())
+                .build();
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
