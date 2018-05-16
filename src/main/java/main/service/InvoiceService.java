@@ -97,39 +97,6 @@ public class InvoiceService {
     }
 
     /**
-     * Find last used invoice number.
-     *
-     * @return Long invoice number.
-     */
-    public Long findLastInvoiceNr() {
-        return this.invoiceDao.findLastInvoiceNr();
-    }
-
-    /**
-     * Get the next invoice number that should be used.
-     *
-     * @param lastUsedInvoiceNr Last used invoice number.
-     * @return Next Long invoice number that should be used as identifier.
-     */
-    public Long getNextInvoiceNr(Long lastUsedInvoiceNr) {
-        if (lastUsedInvoiceNr != null) {
-            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-
-            String invoiceNrText = Objects.toString(lastUsedInvoiceNr);
-            String currentYearText = Objects.toString(currentYear);
-            String replacedInvoiceNr = invoiceNrText.replace(currentYearText, "");
-
-            Long subtractedNr = Long.valueOf(replacedInvoiceNr) + 1;
-
-            String nextInvoiceNrText = currentYearText + subtractedNr.toString();
-
-            return Long.valueOf(nextInvoiceNrText);
-        }
-
-        return null;
-    }
-
-    /**
      * Find the first Invoice that exists in the database.
      *
      * @return The found Invoice or null if there was nothing retrieved from the database.
