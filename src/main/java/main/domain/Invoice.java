@@ -1,6 +1,7 @@
 package main.domain;
 
 import main.domain.enums.PaymentStatus;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -21,12 +22,14 @@ import java.util.Objects;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "invoice.findByInvoiceNr", query = "SELECT i FROM Invoice i WHERE i.invoiceNr = :invoiceNr"),
-        @NamedQuery(name = "invoice.findFirstInvoice", query = "SELECT i FROM Invoice i ORDER BY i.invoiceNr ASC")
+        @NamedQuery(name = "invoice.findFirstInvoice", query = "SELECT i FROM Invoice i ORDER BY i.invoiceNr ASC"),
+        @NamedQuery(name = "invoice.findLastInvoiceNr", query = "SELECT MAX(i.invoiceNr) FROM Invoice i")
 })
 public class Invoice implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GenericGenerator(name = "invoicenr", strategy = "main.utils.InvoiceNrGenerator")
+    @GeneratedValue(generator = "invoicenr")
     private Long invoiceNr;
 
     @Enumerated(EnumType.STRING)

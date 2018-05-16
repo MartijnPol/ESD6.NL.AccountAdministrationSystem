@@ -228,6 +228,43 @@ public class InvoiceServiceTest {
     }
 
     @Test
+    public void getNextInvoiceNr() {
+        Long expectedResult = 20184L;
+        Long expectedResultNew = 20181L;
+        Long unexpectedResult = 20185L;
+        Long expectedResultNull = null;
+
+        Long nextInvoiceNr = this.invoiceService.getNextInvoiceNr(2018003L);
+        Long nextInvoiceNrNew = this.invoiceService.getNextInvoiceNr(2018L);
+        Long nextInvoiceNrNull = this.invoiceService.getNextInvoiceNr(null);
+
+        Assert.assertEquals(expectedResult, nextInvoiceNr);
+        Assert.assertEquals(expectedResultNew, nextInvoiceNrNew);
+        Assert.assertNotEquals(unexpectedResult, nextInvoiceNr);
+        Assert.assertEquals(expectedResultNull, nextInvoiceNrNull);
+    }
+
+    @Test
+    public void findLastInvoiceNr() {
+        Long expectedResult = 20184L;
+        Long unexpectedResult = 20185L;
+
+        invoice.setInvoiceNr(20184L);
+        Invoice invoiceSecond = new Invoice();
+        invoiceSecond.setInvoiceNr(20185L);
+
+        this.invoiceService.createOrUpdate(invoice);
+        this.invoiceService.createOrUpdate(invoiceSecond);
+
+        when(this.invoiceService.findLastInvoiceNr()).thenReturn(20184L);
+
+        Long lastInvoiceNr = this.invoiceService.findLastInvoiceNr();
+
+        Assert.assertEquals(expectedResult, lastInvoiceNr);
+        Assert.assertNotEquals(unexpectedResult, lastInvoiceNr);
+    }
+
+    @Test
     public void deleteTest() {
         when(this.invoiceService.createOrUpdate(invoice)).thenReturn(invoice);
         this.invoiceService.createOrUpdate(invoice);
