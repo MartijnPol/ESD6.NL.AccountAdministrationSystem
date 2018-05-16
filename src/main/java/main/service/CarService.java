@@ -135,7 +135,7 @@ public class CarService {
      * @returns the updated Car, if something went wrong null will be returned.
      */
     public Car assignToNewOwner(Car car, Ownership newOwnership) {
-        if (car != null && newOwnership != null) {
+        if (null != car && null != newOwnership) {
             if (!car.getCurrentOwnership().equals(newOwnership)) {
                 Ownership pastOwnership = car.getCurrentOwnership();
                 if (pastOwnership != null) {
