@@ -24,10 +24,8 @@ import java.util.Objects;
         @NamedQuery(name = "invoice.findFirstInvoice", query = "SELECT i FROM Invoice i ORDER BY i.invoiceNr ASC"),
         @NamedQuery(name = "invoice.findLastInvoiceNr", query = "SELECT MAX(i.invoiceNr) FROM Invoice i")
 })
-public class Invoice implements Serializable {
+public class Invoice extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long invoiceNr;
 
     @Enumerated(EnumType.STRING)

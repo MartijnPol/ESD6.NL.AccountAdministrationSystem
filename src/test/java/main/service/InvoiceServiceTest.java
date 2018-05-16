@@ -218,7 +218,7 @@ public class InvoiceServiceTest {
         invoiceSecond.setInvoiceNr(2L);
 
         when(this.invoiceService.createOrUpdate(invoiceSecond)).thenReturn(invoiceSecond);
-        invoiceDao.create(invoiceSecond);
+        invoiceDao.createOrUpdate(invoiceSecond);
 
         when(this.invoiceService.findFirstInvoice()).thenReturn(invoice);
 

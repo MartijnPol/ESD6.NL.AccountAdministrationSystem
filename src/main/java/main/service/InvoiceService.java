@@ -36,11 +36,7 @@ public class InvoiceService {
     private TariffService tariffService;
 
     public Invoice createOrUpdate(Invoice invoice) {
-        if (invoice.getInvoiceNr() == null) {
-            return this.invoiceDao.create(invoice);
-        } else {
-            return this.invoiceDao.update(invoice);
-        }
+        return this.invoiceDao.createOrUpdate(invoice);
     }
 
     public void delete(Invoice invoice) {

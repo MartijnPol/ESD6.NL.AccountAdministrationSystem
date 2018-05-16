@@ -34,7 +34,7 @@ public class InvoiceDaoTest {
     @Test
     public void createInvoiceTest() {
         invoice.setInvoiceNr(1L);
-        invoiceDao.create(invoice);
+        invoiceDao.createOrUpdate(invoice);
 
         when(invoiceDao.findByInvoiceNr(Matchers.eq(1L))).thenReturn(invoice);
         when(invoiceDao.findByInvoiceNr(AdditionalMatchers.not(Matchers.eq(1L)))).thenReturn(null);
@@ -49,7 +49,7 @@ public class InvoiceDaoTest {
     @Test
     public void updateInvoiceTest() {
         invoice.setInvoiceNr(1L);
-        invoiceDao.create(invoice);
+        invoiceDao.createOrUpdate(invoice);
 
         when(invoiceDao.findByInvoiceNr(Matchers.eq(1L))).thenReturn(invoice);
 
@@ -59,7 +59,7 @@ public class InvoiceDaoTest {
         invoiceByNrFirst.setInvoiceNr(2L);
         invoiceByNrFirst.setPaymentStatus(PaymentStatus.PAID);
 
-        invoiceDao.update(invoiceByNrFirst);
+        invoiceDao.createOrUpdate(invoiceByNrFirst);
 
         when(invoiceDao.findByInvoiceNr(Matchers.eq(2L))).thenReturn(invoiceByNrFirst);
         when(invoiceDao.findByInvoiceNr(AdditionalMatchers.not(Matchers.eq(2L)))).thenReturn(null);
@@ -74,7 +74,7 @@ public class InvoiceDaoTest {
     @Test
     public void deleteInvoiceTest() {
         invoice.setInvoiceNr(1L);
-        invoiceDao.create(invoice);
+        invoiceDao.createOrUpdate(invoice);
 
         when(invoiceDao.findByInvoiceNr(Matchers.eq(1L))).thenReturn(invoice);
 
@@ -93,11 +93,11 @@ public class InvoiceDaoTest {
     @Test
     public void findFirstInvoiceTest() {
         invoice.setInvoiceNr(1L);
-        invoiceDao.create(invoice);
+        invoiceDao.createOrUpdate(invoice);
 
         Invoice invoiceSecond = new Invoice();
         invoiceSecond.setInvoiceNr(2L);
-        invoiceDao.create(invoiceSecond);
+        invoiceDao.createOrUpdate(invoiceSecond);
 
         when(invoiceDao.findFirstInvoice()).thenReturn(invoice);
 

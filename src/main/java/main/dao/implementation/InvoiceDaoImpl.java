@@ -39,16 +39,4 @@ public class InvoiceDaoImpl extends GenericDaoJPAImpl<Invoice> implements Invoic
 
         return query.getSingleResult();
     }
-
-    @Override
-    public Invoice create(Invoice invoice) {
-        this.entityManager.persist(invoice);
-
-        return invoice;
-    }
-
-    @Override
-    public Invoice update(Invoice invoice) {
-        return getEntityManager().merge(invoice);
-    }
 }

@@ -12,8 +12,4 @@ public interface InvoiceDao extends GenericDao<Invoice> {
     Invoice findFirstInvoice();
 
     Long findLastInvoiceNr();
-
-    Invoice create(Invoice invoice);
-
-    Invoice update(Invoice invoice);
 }
