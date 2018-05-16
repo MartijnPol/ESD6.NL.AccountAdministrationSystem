@@ -39,8 +39,8 @@ public class InvoiceResource {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
 
-//        List<Invoice> foundInvoices = invoiceService.findByOwner(foundOwner);
+        List<Invoice> foundInvoices = invoiceService.findByOwner(foundOwner);
 
-        return null;
+        return Response.ok(foundInvoices).build();
     }
 }

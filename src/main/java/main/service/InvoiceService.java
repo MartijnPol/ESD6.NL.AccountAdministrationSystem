@@ -6,10 +6,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import main.dao.InvoiceDao;
 import main.dao.JPA;
-import main.domain.Car;
-import main.domain.Ownership;
-import main.domain.Invoice;
-import main.domain.Tariff;
+import main.domain.*;
 import main.utils.StringHelper;
 
 import javax.ejb.Stateless;
@@ -391,6 +388,10 @@ public class InvoiceService {
 
     public void setInvoiceDao(InvoiceDao invoiceDao) {
         this.invoiceDao = invoiceDao;
+    }
+
+    public List<Invoice> findByOwner(Owner foundOwner) {
+        return this.invoiceDao.findByOwner(foundOwner);
     }
 
     //</editor-fold>

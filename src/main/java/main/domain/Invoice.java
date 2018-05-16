@@ -22,7 +22,8 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(name = "invoice.findByInvoiceNr", query = "SELECT i FROM Invoice i WHERE i.invoiceNr = :invoiceNr"),
         @NamedQuery(name = "invoice.findFirstInvoice", query = "SELECT i FROM Invoice i ORDER BY i.invoiceNr ASC"),
-        @NamedQuery(name = "invoice.findLastInvoiceNr", query = "SELECT MAX(i.invoiceNr) FROM Invoice i")
+        @NamedQuery(name = "invoice.findLastInvoiceNr", query = "SELECT MAX(i.invoiceNr) FROM Invoice i"),
+        @NamedQuery(name = "invoice.findByOwner", query = "SELECT i FROM Invoice i WHERE i.ownership.owner = :owner")
 })
 public class Invoice extends BaseEntity {
 
