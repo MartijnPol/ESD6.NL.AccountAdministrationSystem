@@ -1,7 +1,8 @@
 package web.bean.cars;
 
 import main.domain.Car;
-import main.domain.Invoice;
+import main.domain.CarTracker;
+import main.domain.Ownership;
 import main.service.CarService;
 import main.service.CarTrackerService;
 import main.service.OwnershipService;
@@ -12,9 +13,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.CascadeType;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.io.Serializable;
 import java.util.List;
 
