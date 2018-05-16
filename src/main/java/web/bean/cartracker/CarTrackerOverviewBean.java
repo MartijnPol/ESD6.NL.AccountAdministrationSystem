@@ -65,29 +65,29 @@ public class CarTrackerOverviewBean implements Serializable {
 
     }
 
-    public void createCartracker (){
+    public void createCarTracker(){
         if (!this.cartrackerId.isEmpty() && !this.manufacturer.isEmpty()) {
             CarTracker carTracker = new CarTracker(cartrackerId , manufacturer);
-            carTrackerService.create(carTracker);
+            carTrackerService.createOrUpdate(carTracker);
             // Post naar simulatie systeem met id
             //Unirest.post("http://localhost:8080/DisplacementSystem/api/CarTrackers")
         }
     }
 
-    public void disableCartracker(CarTracker carTracker){
+    public void disableCarTracker(CarTracker carTracker){
         carTracker.setEnabled(false);
-        carTrackerService.update(carTracker);
+        carTrackerService.createOrUpdate(carTracker);
     }
 
 
-    public Owner getOwnerDetails (String cartrackerID){
-        Car car = carService.findByCarTrackerId(cartrackerID);
+    public Owner getOwnerDetails (String carTrackerId){
+        Car car = carService.findByCarTrackerId(carTrackerId);
         Ownership ownership = car.getCurrentOwnership();
         return  ownership.getOwner();
     }
 
-    public Car getCarDetails (String cartrackerID){
-        return carService.findByCarTrackerId(cartrackerID);
+    public Car getCarDetails (String cartrackerId){
+        return carService.findByCarTrackerId(cartrackerId);
     }
 
     public List<CarTracker> getAllCartrackers() throws UnirestException {

@@ -19,7 +19,6 @@ import java.util.List;
         @NamedQuery(name = "car.findByCarTrackerId", query = "SELECT c FROM Car c WHERE c.currentCarTracker.id = :carTrackerId"),
         @NamedQuery(name = "car.deleteByLicencePlate", query = "DELETE FROM Car c WHERE c.licensePlate = :licensePlate")
 })
-
 public class Car extends BaseEntity {
 
     private String licensePlate;

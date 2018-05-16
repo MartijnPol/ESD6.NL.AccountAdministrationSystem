@@ -23,6 +23,8 @@ public class StartUp {
     @Inject
     private CarService carService;
     @Inject
+    private CarTrackerService carTrackerService;
+    @Inject
     private InvoiceService invoiceService;
     @Inject
     private OwnershipService ownershipService;
@@ -54,16 +56,24 @@ public class StartUp {
 //        Ownership ownership2 = new Ownership();
 //        ownership2.setOwner(owner2);
 //
-//        Car car1 = new Car("08-SK-PX", ownership);
-//        Car car2 = new Car("00-01-ES", ownership2);
+//        Car car1 = carService.createOrUpdate(new Car("08-SK-PX", ownership));
+//        Car car2 = carService.createOrUpdate(new Car("00-01-ES", ownership2));
 //
 //        ownership.setCar(car1);
 //        ownership2.setCar(car2);
 //        this.ownershipService.createOrUpdate(ownership);
 //        this.ownershipService.createOrUpdate(ownership2);
 //
-//        car1.setCarTrackerId(1L);
-//        car2.setCarTrackerId(2L);
+//        CarTracker carTracker = carTrackerService.createOrUpdate(new CarTracker("NLD1", "Tesla"));
+//        CarTracker carTracker2 = carTrackerService.createOrUpdate(new CarTracker("NLD2", "Volvo"));
+//
+//        car1.setCurrentCarTracker(carTracker);
+//        car2.setCurrentCarTracker(carTracker2);
+//        carTracker.setCar(car1);
+//        carTracker2.setCar(car2);
+//
+//        carTrackerService.createOrUpdate(carTracker);
+//        carTrackerService.createOrUpdate(carTracker2);
 //
 //        carService.createOrUpdate(car1);
 //        carService.createOrUpdate(car2);
