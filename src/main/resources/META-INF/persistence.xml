@@ -2,6 +2,7 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
     <persistence-unit name="AccountAdministrationPU" transaction-type="JTA">
+        <!--<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>-->
         <jta-data-source>jdbc/AccountAdministrationSystem</jta-data-source>
         <class>main.domain.Address</class>
         <class>main.domain.BatchLog</class>
@@ -16,6 +17,7 @@
         <class>main.domain.UserGroup</class>
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <!--<property name="eclipselink.session.customizer" value="main.utils.InvoiceNrGenerator"/>-->
         </properties>
     </persistence-unit>
 

@@ -1,7 +1,6 @@
 package main.domain;
 
 import main.domain.enums.PaymentStatus;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,8 +22,7 @@ import java.util.Objects;
 public class Invoice implements Serializable {
 
     @Id
-    @GenericGenerator(name = "invoicenr", strategy = "main.utils.InvoiceNrGenerator")
-    @GeneratedValue(generator = "invoicenr")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long invoiceNr;
 
     @Enumerated(EnumType.STRING)
