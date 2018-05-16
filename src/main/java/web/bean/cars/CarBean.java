@@ -3,7 +3,7 @@ package web.bean.cars;
 import main.domain.Car;
 import main.domain.Ownership;
 import main.service.CarService;
-import main.service.CarOwnershipService;
+import main.service.OwnershipService;
 import web.bean.BaseBean;
 import web.core.helper.FrontendHelper;
 
@@ -22,7 +22,7 @@ public class CarBean extends BaseBean {
     @Inject
     private CarService carService;
     @Inject
-    private CarOwnershipService carOwnershipService;
+    private OwnershipService ownershipService;
 
     private Long carId;
     private Car car;
@@ -31,7 +31,7 @@ public class CarBean extends BaseBean {
 
     @Override
     public void init() {
-        this.ownerships = this.carOwnershipService.findAll();
+        this.ownerships = this.ownershipService.findAll();
         this.car = this.carService.findById(this.carId);
     }
 

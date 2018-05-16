@@ -4,7 +4,7 @@ import main.domain.Car;
 import main.domain.CarTracker;
 import main.domain.Ownership;
 import main.service.CarService;
-import main.service.CarOwnershipService;
+import main.service.OwnershipService;
 import main.service.CarTrackerService;
 import web.bean.BaseBean;
 
@@ -25,7 +25,7 @@ public class CarTrackerBean extends BaseBean {
     private CarTrackerService carTrackerService;
 
     @Inject
-    private CarOwnershipService carOwnershipService;
+    private OwnershipService ownershipService;
 
     private Long carId;
     private String cartrackerId;
@@ -36,7 +36,7 @@ public class CarTrackerBean extends BaseBean {
 
     @Override
     public void init() {
-        this.ownerships = this.carOwnershipService.findAll();
+        this.ownerships = this.ownershipService.findAll();
         this.carTracker = this.carTrackerService.findById(cartrackerId);
     }
 

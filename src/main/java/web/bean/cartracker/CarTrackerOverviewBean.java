@@ -35,7 +35,7 @@ public class CarTrackerOverviewBean implements Serializable {
     private CarTrackerService carTrackerService;
 
     @Inject
-    private CarOwnershipService carOwnershipService;
+    private OwnershipService ownershipService;
 
     @Inject
     private RDWService rdwService;

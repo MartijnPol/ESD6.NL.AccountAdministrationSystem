@@ -12,7 +12,7 @@ import java.util.List;
  * @author Thom van de Pas on 4-4-2018
  */
 @Stateless
-public class CarOwnershipService {
+public class OwnershipService {
 
     @Inject
     @JPA
