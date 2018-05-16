@@ -12,12 +12,11 @@ import javax.ws.rs.core.Response;
 @Stateless
 public class BatchResource {
 
-    private Long executeId;
-    private final JobOperator jobOperator = BatchRuntime.getJobOperator();;
+    private final JobOperator jobOperator = BatchRuntime.getJobOperator();
 
     @GET
     public Response startJob() {
-        executeId = jobOperator.start("invoicegeneration", null);
+        Long executeId = jobOperator.start("invoicegeneration", null);
 
         return Response.ok("Batch process invoice generation started: " + executeId).build();
     }

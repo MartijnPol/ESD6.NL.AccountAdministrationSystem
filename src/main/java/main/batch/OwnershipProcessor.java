@@ -1,12 +1,9 @@
 package main.batch;
 
 import main.domain.Ownership;
-import main.service.BatchLogService;
 
 import javax.batch.api.chunk.ItemProcessor;
-import javax.batch.runtime.context.JobContext;
 import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -8,14 +8,12 @@ import org.junit.Test;
 public class EncryptionHelperTest {
 
     private String input;
-    private String emptyInput;
-    private String nullInput;
 
     @Before
     public void init() {
         this.input = "DuckDuckGo";
-        this.emptyInput = "";
-        this.nullInput = null;
+        String emptyInput = "";
+        String nullInput = null;
     }
 
     @Test

@@ -32,8 +32,6 @@ public class CarServiceTest {
     private CarService carService;
     private Car car;
 
-    private Owner currentOwner;
-    private Owner newOwner;
     private Ownership newOwnership;
     private Ownership currentOwnership;
     private CarTracker carTracker;
@@ -55,7 +53,7 @@ public class CarServiceTest {
         carService.setRdwDao(rdwDao);
         carService.setRdwFuelDao(rdwFuelDao);
 
-        currentOwner = new Owner("Thom", "van de Pas", new Date(), new Address());
+        Owner currentOwner = new Owner("Thom", "van de Pas", new Date(), new Address());
         currentOwnership = new Ownership();
         currentOwner.addOwnership(currentOwnership);
         currentOwnership.setOwner(currentOwner);
@@ -64,7 +62,7 @@ public class CarServiceTest {
         car.setCurrentOwnership(currentOwnership);
 
 
-        newOwner = new Owner("Martijn", "van der Pol", new Date(), new Address());
+        Owner newOwner = new Owner("Martijn", "van der Pol", new Date(), new Address());
         newOwnership = new Ownership();
         newOwner.addOwnership(newOwnership);
         newOwnership.setOwner(newOwner);

@@ -3,13 +3,9 @@ package main.utils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jasypt.util.text.StrongTextEncryptor;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Random;
-
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * @author Thom van de Pas on 19-3-2018

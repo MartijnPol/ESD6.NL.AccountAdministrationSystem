@@ -3,7 +3,6 @@ package main.dao;
 
 import main.domain.Car;
 import main.domain.CarTracker;
-import main.domain.Owner;
 
 import java.util.List;
 

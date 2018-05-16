@@ -6,7 +6,6 @@ import main.domain.UserGroup;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
