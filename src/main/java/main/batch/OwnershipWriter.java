@@ -55,7 +55,10 @@ public class OwnershipWriter implements ItemWriter {
             logger.log(Level.INFO, "Generating invoice for owner: " + ownership.getOwner().getFullName());
 
             BigDecimal totalInvoiceAmount = invoiceService.generateTotalInvoiceAmount(ownership);
+            Long lastInvoiceNr = invoiceService.findLastInvoiceNr();
+            Long nextInvoiceNr = invoiceService.getNextInvoiceNr(lastInvoiceNr);
             Invoice invoice = new Invoice();
+            invoice.setInvoiceNr(nextInvoiceNr);
             invoice.setOwnership(ownership);
             invoice.setTotalAmount(totalInvoiceAmount);
             invoiceService.createOrUpdate(invoice);
