@@ -181,20 +181,6 @@ public class InvoiceServiceTest {
     }
 
     @Test
-    public void getNextInvoiceNr() {
-        Long expectedResult = 20184L;
-        Long unexpectedResult = 20185L;
-        Long expectedResultNull = null;
-
-        Long nextInvoiceNr = this.invoiceService.getNextInvoiceNr(2018003L);
-        Long nextInvoiceNrNull = this.invoiceService.getNextInvoiceNr(null);
-
-        Assert.assertEquals(expectedResult, nextInvoiceNr);
-        Assert.assertNotEquals(unexpectedResult, nextInvoiceNr);
-        Assert.assertEquals(expectedResultNull, nextInvoiceNrNull);
-    }
-
-    @Test
     public void findByIdTest() {
         when(this.invoiceService.findById(Matchers.eq(1L))).thenReturn(invoice);
         when(this.invoiceService.findById(AdditionalMatchers.not(Matchers.eq(1L)))).thenReturn(null);

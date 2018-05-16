@@ -16,13 +16,12 @@ import java.util.Objects;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "invoice.findByInvoiceNr", query = "SELECT i FROM Invoice i WHERE i.invoiceNr = :invoiceNr"),
-        @NamedQuery(name = "invoice.findFirstInvoice", query = "SELECT i FROM Invoice i ORDER BY i.invoiceNr ASC"),
-        @NamedQuery(name = "invoice.findLastInvoiceNr", query = "SELECT MAX(i.invoiceNr) FROM Invoice i")
+        @NamedQuery(name = "invoice.findFirstInvoice", query = "SELECT i FROM Invoice i ORDER BY i.invoiceNr ASC")
 })
 public class Invoice implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "invoicenr")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long invoiceNr;
 
     @Enumerated(EnumType.STRING)
