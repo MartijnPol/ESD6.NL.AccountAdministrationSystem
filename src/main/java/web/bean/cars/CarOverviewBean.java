@@ -67,7 +67,7 @@ public class CarOverviewBean implements Serializable {
      */
     public void onRowSelect(SelectEvent event) {
         Car selectedCar = (Car) event.getObject();
-        RedirectHelper.redirect("/pages/cars/car.xhtml?carId=" + selectedCar.getId());
+        RedirectHelper.redirect("/pages/car/car.xhtml?carId=" + selectedCar.getId());
     }
 
     public void onOwnerChange(Owner selectedOwner) {
