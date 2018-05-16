@@ -2,7 +2,6 @@ package main.service;
 
 import main.dao.CarTrackerDao;
 import main.dao.JPA;
-import main.domain.Car;
 import main.domain.CarTracker;
 
 import javax.ejb.Stateless;

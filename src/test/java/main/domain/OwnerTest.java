@@ -13,13 +13,12 @@ import static org.junit.Assert.assertEquals;
  */
 public class OwnerTest {
 
-    private Owner owner;
     private Ownership ownership;
     private List<Car> cars;
 
     @Before
     public void setUp() {
-        owner = new Owner();
+        Owner owner = new Owner();
         owner.setFirstName("DuckDuckGo");
         ownership = new Ownership();
         ownership.setOwner(owner);

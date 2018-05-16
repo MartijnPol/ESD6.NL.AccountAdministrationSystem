@@ -2,12 +2,10 @@ package main.dao.implementation;
 
 import main.dao.InvoiceDao;
 import main.dao.JPA;
-import main.domain.Car;
 import main.domain.Invoice;
 
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
-import java.util.List;
 
 /**
  * @author Thom van de Pas on 4-4-2018

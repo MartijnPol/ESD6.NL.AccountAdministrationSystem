@@ -11,13 +11,10 @@ import main.domain.Ownership;
 import main.domain.Invoice;
 import main.domain.Tariff;
 import main.utils.StringHelper;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.Format;

@@ -36,8 +36,6 @@ public class InvoiceServiceTest {
     private Ownership ownership;
     private Car car;
     private Tariff tariff;
-    private RDW rdwData;
-    private RDWFuel rdwFuelData;
 
     @Mock
     private InvoiceDao invoiceDao;
@@ -54,16 +52,16 @@ public class InvoiceServiceTest {
         this.car = new Car();
         this.tariff = new Tariff();
         this.invoice = new Invoice();
-        this.rdwData = new RDW();
-        this.rdwFuelData = new RDWFuel();
+        RDW rdwData = new RDW();
+        RDWFuel rdwFuelData = new RDWFuel();
         Calendar calendar = Calendar.getInstance();
 
         calendar.set(Calendar.YEAR, 2018);
         calendar.set(Calendar.MONTH, Calendar.JULY);
         calendar.set(Calendar.DATE, 2);
 
-        this.rdwData.setZuinigheidslabel("E");
-        this.rdwFuelData.setBrandstof_omschrijving("Benzine");
+        rdwData.setZuinigheidslabel("E");
+        rdwFuelData.setBrandstof_omschrijving("Benzine");
         this.car.setCurrentOwnership(ownership);
         this.car.setRdwData(rdwData);
         this.car.setRdwFuelData(rdwFuelData);
@@ -182,9 +180,9 @@ public class InvoiceServiceTest {
         Invoice invoiceFoundById = this.invoiceService.findById(1L);
         Invoice invoiceFoundByIdEmpty = this.invoiceService.findById(2L);
 
-        Assert.assertEquals(null, invoiceFoundByIdNull);
+        Assert.assertNull(invoiceFoundByIdNull);
         Assert.assertEquals(invoice, invoiceFoundById);
-        Assert.assertEquals(null, invoiceFoundByIdEmpty);
+        Assert.assertNull(invoiceFoundByIdEmpty);
     }
 
     @Test
@@ -207,8 +205,8 @@ public class InvoiceServiceTest {
         Invoice invoiceFoundByInvoiceNrNull = this.invoiceService.findByInvoiceNr(null);
 
         Assert.assertEquals(invoice, invoiceFoundByInvoiceNr);
-        Assert.assertEquals(null, invoiceFoundByInvoiceNrEmpty);
-        Assert.assertEquals(null, invoiceFoundByInvoiceNrNull);
+        Assert.assertNull(invoiceFoundByInvoiceNrEmpty);
+        Assert.assertNull(invoiceFoundByInvoiceNrNull);
     }
 
     @Test

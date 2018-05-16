@@ -1,17 +1,9 @@
 package main.service;
 
-import main.domain.*;
-import main.domain.enums.PaymentStatus;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Thom van de Pas on 8-3-2018

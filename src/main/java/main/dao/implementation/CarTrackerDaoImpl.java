@@ -1,11 +1,9 @@
 package main.dao.implementation;
 
-import main.dao.CarDao;
 import main.dao.CarTrackerDao;
 import main.dao.JPA;
 import main.domain.Car;
 import main.domain.CarTracker;
-import main.domain.Owner;
 
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;

@@ -15,8 +15,6 @@ import javax.ejb.Stateless;
 @JPA
 public class RDWDaoImpl implements RDWDao {
 
-    private final String baseUrl = "http://opendata.rdw.nl/resource/m9d7-ebf2.json";
-
     /**
      * Function to get RDW data from a given license plate
      * @param licensePlate the license plate
@@ -24,6 +22,7 @@ public class RDWDaoImpl implements RDWDao {
      */
     @Override
     public RDW findByLicensePlate(String licensePlate) {
+        String baseUrl = "http://opendata.rdw.nl/resource/m9d7-ebf2.json";
         String url = baseUrl + "?kenteken=" + StringHelper.replace(licensePlate, "-", "");
         return JSONHelper.getRDWJSONObjectFromUrl(url);
     }

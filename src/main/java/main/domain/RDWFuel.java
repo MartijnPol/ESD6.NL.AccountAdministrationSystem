@@ -1,9 +1,5 @@
 package main.domain;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 

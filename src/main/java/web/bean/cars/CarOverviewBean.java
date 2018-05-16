@@ -1,7 +1,6 @@
 package web.bean.cars;
 
 import main.domain.Car;
-import main.domain.Invoice;
 import main.service.CarService;
 import org.primefaces.event.SelectEvent;
 import web.core.helper.RedirectHelper;

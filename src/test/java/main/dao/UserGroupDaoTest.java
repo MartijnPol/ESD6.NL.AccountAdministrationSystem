@@ -25,8 +25,6 @@ public class UserGroupDaoTest {
 
     private UserGroup userGroup;
     private List<UserGroup> userGroups;
-    private User userFirst;
-    private User userSecond;
 
     @Mock
     private UserGroupDao userGroupDao;
@@ -36,8 +34,8 @@ public class UserGroupDaoTest {
         MockitoAnnotations.initMocks(this);
 
         userGroup = new UserGroup("Admin");
-        userFirst = new User();
-        userSecond = new User();
+        User userFirst = new User();
+        User userSecond = new User();
 
         userFirst.setUsername("DuckDuckGo");
         userFirst.setMailAddress("duckduck@duckstad.nl");

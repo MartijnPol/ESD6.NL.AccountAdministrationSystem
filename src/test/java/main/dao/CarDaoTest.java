@@ -26,9 +26,7 @@ public class CarDaoTest {
 
     private Car car;
     private List<Car> cars;
-    private Ownership ownership;
     private Owner owner;
-    private CarTracker carTracker;
 
     @Mock
     private CarDao carDao;
@@ -38,9 +36,9 @@ public class CarDaoTest {
         MockitoAnnotations.initMocks(this);
 
         car = new Car();
-        ownership = new Ownership();
+        Ownership ownership = new Ownership();
         owner = new Owner();
-        carTracker = new CarTracker("1" , "Sony");
+        CarTracker carTracker = new CarTracker("1", "Sony");
 
 
         owner.setFirstName("DuckDuckGo");
