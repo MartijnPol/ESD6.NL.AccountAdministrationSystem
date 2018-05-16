@@ -1,9 +1,16 @@
 package main.service;
 
+import main.domain.*;
+import main.domain.enums.PaymentStatus;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Thom van de Pas on 8-3-2018
@@ -40,7 +47,12 @@ public class StartUp {
 //        Address address = new Address("Nijverheidsweg", "25a", "5071NL", "Udenhout", "Nederland");
 //        Address address2 = new Address("Tilburgseweg", "12", "5074FK", "Tilburg", "Nederland");
 //        Owner owner1 = ownerService.createOrUpdate(new Owner("Henk", "van der Pol", new Date(), address));
+//        owner1.setCitizenServiceNumber(1234567890L);
 //        Owner owner2 = ownerService.createOrUpdate(new Owner("Frits", "Jansen", new Date(), address2));
+//        owner2.setCitizenServiceNumber(88888888888L);
+//
+//        owner1 = ownerService.createOrUpdate(owner1);
+//        owner2 = ownerService.createOrUpdate(owner2);
 //
 //        Ownership ownership = new Ownership();
 //        ownership.setOwner(owner1);

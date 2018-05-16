@@ -24,6 +24,8 @@ public class Owner extends BaseEntity {
     @Temporal(TemporalType.DATE)
     private Date birthDay;
 
+    private Long citizenServiceNumber;
+
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
@@ -50,7 +52,7 @@ public class Owner extends BaseEntity {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String date = dateFormat.format(this.getBirthDay());
         return Json.createObjectBuilder()
-                .add("fullname", this.getFullName())
+                .add("fullName", this.getFullName())
                 .add("birthday", date)
                 .build();
     }
@@ -86,6 +88,14 @@ public class Owner extends BaseEntity {
         this.birthDay = birthDay;
     }
 
+    public Long getCitizenServiceNumber() {
+        return citizenServiceNumber;
+    }
+
+    public void setCitizenServiceNumber(Long citizenServiceNumber) {
+        this.citizenServiceNumber = citizenServiceNumber;
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -103,7 +113,6 @@ public class Owner extends BaseEntity {
     }
 
     //</editor-fold>
-
 
     @Override
     public boolean equals(Object o) {
