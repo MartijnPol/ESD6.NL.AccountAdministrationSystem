@@ -36,8 +36,6 @@ public class InvoiceServiceTest {
     private Ownership ownership;
     private Car car;
     private Tariff tariff;
-    private RDW rdwData;
-    private RDWFuel rdwFuelData;
 
     @Mock
     private InvoiceDao invoiceDao;
@@ -54,16 +52,16 @@ public class InvoiceServiceTest {
         this.car = new Car();
         this.tariff = new Tariff();
         this.invoice = new Invoice();
-        this.rdwData = new RDW();
-        this.rdwFuelData = new RDWFuel();
+        RDW rdwData = new RDW();
+        RDWFuel rdwFuelData = new RDWFuel();
         Calendar calendar = Calendar.getInstance();
 
         calendar.set(Calendar.YEAR, 2018);
         calendar.set(Calendar.MONTH, Calendar.JULY);
         calendar.set(Calendar.DATE, 2);
 
-        this.rdwData.setZuinigheidslabel("E");
-        this.rdwFuelData.setBrandstof_omschrijving("Benzine");
+        rdwData.setZuinigheidslabel("E");
+        rdwFuelData.setBrandstof_omschrijving("Benzine");
         this.car.setCurrentOwnership(ownership);
         this.car.setRdwData(rdwData);
         this.car.setRdwFuelData(rdwFuelData);
@@ -182,9 +180,9 @@ public class InvoiceServiceTest {
         Invoice invoiceFoundById = this.invoiceService.findById(1L);
         Invoice invoiceFoundByIdEmpty = this.invoiceService.findById(2L);
 
-        Assert.assertEquals(null, invoiceFoundByIdNull);
+        Assert.assertNull(invoiceFoundByIdNull);
         Assert.assertEquals(invoice, invoiceFoundById);
-        Assert.assertEquals(null, invoiceFoundByIdEmpty);
+        Assert.assertNull(invoiceFoundByIdEmpty);
     }
 
     @Test
@@ -207,8 +205,8 @@ public class InvoiceServiceTest {
         Invoice invoiceFoundByInvoiceNrNull = this.invoiceService.findByInvoiceNr(null);
 
         Assert.assertEquals(invoice, invoiceFoundByInvoiceNr);
-        Assert.assertEquals(null, invoiceFoundByInvoiceNrEmpty);
-        Assert.assertEquals(null, invoiceFoundByInvoiceNrNull);
+        Assert.assertNull(invoiceFoundByInvoiceNrEmpty);
+        Assert.assertNull(invoiceFoundByInvoiceNrNull);
     }
 
     @Test
@@ -220,13 +218,50 @@ public class InvoiceServiceTest {
         invoiceSecond.setInvoiceNr(2L);
 
         when(this.invoiceService.createOrUpdate(invoiceSecond)).thenReturn(invoiceSecond);
-        invoiceDao.create(invoiceSecond);
+        invoiceDao.createOrUpdate(invoiceSecond);
 
         when(this.invoiceService.findFirstInvoice()).thenReturn(invoice);
 
         Invoice firstInvoiceFound = this.invoiceService.findFirstInvoice();
 
         Assert.assertEquals(invoice, firstInvoiceFound);
+    }
+
+    @Test
+    public void getNextInvoiceNr() {
+        Long expectedResult = 20184L;
+        Long expectedResultNew = 20181L;
+        Long unexpectedResult = 20185L;
+        Long expectedResultNull = null;
+
+        Long nextInvoiceNr = this.invoiceService.getNextInvoiceNr(2018003L);
+        Long nextInvoiceNrNew = this.invoiceService.getNextInvoiceNr(2018L);
+        Long nextInvoiceNrNull = this.invoiceService.getNextInvoiceNr(null);
+
+        Assert.assertEquals(expectedResult, nextInvoiceNr);
+        Assert.assertEquals(expectedResultNew, nextInvoiceNrNew);
+        Assert.assertNotEquals(unexpectedResult, nextInvoiceNr);
+        Assert.assertEquals(expectedResultNull, nextInvoiceNrNull);
+    }
+
+    @Test
+    public void findLastInvoiceNr() {
+        Long expectedResult = 20184L;
+        Long unexpectedResult = 20185L;
+
+        invoice.setInvoiceNr(20184L);
+        Invoice invoiceSecond = new Invoice();
+        invoiceSecond.setInvoiceNr(20185L);
+
+        this.invoiceService.createOrUpdate(invoice);
+        this.invoiceService.createOrUpdate(invoiceSecond);
+
+        when(this.invoiceService.findLastInvoiceNr()).thenReturn(20184L);
+
+        Long lastInvoiceNr = this.invoiceService.findLastInvoiceNr();
+
+        Assert.assertEquals(expectedResult, lastInvoiceNr);
+        Assert.assertNotEquals(unexpectedResult, lastInvoiceNr);
     }
 
     @Test

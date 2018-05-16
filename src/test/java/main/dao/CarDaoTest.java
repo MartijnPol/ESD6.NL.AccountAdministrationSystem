@@ -26,9 +26,7 @@ public class CarDaoTest {
 
     private Car car;
     private List<Car> cars;
-    private Ownership ownership;
     private Owner owner;
-    private CarTracker carTracker;
 
     @Mock
     private CarDao carDao;
@@ -38,16 +36,16 @@ public class CarDaoTest {
         MockitoAnnotations.initMocks(this);
 
         car = new Car();
-        ownership = new Ownership();
+        Ownership ownership = new Ownership();
         owner = new Owner();
-        carTracker = new CarTracker("1" , "Sony");
+        CarTracker carTracker = new CarTracker("1", "Sony");
 
 
         owner.setFirstName("DuckDuckGo");
         ownership.setOwner(owner);
         car.setCurrentOwnership(ownership);
         car.setLicensePlate("08-SK-PX");
-        car.setCurrentCartracker(carTracker);
+        car.setCurrentCarTracker(carTracker);
         cars = new ArrayList<>();
         cars.add(car);
     }
@@ -80,7 +78,7 @@ public class CarDaoTest {
         Car emptyCarByCarTrackerId = carDao.findByCarTrackerId("2");
 
         assertThat(carByCarTrackerId.getLicensePlate(), is("08-SK-PX"));
-        assertThat(carByCarTrackerId.getCurrentCartracker().getId(), is("1"));
+        assertThat(carByCarTrackerId.getCurrentCarTracker().getId(), is("1"));
         assertThat(emptyCarByCarTrackerId, is(nullValue()));
     }
 

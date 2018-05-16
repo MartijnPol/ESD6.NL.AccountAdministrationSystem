@@ -17,12 +17,12 @@
 
             <div class="content-container">
 
-                <h:form>
+                <h:form id="carTrackerOverviewForm">
 
                     <p:dataTable emptyMessage="Er zijn geen cartrackers gevonden die voldoen aan de criteria"
                                  filteredValue="#{carTrackerOverviewBean.filteredCartrackers}"
                                  paginator="true"
-                                 id="TestDataTable"
+                                 id="carTrackerDataTable"
                                  tableStyleClass="table"
                                  paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -56,8 +56,8 @@
                         </p:column>
 
                         <p:column styleClass="text-align-center" width="20%">
-                            <p:commandButton action="#{carTrackerOverviewBean.disableCartracker(cartracker)}"
-                                             update="TestDataTable"
+                            <p:commandButton action="#{carTrackerOverviewBean.disableCarTracker(cartracker)}"
+                                             update="carTrackerDataTable"
                                              value="Deactiveer"
                                              rendered="#{carTrackerBean.carTracker.car eq null and carTrackerBean.carTracker.enabled  eq 0}"
                                              styleClass="btn btn-danger actionlink">
@@ -83,7 +83,7 @@
 
             <div class="content-container">
 
-                <h:form>
+                <h:form id="addCarTrackerForm">
 
                     <div class="form-group">
                         <p:inputText id="CartrackerID"
@@ -105,9 +105,11 @@
                     </div>
 
 
-                    <p:commandButton action="#{carTrackerOverviewBean.createCartracker}"
+                    <p:commandButton action="#{carTrackerOverviewBean.createCarTracker}"
                                      id="Aanmaken"
                                      value="Aanmaken"
+                                     process="addCarTrackerForm"
+                                     update="carTrackerOverviewForm:carTrackerDataTable"
                                      styleClass="btn btn-success"/>
                 </h:form>
 

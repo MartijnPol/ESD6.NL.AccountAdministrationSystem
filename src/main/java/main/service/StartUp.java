@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,6 +21,8 @@ public class StartUp {
 
     @Inject
     private CarService carService;
+    @Inject
+    private CarTrackerService carTrackerService;
     @Inject
     private InvoiceService invoiceService;
     @Inject
@@ -46,7 +47,12 @@ public class StartUp {
 //        Address address = new Address("Nijverheidsweg", "25a", "5071NL", "Udenhout", "Nederland");
 //        Address address2 = new Address("Tilburgseweg", "12", "5074FK", "Tilburg", "Nederland");
 //        Owner owner1 = ownerService.createOrUpdate(new Owner("Henk", "van der Pol", new Date(), address));
+//        owner1.setCitizenServiceNumber(1234567890L);
 //        Owner owner2 = ownerService.createOrUpdate(new Owner("Frits", "Jansen", new Date(), address2));
+//        owner2.setCitizenServiceNumber(88888888888L);
+//
+//        owner1 = ownerService.createOrUpdate(owner1);
+//        owner2 = ownerService.createOrUpdate(owner2);
 //
 //        Ownership ownership = new Ownership();
 //        ownership.setOwner(owner1);
@@ -54,16 +60,24 @@ public class StartUp {
 //        Ownership ownership2 = new Ownership();
 //        ownership2.setOwner(owner2);
 //
-//        Car car1 = new Car("08-SK-PX", ownership);
-//        Car car2 = new Car("00-01-ES", ownership2);
+//        Car car1 = carService.createOrUpdate(new Car("08-SK-PX", ownership));
+//        Car car2 = carService.createOrUpdate(new Car("00-01-ES", ownership2));
 //
 //        ownership.setCar(car1);
 //        ownership2.setCar(car2);
 //        this.ownershipService.createOrUpdate(ownership);
 //        this.ownershipService.createOrUpdate(ownership2);
 //
-//        car1.setCarTrackerId(1L);
-//        car2.setCarTrackerId(2L);
+//        CarTracker carTracker = carTrackerService.createOrUpdate(new CarTracker("NLD1", "Tesla"));
+//        CarTracker carTracker2 = carTrackerService.createOrUpdate(new CarTracker("NLD2", "Volvo"));
+//
+//        car1.setCurrentCarTracker(carTracker);
+//        car2.setCurrentCarTracker(carTracker2);
+//        carTracker.setCar(car1);
+//        carTracker2.setCar(car2);
+//
+//        carTrackerService.createOrUpdate(carTracker);
+//        carTrackerService.createOrUpdate(carTracker2);
 //
 //        carService.createOrUpdate(car1);
 //        carService.createOrUpdate(car2);

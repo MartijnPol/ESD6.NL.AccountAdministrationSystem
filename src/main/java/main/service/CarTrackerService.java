@@ -2,7 +2,6 @@ package main.service;
 
 import main.dao.CarTrackerDao;
 import main.dao.JPA;
-import main.domain.Car;
 import main.domain.CarTracker;
 
 import javax.ejb.Stateless;
@@ -25,6 +24,21 @@ public class CarTrackerService {
     }
 
     /**
+     * Creates or Updates a CarTracker based on whether it has an ID or not.
+     *
+     * @param carTracker is the CarTracker to be created or updated.
+     * @returns the CarTracker.
+     */
+    public CarTracker createOrUpdate(CarTracker carTracker) {
+        if (null == carTracker.getId()) {
+            return this.create(carTracker);
+        } else {
+            return this.update(carTracker);
+        }
+
+    }
+
+    /**
      * Function to save a given CarTracker object in the database
      *
      * @param carTracker is the CarTracker object that needs to be saved
@@ -42,14 +56,6 @@ public class CarTrackerService {
         return this.carTrackerDao.update(carTracker);
     }
 
-
-    public CarTracker createOrUpdate(CarTracker carTracker) {
-        if (carTracker.getId() == null) {
-            return this.create(carTracker);
-        } else {
-            return this.update(carTracker);
-        }
-    }
     /**
      * Function to find CarTracker data by it's Id
      *

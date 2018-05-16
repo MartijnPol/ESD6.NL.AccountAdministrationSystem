@@ -31,7 +31,6 @@ public class OwnershipReader implements ItemReader {
     private static final Logger logger = Logger.getLogger(OwnershipReader.class.getName());
 
     private ItemNumberCheckpoint checkpoint;
-    private Ownership ownership;
     private Long idCount = 1L;
 
     public OwnershipReader() {
@@ -56,13 +55,13 @@ public class OwnershipReader implements ItemReader {
 
     @Override
     public Object readItem() {
-        this.ownership = null;
-        this.ownership = ownershipService.findById(idCount);
-        if (this.ownership != null) {
+        Ownership ownership = null;
+        ownership = ownershipService.findById(idCount);
+        if (ownership != null) {
             logger.log(Level.INFO, "Reading item");
             this.batchLogService.createOrUpdate(new BatchLog(jobContext.getJobName(), "Bezig met het lezen van ownership met id: " + ownership.getId().toString() , jobContext.getExecutionId()));
             this.idCount = idCount + 1L;
-            return this.ownership;
+            return ownership;
         } else {
             logger.log(Level.INFO, "No items found");
             return null;

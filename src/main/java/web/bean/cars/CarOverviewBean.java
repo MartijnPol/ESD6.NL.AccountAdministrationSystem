@@ -1,6 +1,7 @@
 package web.bean.cars;
 
-import main.domain.*;
+import main.domain.Car;
+import main.domain.Invoice;
 import main.service.CarService;
 import main.service.CarTrackerService;
 import main.service.OwnershipService;

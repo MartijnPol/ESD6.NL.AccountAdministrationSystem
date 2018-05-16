@@ -11,13 +11,10 @@ import main.domain.Ownership;
 import main.domain.Invoice;
 import main.domain.Tariff;
 import main.utils.StringHelper;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.Format;
@@ -39,11 +36,7 @@ public class InvoiceService {
     private TariffService tariffService;
 
     public Invoice createOrUpdate(Invoice invoice) {
-        if (invoice.getInvoiceNr() == null) {
-            return this.invoiceDao.create(invoice);
-        } else {
-            return this.invoiceDao.update(invoice);
-        }
+        return this.invoiceDao.createOrUpdate(invoice);
     }
 
     public void delete(Invoice invoice) {
@@ -103,6 +96,42 @@ public class InvoiceService {
      */
     public Invoice findFirstInvoice() {
         return this.invoiceDao.findFirstInvoice();
+    }
+
+    /**
+     * Find last used invoice number.
+     *
+     * @return Long invoice number.
+     */
+    public Long findLastInvoiceNr() {
+        return this.invoiceDao.findLastInvoiceNr();
+    }
+
+    /**
+     * Get the next invoice number that should be used.
+     *
+     * @param lastUsedInvoiceNr Last used invoice number.
+     * @return Next Long invoice number that should be used as identifier.
+     */
+    public Long getNextInvoiceNr(Long lastUsedInvoiceNr) {
+        if (lastUsedInvoiceNr != null) {
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+            String invoiceNrText = Objects.toString(lastUsedInvoiceNr);
+            String currentYearText = Objects.toString(currentYear);
+            String replacedInvoiceNr = invoiceNrText.replace(currentYearText, "");
+            Long subtractedNr = 1L;
+
+            if (!StringHelper.isEmpty(replacedInvoiceNr)) {
+                subtractedNr = Long.valueOf(replacedInvoiceNr) + 1;
+            }
+
+            String nextInvoiceNrText = currentYearText + subtractedNr.toString();
+
+            return Long.valueOf(nextInvoiceNrText);
+
+        }
+        return null;
     }
 
     //<editor-fold defaultstate="collapsed" desc="Invoice amount generation methods">

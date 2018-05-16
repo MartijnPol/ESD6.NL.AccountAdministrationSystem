@@ -2,12 +2,10 @@ package main.dao.implementation;
 
 import main.dao.InvoiceDao;
 import main.dao.JPA;
-import main.domain.Car;
 import main.domain.Invoice;
 
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
-import java.util.List;
 
 /**
  * @author Thom van de Pas on 4-4-2018
@@ -36,14 +34,9 @@ public class InvoiceDaoImpl extends GenericDaoJPAImpl<Invoice> implements Invoic
     }
 
     @Override
-    public Invoice create(Invoice invoice) {
-        this.entityManager.persist(invoice);
+    public Long findLastInvoiceNr() {
+        TypedQuery<Long> query = getEntityManager().createNamedQuery("invoice.findLastInvoiceNr", Long.class);
 
-        return invoice;
-    }
-
-    @Override
-    public Invoice update(Invoice invoice) {
-        return getEntityManager().merge(invoice);
+        return query.getSingleResult();
     }
 }
