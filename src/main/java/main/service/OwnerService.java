@@ -56,4 +56,8 @@ public class OwnerService {
     public List<Owner> findAll() {
         return this.ownerDao.findAll();
     }
+
+    public void setOwnerDao(OwnerDao ownerDao) {
+        this.ownerDao = ownerDao;
+    }
 }
