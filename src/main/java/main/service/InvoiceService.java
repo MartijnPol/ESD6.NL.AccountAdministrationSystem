@@ -102,6 +102,42 @@ public class InvoiceService {
         return this.invoiceDao.findFirstInvoice();
     }
 
+    /**
+     * Find last used invoice number.
+     *
+     * @return Long invoice number.
+     */
+    public Long findLastInvoiceNr() {
+        return this.invoiceDao.findLastInvoiceNr();
+    }
+
+    /**
+     * Get the next invoice number that should be used.
+     *
+     * @param lastUsedInvoiceNr Last used invoice number.
+     * @return Next Long invoice number that should be used as identifier.
+     */
+    public Long getNextInvoiceNr(Long lastUsedInvoiceNr) {
+        if (lastUsedInvoiceNr != null) {
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+            String invoiceNrText = Objects.toString(lastUsedInvoiceNr);
+            String currentYearText = Objects.toString(currentYear);
+            String replacedInvoiceNr = invoiceNrText.replace(currentYearText, "");
+            Long subtractedNr = 1L;
+
+            if (!StringHelper.isEmpty(replacedInvoiceNr)) {
+                subtractedNr = Long.valueOf(replacedInvoiceNr) + 1;
+            }
+
+            String nextInvoiceNrText = currentYearText + subtractedNr.toString();
+
+            return Long.valueOf(nextInvoiceNrText);
+
+        }
+        return null;
+    }
+
     //<editor-fold defaultstate="collapsed" desc="Invoice amount generation methods">
 
     /**

@@ -34,6 +34,13 @@ public class InvoiceDaoImpl extends GenericDaoJPAImpl<Invoice> implements Invoic
     }
 
     @Override
+    public Long findLastInvoiceNr() {
+        TypedQuery<Long> query = getEntityManager().createNamedQuery("invoice.findLastInvoiceNr", Long.class);
+
+        return query.getSingleResult();
+    }
+
+    @Override
     public Invoice create(Invoice invoice) {
         this.entityManager.persist(invoice);
 
