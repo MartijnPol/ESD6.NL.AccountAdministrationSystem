@@ -16,13 +16,7 @@
 
                         <p:menuitem value="Dashboard" url="/pages/profile/dashboard.xhtml"/>
 
-                        <p:submenu label="Gebruiker" styleClass="sub-menu">
-                            <p:column>
-                                <p:submenu styleClass="nav-item">
-                                    <p:menuitem value="Toevoegen" url="/pages/profile/register.xhtml"/>
-                                </p:submenu>
-                            </p:column>
-                        </p:submenu>
+                        <p:menuitem value="Gebruikers" url="/pages/profile/register.xhtml"/>
 
                         <p:submenu label="Factuur">
                             <p:column>
@@ -33,30 +27,11 @@
                             </p:column>
                         </p:submenu>
 
-                        <p:submenu label="Auto's">
-                            <p:column>
-                                <p:submenu>
-                                    <p:menuitem value="Overzicht" url="/pages/cars/overview.xhtml"/>
-                                </p:submenu>
-                            </p:column>
-                        </p:submenu>
+                        <p:menuitem value="Auto's" url="/pages/cars/overview.xhtml"/>
 
-                        <p:submenu label="Cartrackers">
-                            <p:column>
-                                <p:submenu>
-                                    <p:menuitem value="Overzicht" url="/pages/cartracker/overview.xhtml"/>
-                                </p:submenu>
-                            </p:column>
-                        </p:submenu>
+                        <p:menuitem value="CarTrackers" url="/pages/cartracker/overview.xhtml"/>
 
-                        <p:submenu label="Tarieven">
-                            <p:column>
-                                <p:submenu>
-                                    <p:menuitem value="Overzicht" url="/pages/tariff/overview.xhtml"/>
-                                    <p:menuitem value="Toevoegen" url="/pages/tariff/add.xhtml"/>
-                                </p:submenu>
-                            </p:column>
-                        </p:submenu>
+                        <p:menuitem value="Tarieven" url="/pages/tariff/overview.xhtml"/>
 
                         <p:menuitem value="Uitloggen" action="#{sessionBean.logout()}"/>
 
