@@ -42,7 +42,7 @@ public class OwnerResource {
         }
 
 
-        return Response.ok(foundOwner.toJson()).build();
+        return Response.ok(foundOwner.toJson()).header("Access-Control-Allow-Origin", "*").build();
 
     }
 
