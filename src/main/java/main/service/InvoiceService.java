@@ -32,6 +32,9 @@ public class InvoiceService {
     @Inject
     private TariffService tariffService;
 
+    @Inject
+    private CarService carService;
+
     public Invoice createOrUpdate(Invoice invoice) {
         return this.invoiceDao.createOrUpdate(invoice);
     }
@@ -149,12 +152,52 @@ public class InvoiceService {
             double mainTariff = tariff.getTariffInEuro();
             double economicalAddition = getEconomicalAddition(car, tariff);
             double carFuelAddition = getCarFuelAddition(car, tariff);
+            double carMovementCosts = getCarMovementCosts(car, tariff);
 
-            BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition));
+            BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition) + carMovementCosts);
             return preventNegativeAmount(result);
         }
 
         return BigDecimal.ZERO;
+    }
+
+    public double getCarMovementCosts(Car car, Tariff tariff) {
+        CarTrackerResponse carMovements = this.carService.findCarMovements(car.getCurrentCarTracker().getId());
+        HashMap<Date, List<CarTrackerRuleResponse>> sortedMovementsByDay = sortMovementsByDay(carMovements);
+
+
+        double totalCosts = 0.0;
+        Iterator iterator =  sortedMovementsByDay.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry pair = (Map.Entry) iterator.next();
+
+            totalCosts = totalCosts + getCarMovementCosts(pair);
+            
+            iterator.remove();
+        }
+        return totalCosts;
+    }
+
+    public double getCarMovementCosts(Map.Entry pair) {
+        return 0.0;
+    }
+
+    public HashMap<Date, List<CarTrackerRuleResponse>> sortMovementsByDay(CarTrackerResponse carMovements) {
+        HashMap<Date, List<CarTrackerRuleResponse>> sortedCarMovements = new HashMap<>();
+
+        for (CarTrackerRuleResponse carTrackerRule : carMovements.getCarTrackerRuleResponses()) {
+            if(!sortedCarMovements.containsKey(carTrackerRule.getDate())) {
+                List<CarTrackerRuleResponse> carTrackerRules = new ArrayList<>();
+                carTrackerRules.add(carTrackerRule);
+
+                sortedCarMovements.put(carTrackerRule.getDate(), carTrackerRules);
+            } else {
+                sortedCarMovements.get(carTrackerRule.getDate()).add(carTrackerRule);
+            }
+        }
+
+        return sortedCarMovements;
     }
 
     /**

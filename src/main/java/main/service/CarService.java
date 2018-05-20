@@ -1,10 +1,18 @@
 package main.service;
 
+import com.google.gson.Gson;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.GetRequest;
+import main.boundary.rest.CarResource;
 import main.dao.CarDao;
 import main.dao.JPA;
 import main.dao.RDWDao;
 import main.dao.RDWFuelDao;
 import main.domain.*;
+import main.utils.StringHelper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -168,6 +176,23 @@ public class CarService {
             this.createOrUpdate(car);
             return car;
         }
+        return null;
+    }
+
+    public CarTrackerResponse findCarMovements(String carTrackerId) {
+        if (!StringHelper.isEmpty(carTrackerId)) {
+            GetRequest getRequest = Unirest.get("http://localhost:55790/DisplacementSystem/api/CarTrackers/" + carTrackerId);
+            try {
+                HttpResponse<JsonNode> jsonNodeHttpResponse = getRequest.asJson();
+                Gson gson = new Gson();
+                String jsonString = jsonNodeHttpResponse.getBody().toString();
+
+                return gson.fromJson(jsonString, CarTrackerResponse.class);
+            } catch (UnirestException e) {
+                e.printStackTrace();
+            }
+        }
+
         return null;
     }
 
