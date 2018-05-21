@@ -152,15 +152,24 @@ public class InvoiceService {
             double mainTariff = tariff.getTariffInEuro();
             double economicalAddition = getEconomicalAddition(car, tariff);
             double carFuelAddition = getCarFuelAddition(car, tariff);
-            double carMovementCosts = getCarMovementCosts(car, tariff);
 
-            BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition) + carMovementCosts);
+            BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition));
             return preventNegativeAmount(result);
         }
 
         return BigDecimal.ZERO;
     }
 
+    /**
+     * Get the total costs for car movements.
+     * Car movements are retrieved from the DisplacementSystem via REST call.
+     * The response will be sorted by day and after that used for calculations.
+     * When the response does not hold any CarTrackerRules 0.0 is returned.
+     *
+     * @param car Car that should be checked
+     * @param tariff Tariff used for calculation
+     * @return Costs based on the car movements when there is no CarTrackerRules found 0.0 is returned
+     */
     public double getCarMovementCosts(Car car, Tariff tariff) {
         CarTrackerResponse carMovements = this.carService.findCarMovements(car.getCurrentCarTracker().getId());
         HashMap<Date, List<CarTrackerRuleResponse>> sortedMovementsByDay = sortMovementsByDay(carMovements);
@@ -183,6 +192,13 @@ public class InvoiceService {
         return 0.0;
     }
 
+    /**
+     * Sort data from a CarTrackerResponse object by day.
+     * The sorted data is returned in a HashMap and could be later used for calculations.
+     *
+     * @param carMovements CarTrackerResponse object containing all the data
+     * @return HashMap sorted by day and for each day the car movements
+     */
     public HashMap<Date, List<CarTrackerRuleResponse>> sortMovementsByDay(CarTrackerResponse carMovements) {
         HashMap<Date, List<CarTrackerRuleResponse>> sortedCarMovements = new HashMap<>();
 
