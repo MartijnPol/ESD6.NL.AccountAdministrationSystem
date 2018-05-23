@@ -158,6 +158,9 @@ input {
 .ui-dialog .ui-dialog-buttonpane button:hover {
     background-color: #E1E6EA;
 }
+.ui-shadow {
+    background-color: #FFFFFF;
+}
 
 /** Dropdownlist **/
 .ui-selectonemenu-panel {

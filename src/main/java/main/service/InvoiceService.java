@@ -185,19 +185,35 @@ public class InvoiceService {
 
 
         double totalCosts = 0.0;
-        Iterator iterator =  sortedMovementsByDay.entrySet().iterator();
 
-        while (iterator.hasNext()) {
-            Map.Entry pair = (Map.Entry) iterator.next();
-
-            totalCosts = totalCosts + getCarMovementCosts(pair);
-            
-            iterator.remove();
+        for (List<CarTrackerRuleResponse> responseList : sortedMovementsByDay.values()) {
+            double carMovementCostsPerDay = getCarMovementCostsPerDay(responseList, tariff);
+            totalCosts = totalCosts + carMovementCostsPerDay;
         }
+
         return totalCosts;
     }
 
-    public double getCarMovementCosts(Map.Entry pair) {
+    /**
+     * Calculate car movement costs per day.
+     * Movements are retrieved from the rules parameter.
+     * Various details about the movements are requested from the Google Road API, and later used for calculations.
+     *
+     * @param rules List of CarTrackerResponseRule containing necessary data.
+     * @param tariff Tariff used for calculation
+     * @return Total costs or 0.0 when rules are empty
+     */
+    public double getCarMovementCostsPerDay(List<CarTrackerRuleResponse> rules, Tariff tariff) {
+        if (!rules.isEmpty()) {
+            double totalCosts = 0.0;
+
+            for (CarTrackerRuleResponse carTrackerRule : rules) {
+
+            }
+
+            return totalCosts;
+        }
+
         return 0.0;
     }
 
