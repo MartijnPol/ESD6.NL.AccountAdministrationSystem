@@ -30,7 +30,7 @@ public class Ownership extends BaseEntity {
     @ManyToOne
     private Car car;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private Owner owner;
 
     public Ownership() {
