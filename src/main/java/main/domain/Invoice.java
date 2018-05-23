@@ -101,6 +101,14 @@ public class Invoice extends BaseEntity {
         this.filePath = filePath;
     }
 
+    public CarTrackerResponse getCarTrackerResponse() {
+        return carTrackerResponse;
+    }
+
+    public void setCarTrackerResponse(CarTrackerResponse carTrackerResponse) {
+        this.carTrackerResponse = carTrackerResponse;
+    }
+
     //</editor-fold>
 
     @Override
@@ -123,7 +131,7 @@ public class Invoice extends BaseEntity {
         return Json.createObjectBuilder()
                 .add("invoiceNr", this.getInvoiceNr())
                 .add("paymentStatus", this.getPaymentStatus().toString())
-                .add("date",formattedDate)
+                .add("date", formattedDate)
                 .add("totalAmount", this.getTotalAmount().setScale(2, RoundingMode.HALF_UP))
                 .build();
     }
