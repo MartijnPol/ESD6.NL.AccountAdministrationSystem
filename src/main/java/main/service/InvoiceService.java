@@ -208,6 +208,9 @@ public class InvoiceService {
             double totalCosts = 0.0;
 
             for (CarTrackerRuleResponse carTrackerRule : rules) {
+                double lat = carTrackerRule.getLat();
+                double lon = carTrackerRule.getLon();
+
 
             }
 
