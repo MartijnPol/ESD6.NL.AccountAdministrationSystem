@@ -38,6 +38,9 @@ public class Invoice extends BaseEntity {
     @Column(precision = 20, scale = 10)
     private BigDecimal totalAmount;
 
+    @Transient
+    private CarTrackerResponse carTrackerResponse;
+
     @ManyToOne
     private Ownership ownership;
 
