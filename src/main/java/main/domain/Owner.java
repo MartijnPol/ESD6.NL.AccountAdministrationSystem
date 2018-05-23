@@ -19,7 +19,9 @@ import java.util.Objects;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "owner.findByFullNameAndCSN", query = "SELECT o FROM Owner o WHERE o.firstName = :firstName " +
-                "AND o.lastName = :lastName AND o.citizenServiceNumber = :citizenServiceNumber")
+                "AND o.lastName = :lastName AND o.citizenServiceNumber = :citizenServiceNumber"),
+        @NamedQuery(name = "owner.findByCSN",
+                query = "SELECT o FROM Owner o WHERE o.citizenServiceNumber = :citizenServiceNumber")
 })
 public class Owner extends BaseEntity {
 

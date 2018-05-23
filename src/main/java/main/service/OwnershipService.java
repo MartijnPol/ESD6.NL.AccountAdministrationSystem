@@ -26,7 +26,6 @@ public class OwnershipService {
     public Ownership findById(Long id) {
         return this.carOwnershipDao.findById(id);
     }
-
     public List<Ownership> findAll() {
         return this.carOwnershipDao.findAll();
     }

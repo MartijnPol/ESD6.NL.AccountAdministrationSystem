@@ -37,6 +37,10 @@ public class Ownership extends BaseEntity {
         this.invoices = new ArrayList<>();
     }
 
+    public Ownership(Owner owner) {
+        this.owner = owner;
+    }
+
     public void addInvoice(Invoice invoice) {
         if (!this.invoices.contains(invoice)) {
             this.invoices.add(invoice);

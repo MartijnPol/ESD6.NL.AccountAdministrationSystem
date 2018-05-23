@@ -83,7 +83,7 @@ public class InvoiceDaoTest {
 
         invoiceDao.delete(invoiceByNr);
 
-        when(invoiceDao.findByInvoiceNr(Matchers.eq(1L))).thenReturn(null);
+        when(invoiceDao.findByInvoiceNr(1L)).thenReturn(null);
 
         Invoice invoiceEmpty = invoiceDao.findByInvoiceNr(1L);
 

@@ -60,4 +60,8 @@ public class OwnerService {
     public void setOwnerDao(OwnerDao ownerDao) {
         this.ownerDao = ownerDao;
     }
+
+    public Owner findByCSN(Long citizenServiceNumber) {
+        return this.ownerDao.findByCSN(citizenServiceNumber);
+    }
 }

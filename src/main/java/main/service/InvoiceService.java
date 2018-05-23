@@ -6,10 +6,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import main.dao.InvoiceDao;
 import main.dao.JPA;
-import main.domain.Car;
-import main.domain.Ownership;
-import main.domain.Invoice;
-import main.domain.Tariff;
+import main.domain.*;
 import main.utils.StringHelper;
 
 import javax.ejb.Stateless;
@@ -34,6 +31,9 @@ public class InvoiceService {
 
     @Inject
     private TariffService tariffService;
+
+    @Inject
+    private CarService carService;
 
     public Invoice createOrUpdate(Invoice invoice) {
         return this.invoiceDao.createOrUpdate(invoice);
@@ -158,6 +158,62 @@ public class InvoiceService {
         }
 
         return BigDecimal.ZERO;
+    }
+
+    /**
+     * Get the total costs for car movements.
+     * Car movements are retrieved from the DisplacementSystem via REST call.
+     * The response will be sorted by day and after that used for calculations.
+     * When the response does not hold any CarTrackerRules 0.0 is returned.
+     *
+     * @param car Car that should be checked
+     * @param tariff Tariff used for calculation
+     * @return Costs based on the car movements when there is no CarTrackerRules found 0.0 is returned
+     */
+    public double getCarMovementCosts(Car car, Tariff tariff) {
+        CarTrackerResponse carMovements = this.carService.findCarMovements(car.getCurrentCarTracker().getId());
+        HashMap<Date, List<CarTrackerRuleResponse>> sortedMovementsByDay = sortMovementsByDay(carMovements);
+
+
+        double totalCosts = 0.0;
+        Iterator iterator =  sortedMovementsByDay.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry pair = (Map.Entry) iterator.next();
+
+            totalCosts = totalCosts + getCarMovementCosts(pair);
+            
+            iterator.remove();
+        }
+        return totalCosts;
+    }
+
+    public double getCarMovementCosts(Map.Entry pair) {
+        return 0.0;
+    }
+
+    /**
+     * Sort data from a CarTrackerResponse object by day.
+     * The sorted data is returned in a HashMap and could be later used for calculations.
+     *
+     * @param carMovements CarTrackerResponse object containing all the data
+     * @return HashMap sorted by day and for each day the car movements
+     */
+    public HashMap<Date, List<CarTrackerRuleResponse>> sortMovementsByDay(CarTrackerResponse carMovements) {
+        HashMap<Date, List<CarTrackerRuleResponse>> sortedCarMovements = new HashMap<>();
+
+        for (CarTrackerRuleResponse carTrackerRule : carMovements.getCarTrackerRuleResponses()) {
+            if(!sortedCarMovements.containsKey(carTrackerRule.getDate())) {
+                List<CarTrackerRuleResponse> carTrackerRules = new ArrayList<>();
+                carTrackerRules.add(carTrackerRule);
+
+                sortedCarMovements.put(carTrackerRule.getDate(), carTrackerRules);
+            } else {
+                sortedCarMovements.get(carTrackerRule.getDate()).add(carTrackerRule);
+            }
+        }
+
+        return sortedCarMovements;
     }
 
     /**
@@ -391,6 +447,10 @@ public class InvoiceService {
 
     public void setInvoiceDao(InvoiceDao invoiceDao) {
         this.invoiceDao = invoiceDao;
+    }
+
+    public List<Invoice> findByOwner(Owner foundOwner) {
+        return this.invoiceDao.findByOwner(foundOwner);
     }
 
     //</editor-fold>

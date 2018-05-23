@@ -79,7 +79,8 @@ public class InvoiceOverviewBean extends BaseBean {
     public void deleteInvoice(Invoice invoice) {
         if (invoice != null) {
             invoiceService.delete(invoice);
-            RedirectHelper.redirect("/pages/invoice/overview.xhtml");
+            this.invoices = invoiceService.findAll();
+            FrontendHelper.displaySuccessSmallMessage("Factuur is succesvol verwijderd!");
         } else {
             FrontendHelper.displayErrorSmallMessage("Er ging iets mis.", "Probeer het opnieuw.");
         }

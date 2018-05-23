@@ -15,10 +15,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -281,5 +280,44 @@ public class InvoiceServiceTest {
         Invoice invoiceEmpty = this.invoiceService.findByInvoiceNr(1L);
 
         assertThat(invoiceEmpty, CoreMatchers.is(nullValue()));
+    }
+
+    @Test
+    public void sortMovementsByDayTest() {
+        CarTrackerResponse carTrackerResponse = new CarTrackerResponse();
+        carTrackerResponse.setCarTrackerId("NLD1");
+        carTrackerResponse.setTotalRules(3L);
+
+        Calendar calendarMay21 = Calendar.getInstance();
+        calendarMay21.set(Calendar.YEAR, 2018);
+        calendarMay21.set(Calendar.MONTH, Calendar.MAY);
+        calendarMay21.set(Calendar.DATE, 21);
+
+        Calendar calendarMay22 = Calendar.getInstance();
+        calendarMay22.set(Calendar.YEAR, 2018);
+        calendarMay22.set(Calendar.MONTH, Calendar.MAY);
+        calendarMay22.set(Calendar.DATE, 22);
+
+        CarTrackerRuleResponse carTrackerRuleResponseFirst = new CarTrackerRuleResponse();
+        CarTrackerRuleResponse carTrackerRuleResponseSecond = new CarTrackerRuleResponse();
+        CarTrackerRuleResponse carTrackerRuleResponseThird = new CarTrackerRuleResponse();
+
+        carTrackerRuleResponseFirst.setDate(calendarMay22.getTime());
+        carTrackerRuleResponseSecond.setDate(calendarMay21.getTime());
+        carTrackerRuleResponseThird.setDate(calendarMay22.getTime());
+
+        carTrackerRuleResponseFirst.setId(1L);
+        carTrackerRuleResponseSecond.setId(2L);
+        carTrackerRuleResponseThird.setId(3L);
+
+        carTrackerResponse.setCarTrackerRuleResponses(Arrays.asList(carTrackerRuleResponseFirst, carTrackerRuleResponseSecond, carTrackerRuleResponseThird));
+
+        HashMap<Date, List<CarTrackerRuleResponse>> sortedMovementsByDay = this.invoiceService.sortMovementsByDay(carTrackerResponse);
+
+        assertThat(sortedMovementsByDay.get(calendarMay22.getTime()).size(), is(2));
+        assertThat(sortedMovementsByDay.get(calendarMay21.getTime()).size(), is(1));
+        assertThat(sortedMovementsByDay.get(calendarMay22.getTime()).get(0).getId(), is(1L));
+        assertThat(sortedMovementsByDay.get(calendarMay21.getTime()).get(0).getId(), is(2L));
+        assertThat(sortedMovementsByDay.get(calendarMay22.getTime()).get(1).getId(), is(3L));
     }
 }
