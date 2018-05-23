@@ -179,6 +179,14 @@ public class CarService {
         return null;
     }
 
+    /**
+     * Request cartracker data from the DisplacementSystem.
+     * Data is obtained via a REST call.
+     * Response is mapped to a CarTrackerResponse object.
+     *
+     * @param carTrackerId CarTracker id used for requesting data.
+     * @return CarTrackerResponse object containing all the available data, when the request return empty null will be returned.
+     */
     public CarTrackerResponse findCarMovements(String carTrackerId) {
         if (!StringHelper.isEmpty(carTrackerId)) {
             GetRequest getRequest = Unirest.get("http://localhost:55790/DisplacementSystem/api/CarTrackers/" + carTrackerId);
