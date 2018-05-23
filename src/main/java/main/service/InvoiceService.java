@@ -11,6 +11,7 @@ import main.utils.StringHelper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.json.JsonObject;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -58,6 +59,14 @@ public class InvoiceService {
             return this.invoiceDao.findById(id);
         }
         return null;
+    }
+
+    public List<JsonObject> multipleToJson(List<Invoice> invoices) {
+        List<JsonObject> jsonObjects = new ArrayList<>();
+        for (Invoice invoice : invoices) {
+            jsonObjects.add(invoice.toJson());
+        }
+        return jsonObjects;
     }
 
     /**

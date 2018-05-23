@@ -1,49 +1,49 @@
-package main.service;
-
-import main.domain.*;
-import main.domain.enums.PaymentStatus;
-
-import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.inject.Inject;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * @author Thom van de Pas on 8-3-2018
- */
-@Singleton
-@Startup
-public class StartUp {
-
-    @Inject
-    private CarService carService;
-    @Inject
-    private CarTrackerService carTrackerService;
-    @Inject
-    private InvoiceService invoiceService;
-    @Inject
-    private OwnershipService ownershipService;
-    @Inject
-    private OwnerService ownerService;
-    @Inject
-    private RDWService rdwService;
-    @Inject
-    private TariffService tariffService;
-    @Inject
-    private UserGroupService userGroupService;
-    @Inject
-    private UserService userService;
-
-    public StartUp() {
-
-    }
-
-    @PostConstruct
-    public void initData() {
+//package main.service;
+//
+//import main.domain.*;
+//import main.domain.enums.PaymentStatus;
+//
+//import javax.annotation.PostConstruct;
+//import javax.ejb.Singleton;
+//import javax.ejb.Startup;
+//import javax.inject.Inject;
+//import java.math.BigDecimal;
+//import java.util.Date;
+//import java.util.HashMap;
+//import java.util.Map;
+//
+///**
+// * @author Thom van de Pas on 8-3-2018
+// */
+//@Singleton
+//@Startup
+//public class StartUp {
+//
+//    @Inject
+//    private CarService carService;
+//    @Inject
+//    private CarTrackerService carTrackerService;
+//    @Inject
+//    private InvoiceService invoiceService;
+//    @Inject
+//    private OwnershipService ownershipService;
+//    @Inject
+//    private OwnerService ownerService;
+//    @Inject
+//    private RDWService rdwService;
+//    @Inject
+//    private TariffService tariffService;
+//    @Inject
+//    private UserGroupService userGroupService;
+//    @Inject
+//    private UserService userService;
+//
+//    public StartUp() {
+//
+//    }
+//
+//    @PostConstruct
+//    public void initData() {
 //        Address address = new Address("Nijverheidsweg", "25a", "5071NL", "Udenhout", "Nederland");
 //        Address address2 = new Address("Tilburgseweg", "12", "5074FK", "Tilburg", "Nederland");
 //        Owner owner1 = ownerService.createOrUpdate(new Owner("Henk", "van der Pol", new Date(), address));
@@ -67,6 +67,11 @@ public class StartUp {
 //        ownership2.setCar(car2);
 //        this.ownershipService.createOrUpdate(ownership);
 //        this.ownershipService.createOrUpdate(ownership2);
+//
+//        owner1.addOwnership(ownership);
+//        owner2.addOwnership(ownership2);
+//        ownerService.createOrUpdate(owner1);
+//        ownerService.createOrUpdate(owner2);
 //
 //        CarTracker carTracker = carTrackerService.createOrUpdate(new CarTracker("NLD1", "Tesla"));
 //        CarTracker carTracker2 = carTrackerService.createOrUpdate(new CarTracker("NLD2", "Volvo"));
@@ -135,5 +140,5 @@ public class StartUp {
 //        tariff1.setCarFuels(carFuels);
 //
 //        this.tariffService.createOrUpdate(tariff1);
-    }
-}
+//    }
+//}

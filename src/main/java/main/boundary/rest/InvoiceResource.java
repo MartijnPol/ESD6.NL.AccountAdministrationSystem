@@ -43,7 +43,7 @@ public class InvoiceResource {
 
         List<Invoice> foundInvoices = invoiceService.findByOwner(foundOwner);
 
-        return Response.ok(foundInvoices).build();
+        return Response.ok(invoiceService.multipleToJson(foundInvoices)).build();
     }
 
     // TODO-Thom: Finish this method
