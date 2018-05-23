@@ -1,13 +1,16 @@
 package main.domain;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author Thom van de Pas on 4-4-2018
@@ -27,17 +30,46 @@ public class Ownership extends BaseEntity {
     @ManyToOne
     private Car car;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private Owner owner;
 
     public Ownership() {
         this.invoices = new ArrayList<>();
     }
 
+    public Ownership(Owner owner) {
+        this.owner = owner;
+    }
+
     public void addInvoice(Invoice invoice) {
         if (!this.invoices.contains(invoice)) {
             this.invoices.add(invoice);
         }
+    }
+
+    public JsonObject toJsonSimple() {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        return Json.createObjectBuilder()
+                .add("car", car.toJson())
+                .build();
+    }
+
+    public JsonObject toJsonComplete() {
+        JsonArrayBuilder invoiceArrayBuilder = Json.createArrayBuilder();
+
+        for (Invoice invoice : getInvoices()) {
+            invoiceArrayBuilder.add(invoice.toJson());
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedStartDate = dateFormat.format(this.getStartDate());
+        String formattedEndDate = dateFormat.format(this.getEndDate());
+        return Json.createObjectBuilder()
+                .add("startDate", formattedStartDate)
+                .add("endDate", formattedEndDate)
+                .add("car", car.toJson())
+                .add("invoices", invoiceArrayBuilder)
+                .build();
     }
 
     //<editor-fold desc="Getters/Setters">

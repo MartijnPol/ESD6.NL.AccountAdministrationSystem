@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 @Named("OwnershipProcessor")
 public class OwnershipProcessor implements ItemProcessor {
 
+
     private static final Logger logger = Logger.getLogger(OwnershipProcessor.class.getName());
 
     @Override

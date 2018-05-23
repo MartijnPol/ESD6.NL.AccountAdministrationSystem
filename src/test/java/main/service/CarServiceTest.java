@@ -3,13 +3,9 @@ package main.service;
 import main.dao.RDWFuelDao;
 import main.dao.implementation.CarDaoImpl;
 import main.dao.implementation.RDWDaoImpl;
-import main.domain.Address;
-import main.domain.Car;
-import main.domain.Owner;
-import main.domain.Ownership;
+import main.domain.*;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -36,10 +32,9 @@ public class CarServiceTest {
     private CarService carService;
     private Car car;
 
-    private Owner currentOwner;
-    private Owner newOwner;
     private Ownership newOwnership;
     private Ownership currentOwnership;
+    private CarTracker carTracker;
 
     @Mock
     private CarDaoImpl carDao;
@@ -58,7 +53,7 @@ public class CarServiceTest {
         carService.setRdwDao(rdwDao);
         carService.setRdwFuelDao(rdwFuelDao);
 
-        currentOwner = new Owner("Thom", "van de Pas", new Date(), new Address());
+        Owner currentOwner = new Owner("Thom", "van de Pas", new Date(), new Address());
         currentOwnership = new Ownership();
         currentOwner.addOwnership(currentOwnership);
         currentOwnership.setOwner(currentOwner);
@@ -67,11 +62,13 @@ public class CarServiceTest {
         car.setCurrentOwnership(currentOwnership);
 
 
-        newOwner = new Owner("Martijn", "van der Pol", new Date(), new Address());
+        Owner newOwner = new Owner("Martijn", "van der Pol", new Date(), new Address());
         newOwnership = new Ownership();
         newOwner.addOwnership(newOwnership);
         newOwnership.setOwner(newOwner);
         newOwnership.setId(2L);
+
+        carTracker = new CarTracker("1" , "Sony");
     }
 
     @Test
@@ -97,7 +94,7 @@ public class CarServiceTest {
         car.addMultiplePastOwnerships(ownerships);
 
         car.setCurrentOwnership(currentOwnership);
-        car.setCarTrackerId(1L);
+        car.setCurrentCarTracker(carTracker);
 
         List<Ownership> theOwnerships = car.getPastOwnerships();
         assertThat(theOwnerships.size(), is(2));
@@ -112,7 +109,7 @@ public class CarServiceTest {
     public void assignCarToNewOwnerTest() {
         assertThat(car.getCurrentOwnership(), is(this.currentOwnership));
 
-        this.car = carService.assignToNewOwner(car, newOwnership);
+        this.car = carService.assignToNewOwner(car, this.newOwnership);
         Ownership newOwnership = this.car.getCurrentOwnership();
         Assert.assertEquals(this.newOwnership, newOwnership);
     }

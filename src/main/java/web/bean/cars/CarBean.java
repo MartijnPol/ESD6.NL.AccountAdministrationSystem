@@ -7,7 +7,6 @@ import main.service.OwnershipService;
 import web.bean.BaseBean;
 import web.core.helper.FrontendHelper;
 
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

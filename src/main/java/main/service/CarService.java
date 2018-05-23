@@ -1,10 +1,18 @@
 package main.service;
 
+import com.google.gson.Gson;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.GetRequest;
+import main.boundary.rest.CarResource;
 import main.dao.CarDao;
 import main.dao.JPA;
 import main.dao.RDWDao;
 import main.dao.RDWFuelDao;
 import main.domain.*;
+import main.utils.StringHelper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -70,7 +78,7 @@ public class CarService {
         return this.carDao.findAll();
     }
 
-    public Car findByCarTrackerId(Long carTrackerId) {
+    public Car findByCarTrackerId(String carTrackerId) {
         return this.carDao.findByCarTrackerId(carTrackerId);
     }
 
@@ -135,7 +143,7 @@ public class CarService {
      * @returns the updated Car, if something went wrong null will be returned.
      */
     public Car assignToNewOwner(Car car, Ownership newOwnership) {
-        if (car != null && newOwnership != null) {
+        if (null != car && null != newOwnership) {
             if (!car.getCurrentOwnership().equals(newOwnership)) {
                 Ownership pastOwnership = car.getCurrentOwnership();
                 if (pastOwnership != null) {
@@ -150,6 +158,49 @@ public class CarService {
             this.createOrUpdate(car);
             return car;
         }
+        return null;
+    }
+
+    public Car assignNewCarTracker(Car car, CarTracker newCartracker) {
+        if (car != null && newCartracker != null) {
+            if (!car.getCurrentCarTracker().equals(newCartracker)) {
+                CarTracker pastCartracker = car.getCurrentCarTracker();
+                if (pastCartracker != null) {
+                    pastCartracker.setEndDate(new Date());
+                    car.addPastCarTracker(pastCartracker);
+                }
+                newCartracker.setStartDate(new Date());
+                newCartracker.setCar(car);
+                car.setCurrentCarTracker(newCartracker);
+            }
+            this.createOrUpdate(car);
+            return car;
+        }
+        return null;
+    }
+
+    /**
+     * Request cartracker data from the DisplacementSystem.
+     * Data is obtained via a REST call.
+     * Response is mapped to a CarTrackerResponse object.
+     *
+     * @param carTrackerId CarTracker id used for requesting data.
+     * @return CarTrackerResponse object containing all the available data, when the request return empty null will be returned.
+     */
+    public CarTrackerResponse findCarMovements(String carTrackerId) {
+        if (!StringHelper.isEmpty(carTrackerId)) {
+            GetRequest getRequest = Unirest.get("http://localhost:55790/DisplacementSystem/api/CarTrackers/" + carTrackerId);
+            try {
+                HttpResponse<JsonNode> jsonNodeHttpResponse = getRequest.asJson();
+                Gson gson = new Gson();
+                String jsonString = jsonNodeHttpResponse.getBody().toString();
+
+                return gson.fromJson(jsonString, CarTrackerResponse.class);
+            } catch (UnirestException e) {
+                e.printStackTrace();
+            }
+        }
+
         return null;
     }
 

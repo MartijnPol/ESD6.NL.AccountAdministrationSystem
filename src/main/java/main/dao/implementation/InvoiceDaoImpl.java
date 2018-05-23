@@ -2,11 +2,12 @@ package main.dao.implementation;
 
 import main.dao.InvoiceDao;
 import main.dao.JPA;
-import main.domain.Car;
 import main.domain.Invoice;
+import main.domain.Owner;
 
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 /**
@@ -33,5 +34,19 @@ public class InvoiceDaoImpl extends GenericDaoJPAImpl<Invoice> implements Invoic
         TypedQuery<Invoice> query = getEntityManager().createNamedQuery("invoice.findFirstInvoice", Invoice.class);
 
         return oneResult(query);
+    }
+
+    @Override
+    public Long findLastInvoiceNr() {
+        TypedQuery<Long> query = getEntityManager().createNamedQuery("invoice.findLastInvoiceNr", Long.class);
+
+        return query.getSingleResult();
+    }
+
+    @Override
+    public List<Invoice> findByOwner(Owner foundOwner) {
+        return getEntityManager().createNamedQuery("invoice.findByOwner", Invoice.class)
+                .setParameter("owner", foundOwner)
+                .getResultList();
     }
 }

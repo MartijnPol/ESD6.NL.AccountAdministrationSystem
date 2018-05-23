@@ -12,10 +12,9 @@ import javax.ejb.Stateless;
 @JPA
 public class RDWFuelDaoImpl implements RDWFuelDao {
 
-    private final String baseUrl = "http://opendata.rdw.nl/resource/8ys7-d773.json";
-
     @Override
     public RDWFuel findByLicensePlate(String licensePlate) {
+        String baseUrl = "http://opendata.rdw.nl/resource/8ys7-d773.json";
         String url = baseUrl + "?kenteken=" + StringHelper.replace(licensePlate, "-", "");
         return JSONHelper.getRDWFuelJSONObjectFromUrl(url);
     }

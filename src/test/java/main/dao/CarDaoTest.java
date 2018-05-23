@@ -1,6 +1,7 @@
 package main.dao;
 
 import main.domain.Car;
+import main.domain.CarTracker;
 import main.domain.Owner;
 import main.domain.Ownership;
 import org.junit.Before;
@@ -25,7 +26,6 @@ public class CarDaoTest {
 
     private Car car;
     private List<Car> cars;
-    private Ownership ownership;
     private Owner owner;
 
     @Mock
@@ -36,14 +36,16 @@ public class CarDaoTest {
         MockitoAnnotations.initMocks(this);
 
         car = new Car();
-        ownership = new Ownership();
+        Ownership ownership = new Ownership();
         owner = new Owner();
+        CarTracker carTracker = new CarTracker("1", "Sony");
+
 
         owner.setFirstName("DuckDuckGo");
         ownership.setOwner(owner);
         car.setCurrentOwnership(ownership);
         car.setLicensePlate("08-SK-PX");
-        car.setCarTrackerId(1L);
+        car.setCurrentCarTracker(carTracker);
         cars = new ArrayList<>();
         cars.add(car);
     }
@@ -69,14 +71,14 @@ public class CarDaoTest {
     public void findByCarTrackerId() {
         carDao.createOrUpdate(car);
 
-        when(carDao.findByCarTrackerId(Matchers.eq(1L))).thenReturn(car);
-        when(carDao.findByCarTrackerId(AdditionalMatchers.not(Matchers.eq(1L)))).thenReturn(null);
+        when(carDao.findByCarTrackerId(Matchers.eq("1"))).thenReturn(car);
+        when(carDao.findByCarTrackerId(AdditionalMatchers.not(Matchers.eq("1")))).thenReturn(null);
 
-        Car carByCarTrackerId = carDao.findByCarTrackerId(1L);
-        Car emptyCarByCarTrackerId = carDao.findByCarTrackerId(2L);
+        Car carByCarTrackerId = carDao.findByCarTrackerId("1");
+        Car emptyCarByCarTrackerId = carDao.findByCarTrackerId("2");
 
         assertThat(carByCarTrackerId.getLicensePlate(), is("08-SK-PX"));
-        assertThat(carByCarTrackerId.getCarTrackerId(), is(1L));
+        assertThat(carByCarTrackerId.getCurrentCarTracker().getId(), is("1"));
         assertThat(emptyCarByCarTrackerId, is(nullValue()));
     }
 

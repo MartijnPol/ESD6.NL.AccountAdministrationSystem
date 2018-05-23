@@ -1,6 +1,5 @@
 package web.bean;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 
 /**

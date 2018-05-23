@@ -24,10 +24,6 @@ public final class StringHelper {
      * @return True when input is null or empty else false
      */
     public static boolean isEmpty(String input) {
-        if (input != null && !input.isEmpty()) {
-            return false;
-        }
-
-        return true;
+        return input == null || input.isEmpty();
     }
 }

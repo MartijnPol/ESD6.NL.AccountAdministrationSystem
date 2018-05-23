@@ -3,9 +3,9 @@ package main.utils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jasypt.util.text.StrongTextEncryptor;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import org.apache.commons.codec.binary.Base64;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Random;
 
 /**
  * @author Thom van de Pas on 19-3-2018
@@ -28,7 +28,7 @@ public final class EncryptionHelper {
     }
 
     public static String encryptData(String data) {
-          return DigestUtils.sha256Hex(data);
+        return DigestUtils.sha256Hex(data);
     }
 
     public static String encryptReversible(String value) {
@@ -48,7 +48,10 @@ public final class EncryptionHelper {
 
 
     private static String saltData(String data) {
-        return "Q4R@d8Lb2UP-qts%ndnVh_G7N-"
-                + data;
+        Random random = new SecureRandom();
+        int size = 32;
+        byte[] salt = new byte[size];
+        random.nextBytes(salt);
+        return Arrays.toString(salt) + data;
     }
 }

@@ -5,6 +5,7 @@ import main.dao.OwnerDao;
 import main.domain.Owner;
 
 import javax.ejb.Stateless;
+import javax.persistence.TypedQuery;
 
 /**
  * @author Thom van de Pas on 8-3-2018
@@ -14,5 +15,23 @@ import javax.ejb.Stateless;
 public class OwnerDaoImpl extends GenericDaoJPAImpl<Owner> implements OwnerDao {
 
     public OwnerDaoImpl() {
+    }
+
+    @Override
+    public Owner findByFullNameAndCSN(String firstName, String lastName, Long citizenServiceNumber) {
+        TypedQuery<Owner> query = getEntityManager().createNamedQuery("owner.findByFullNameAndCSN", Owner.class)
+                .setParameter("firstName", firstName)
+                .setParameter("lastName", lastName)
+                .setParameter("citizenServiceNumber", citizenServiceNumber);
+
+        return oneResult(query);
+    }
+
+    @Override
+    public Owner findByCSN(Long citizenServiceNumber) {
+        TypedQuery<Owner> query = getEntityManager().createNamedQuery("owner.findByCSN", Owner.class)
+                .setParameter("citizenServiceNumber", citizenServiceNumber);
+
+        return oneResult(query);
     }
 }

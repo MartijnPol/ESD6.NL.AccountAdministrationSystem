@@ -46,25 +46,22 @@ public class StringHelperTest {
 
     @Test
     public void emptyStringTest() {
-        boolean expectedResult = true;
         boolean result = StringHelper.isEmpty(emptyInput);
 
-        Assert.assertEquals(expectedResult, result);
+        Assert.assertTrue(result);
     }
 
     @Test
     public void nullStringTest() {
-        boolean expectedResult = true;
         boolean result = StringHelper.isEmpty(nullInput);
 
-        Assert.assertEquals(expectedResult, result);
+        Assert.assertTrue(result);
     }
 
     @Test
     public void notEmptyStringTest() {
-        boolean expectedResult = false;
         boolean result = StringHelper.isEmpty(input);
 
-        Assert.assertEquals(expectedResult, result);
+        Assert.assertFalse(result);
     }
 }

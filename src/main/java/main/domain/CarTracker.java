@@ -1,88 +1,96 @@
 package main.domain;
 
-import main.service.CarService;
-import main.service.OwnerService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-
+@Entity
+@NamedQueries({
+        @NamedQuery(name = "cartracker.findByCar", query = "SELECT c FROM CarTracker c WHERE c.car = :car"),
+        @NamedQuery(name = "carTracker.findById", query = "SELECT c FROM CarTracker  c WHERE c.id = :id")
+})
 public class CarTracker implements Serializable {
 
-    private Long id;
-    private Long totalRules;
-    private List<CarTrackerRule> rules;
-    private Owner owner;
+    @Id
+    private String id;
+
+    @Temporal(TemporalType.DATE)
+    private Date startDate;
+
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
+
+    private String manufacturer;
+
+    @ManyToOne
     private Car car;
 
-    OwnerService ownerService;
-    CarService carService;
+    private boolean enabled;
 
-    public CarTracker() {
-        rules = new ArrayList<>();
+    public CarTracker(){
+        this.enabled = true;
     }
 
-    public CarTracker(Long totalRules, List<CarTrackerRule> rules) {
+    public CarTracker(String id , String manufacturer){
         this();
-        this.totalRules = totalRules;
-        this.rules = rules;
+        this.id = id;
+        this.manufacturer = manufacturer;
+        this.startDate = new Date();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getTotalRules() {
-        return totalRules;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setTotalRules(Long totalRules) {
-        this.totalRules = totalRules;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public List<CarTrackerRule> getRules() {
-        return rules;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setRules(List<CarTrackerRule> rules) {
-        this.rules = rules;
-        calculateTotalRules();
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
-    public void addRules(List<CarTrackerRule> rules) {
-        this.rules.addAll(rules);
-        calculateTotalRules();
+    public Car getCar() {
+        return car;
     }
 
-    public void calculateTotalRules() {
-        this.totalRules = (long) rules.size();
+    public void setCar(Car car) {
+        this.car = car;
     }
 
+    public String getManufacturer() {
+        return manufacturer;
+    }
 
-    public JsonObject toJson() {
-        JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+    public void setManufacturer(String fabric) {
+        this.manufacturer = fabric;
+    }
 
-        for (CarTrackerRule carTrackerRule : rules) {
-            jsonArrayBuilder.add(carTrackerRule.toJson());
-        }
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-        return Json.createObjectBuilder()
-                .add("CarTrackerId", this.id)
-                .add("totalRules", this.totalRules)
-                .add("CarTrackerRules", jsonArrayBuilder)
-                .build();
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
     public String toString() {
-        return "Tracker [id=" + id + ", TotalRules=" + totalRules + ", rules=" + rules + "]";
+        return "Tracker [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + "]";
     }
 }

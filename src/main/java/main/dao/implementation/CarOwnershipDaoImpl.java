@@ -1,7 +1,7 @@
 package main.dao.implementation;
 
 import main.dao.JPA;
-import main.dao.OwnershipDao;
+import main.dao.CarOwnershipDao;
 import main.domain.Ownership;
 
 import javax.ejb.Stateless;
@@ -11,9 +11,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @JPA
-public class OwnershipDaoImpl extends GenericDaoJPAImpl<Ownership> implements OwnershipDao {
+public class CarOwnershipDaoImpl extends GenericDaoJPAImpl<Ownership> implements CarOwnershipDao {
 
-    public OwnershipDaoImpl() {
+    public CarOwnershipDaoImpl() {
 
     }
 }

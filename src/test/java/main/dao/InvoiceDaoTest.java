@@ -59,6 +59,8 @@ public class InvoiceDaoTest {
         invoiceByNrFirst.setInvoiceNr(2L);
         invoiceByNrFirst.setPaymentStatus(PaymentStatus.PAID);
 
+        invoiceDao.createOrUpdate(invoiceByNrFirst);
+
         when(invoiceDao.findByInvoiceNr(Matchers.eq(2L))).thenReturn(invoiceByNrFirst);
         when(invoiceDao.findByInvoiceNr(AdditionalMatchers.not(Matchers.eq(2L)))).thenReturn(null);
 
@@ -81,7 +83,7 @@ public class InvoiceDaoTest {
 
         invoiceDao.delete(invoiceByNr);
 
-        when(invoiceDao.findByInvoiceNr(Matchers.eq(1L))).thenReturn(null);
+        when(invoiceDao.findByInvoiceNr(1L)).thenReturn(null);
 
         Invoice invoiceEmpty = invoiceDao.findByInvoiceNr(1L);
 

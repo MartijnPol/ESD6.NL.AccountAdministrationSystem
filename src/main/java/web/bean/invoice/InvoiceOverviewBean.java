@@ -9,10 +9,14 @@ import web.core.helper.FrontendHelper;
 import web.core.helper.RedirectHelper;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -75,7 +79,8 @@ public class InvoiceOverviewBean extends BaseBean {
     public void deleteInvoice(Invoice invoice) {
         if (invoice != null) {
             invoiceService.delete(invoice);
-            RedirectHelper.redirect("/pages/invoice/overview.xhtml");
+            this.invoices = invoiceService.findAll();
+            FrontendHelper.displaySuccessSmallMessage("Factuur is succesvol verwijderd!");
         } else {
             FrontendHelper.displayErrorSmallMessage("Er ging iets mis.", "Probeer het opnieuw.");
         }
@@ -87,7 +92,27 @@ public class InvoiceOverviewBean extends BaseBean {
      * @param invoice Invoice that should be used for generation
      */
     public void generateInvoicePdf(Invoice invoice) {
-        invoiceService.generateInvoicePdf(invoice);
+        HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        ByteArrayOutputStream byteArrayOutputStream = invoiceService.generateInvoicePdf(invoice);
+
+        httpServletResponse.setHeader("Expires", "0");
+        httpServletResponse.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        httpServletResponse.setHeader("Pragma", "public");
+        httpServletResponse.setHeader("Content-disposition", "inline; filename=pathfinder.pdf");
+
+        httpServletResponse.setContentType("application/pdf");
+        httpServletResponse.setContentLength(byteArrayOutputStream.size());
+
+        try {
+            OutputStream outputStream = httpServletResponse.getOutputStream();
+            byteArrayOutputStream.writeTo(outputStream);
+            outputStream.flush();
+            outputStream.close();
+            FacesContext.getCurrentInstance().renderResponse();
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setSelectedInvoice(Invoice selectedInvoice) {

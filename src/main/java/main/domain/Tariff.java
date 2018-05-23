@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @XmlRootElement
-@Entity(name = "TARIFF")
+@Entity
 public class Tariff extends BaseEntity {
 
     private double tariffInEuro;

@@ -3,6 +3,7 @@ package main.service;
 import main.dao.JPA;
 import main.dao.OwnerDao;
 import main.domain.Owner;
+import org.jasypt.commons.CommonUtils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -37,7 +38,30 @@ public class OwnerService {
         return this.ownerDao.findById(id);
     }
 
+    /**
+     * Finds an Owner based on the combination: firstName, lastName and citizenServiceNumber.
+     *
+     * @param firstName            is the first name of an Owner.
+     * @param lastName             is the last name of an Owner.
+     * @param citizenServiceNumber is the citizen service number of an Owner.
+     * @return the found Owner or null
+     */
+    public Owner findByFullNameAndCSN(String firstName, String lastName, Long citizenServiceNumber) {
+        if (CommonUtils.isNotEmpty(firstName) && CommonUtils.isNotEmpty(lastName) && citizenServiceNumber != null) {
+            return this.ownerDao.findByFullNameAndCSN(firstName, lastName, citizenServiceNumber);
+        }
+        return null;
+    }
+
     public List<Owner> findAll() {
         return this.ownerDao.findAll();
+    }
+
+    public void setOwnerDao(OwnerDao ownerDao) {
+        this.ownerDao = ownerDao;
+    }
+
+    public Owner findByCSN(Long citizenServiceNumber) {
+        return this.ownerDao.findByCSN(citizenServiceNumber);
     }
 }

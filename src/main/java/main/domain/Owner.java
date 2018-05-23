@@ -1,10 +1,10 @@
 package main.domain;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,6 +17,12 @@ import java.util.Objects;
  */
 @XmlRootElement
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "owner.findByFullNameAndCSN", query = "SELECT o FROM Owner o WHERE o.firstName = :firstName " +
+                "AND o.lastName = :lastName AND o.citizenServiceNumber = :citizenServiceNumber"),
+        @NamedQuery(name = "owner.findByCSN",
+                query = "SELECT o FROM Owner o WHERE o.citizenServiceNumber = :citizenServiceNumber")
+})
 public class Owner extends BaseEntity {
 
     private String firstName;
@@ -24,6 +30,8 @@ public class Owner extends BaseEntity {
 
     @Temporal(TemporalType.DATE)
     private Date birthDay;
+
+    private Long citizenServiceNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
@@ -48,11 +56,21 @@ public class Owner extends BaseEntity {
     }
 
     public JsonObject toJson() {
+        JsonArrayBuilder ownershipArrayBuilder = Json.createArrayBuilder();
+
+        for (Ownership ownership : getOwnerships()) {
+            ownershipArrayBuilder.add(ownership.toJsonSimple());
+        }
+
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String date = dateFormat.format(this.getBirthDay());
+        String formattedBirthDay = dateFormat.format(this.getBirthDay());
+
         return Json.createObjectBuilder()
-                .add("fullname", this.getFullName())
-                .add("birthday", date)
+                .add("fullName", this.getFullName())
+                .add("birthday", formattedBirthDay)
+                .add("citizenServiceNumber", this.getCitizenServiceNumber())
+                .add("address", this.getAddress().toJson())
+                .add("ownerships", ownershipArrayBuilder)
                 .build();
     }
 
@@ -87,6 +105,14 @@ public class Owner extends BaseEntity {
         this.birthDay = birthDay;
     }
 
+    public Long getCitizenServiceNumber() {
+        return citizenServiceNumber;
+    }
+
+    public void setCitizenServiceNumber(Long citizenServiceNumber) {
+        this.citizenServiceNumber = citizenServiceNumber;
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -104,7 +130,6 @@ public class Owner extends BaseEntity {
     }
 
     //</editor-fold>
-
 
     @Override
     public boolean equals(Object o) {

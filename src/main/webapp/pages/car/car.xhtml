@@ -1,0 +1,181 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/template.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="carId" value="#{carBean.carId}"/>
+
+        <f:event type="preRenderView" listener="#{carBean.init}"/>
+    </f:metadata>
+
+    <ui:define name="title">Autodetails</ui:define>
+
+    <ui:define name="content">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <header class="header">
+                        <h1>Autodetails</h1>
+                        <h5 class="text-muted">Details van de auto</h5>
+                    </header>
+                </div>
+            </div>
+
+            <div class="row content-container">
+                <div class="col-lg-12">
+                    <h:form rendered="#{not empty carBean.car}">
+
+                        <div class="form-control">
+                            <p:outputLabel for="licensePlateText" value="Kenteken: "/>
+                            <h:outputText id="licensePlateText" value="#{carBean.car.licensePlate}"/>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="cartrackerid" value="Cartracker: "/>
+                            <h:outputText id="cartrackerid" value="#{carBean.car.currentCarTracker.id}"/>
+                        </div>
+
+
+                        <div class="form-control">
+                            <p:outputLabel for="selectOneMenu" value="Eigenaar: "/>
+                            <p:selectOneMenu id="selectOneMenu" value="#{carBean.selectedOwnership}" filter="true"
+                                             converter="omnifaces.SelectItemsIndexConverter"
+                                             filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="#{carBean.car.currentOwnership.owner.fullName}"
+                                              itemDisabled="true"/>
+                                <f:selectItems itemLabel="#{ownership.owner.getFullName()}"
+                                               itemValue="#{ownership}"
+                                               value="#{carBean.ownerships}"
+                                               var="ownership"/>
+                                <p:ajax listener="#{carBean.onItemChange(ownership)}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <p:commandButton action="#{carBean.update}"
+                                         ajax="true"
+                                         id="update"
+                                         styleClass="btn btn-success"
+                                         value="Update"/>
+
+                    </h:form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <header class="header">
+                        <h1>Autodetails</h1>
+                        <h5 class="text-muted">RDW details</h5>
+                    </header>
+                </div>
+            </div>
+
+            <div class="row content-container">
+                <div class="col-lg-12">
+                    <h:form rendered="#{not empty carBean.car.rdwData}">
+
+                        <div class="form-control">
+                            <p:outputLabel for="bpm" value="Bruto bpm: "/>
+                            <h:outputText id="bpm" value="#{carBean.car.rdwData.bruto_bpm}"/>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="catalogusprice" value="catalogus prijs: "/>
+                            <h:outputText id="catalogusprice" value="#{carBean.car.rdwData.catalogusprijs}"/>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="cilinderinhoud" value="Cilinderinhoud: "/>
+                            <h:outputText id="cilinderinhoud" value="#{carBean.car.rdwData.cilinderinhoud}"/>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="eersteafgifte" value="Eerste afgifte: "/>
+                            <h:outputText id="eersteafgifte" value="#{carBean.car.rdwData.datum_eerste_afgifte_nederland}"/>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="eerstekleur" value="Eerste kleur: "/>
+                            <h:outputText id="eerstekleur" value="#{carBean.car.rdwData.eerste_kleur}"/>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="handelsbenaming" value="Handelsbenaming: "/>
+                            <h:outputText id="handelsbenaming" value="#{carBean.car.rdwData.handelsbenaming}"/>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="merk" value="Merk: "/>
+                            <h:outputText id="merk" value="#{carBean.car.rdwData.merk}"/>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="voertuigsoort" value="Voertuigsoort: "/>
+                            <h:outputText id="voertuigsoort" value="#{carBean.car.rdwData.voertuigsoort}"/>
+                        </div>
+
+                    </h:form>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <header class="header">
+                            <h1>Autodetails</h1>
+                            <h5 class="text-muted">RDW brandstof details</h5>
+                        </header>
+                    </div>
+                </div>
+
+                <div class="row content-container">
+                    <div class="col-lg-12">
+                        <h:form rendered="#{not empty carBean.car.rdwData}">
+
+                            <div class="form-control">
+                                <p:outputLabel for="brandstof" value="Brandstof: "/>
+                                <h:outputText id="brandstof" value="#{carBean.car.rdwFuelData.brandstof_omschrijving}"/>
+                            </div>
+
+                            <div class="form-control">
+                                <p:outputLabel for="verbruikbuiten" value="Verbruik buiten: "/>
+                                <h:outputText id="verbruikbuiten" value="#{carBean.car.rdwFuelData.brandstofverbruik_buiten}"/>
+                            </div>
+
+                            <div class="form-control">
+                                <p:outputLabel for="verbruikbinnen" value="Verbruik binnen: "/>
+                                <h:outputText id="verbruikbinnen" value="#{carBean.car.rdwFuelData.brandstofverbruik_stad}"/>
+                            </div>
+
+                            <div class="form-control">
+                                <p:outputLabel for="verbruikcombi" value="Verbruik combinatie: "/>
+                                <h:outputText id="verbruikcombi" value="#{carBean.car.rdwFuelData.brandstofverbruik_gecombineerd}"/>
+                            </div>
+
+                            <div class="form-control">
+                                <p:outputLabel for="uitstoot" value="Uitstoot: "/>
+                                <h:outputText id="uitstoot" value="#{carBean.car.rdwFuelData.co2_uitstoot_gecombineerd}"/>
+                            </div>
+
+                            <div class="form-control">
+                                <p:outputLabel for="mileauklasse" value="Mileauklasse: "/>
+                                <h:outputText id="mileauklasse" value="#{carBean.car.rdwFuelData.milieuklasse_eg_goedkeuring_licht}"/>
+                            </div>
+                        </h:form>
+                    </div>
+            </div>
+
+
+
+        <div class="container">
+            <div class="content-container">
+                <h:form id="emptyForm" rendered="#{empty carBean.car}">
+                    <p:outputLabel id="mistake" value="Er is iets mis gegaan."/>
+                </h:form>
+            </div>
+        </div>
+        </div>
+    </ui:define>
+</ui:composition>

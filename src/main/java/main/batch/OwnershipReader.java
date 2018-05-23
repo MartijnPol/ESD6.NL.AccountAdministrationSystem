@@ -1,9 +1,12 @@
 package main.batch;
 
+import main.domain.BatchLog;
 import main.domain.Ownership;
+import main.service.BatchLogService;
 import main.service.OwnershipService;
 
 import javax.batch.api.chunk.ItemReader;
+import javax.batch.runtime.context.JobContext;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,49 +22,55 @@ import java.util.logging.Logger;
 public class OwnershipReader implements ItemReader {
 
     @Inject
+    private JobContext jobContext;
+    @Inject
     private OwnershipService ownershipService;
+    @Inject
+    private BatchLogService batchLogService;
 
     private static final Logger logger = Logger.getLogger(OwnershipReader.class.getName());
 
     private ItemNumberCheckpoint checkpoint;
-    private Ownership ownership;
     private Long idCount = 1L;
 
     public OwnershipReader() {
     }
 
     @Override
-    public void open(Serializable serializable) throws Exception {
+    public void open(Serializable serializable) {
         if (checkpoint == null) {
             this.checkpoint = new ItemNumberCheckpoint();
         } else {
-            this.checkpoint = (ItemNumberCheckpoint) checkpoint;
+            this.checkpoint = checkpoint;
         }
-        this.logger.log(Level.INFO, "Reader open");
+        logger.log(Level.INFO, "Reader open");
+        this.batchLogService.createOrUpdate(new BatchLog(jobContext.getJobName(), "De ownership reader is open.", jobContext.getExecutionId()));
     }
 
     @Override
-    public void close() throws Exception {
-        this.logger.log(Level.INFO, "Reader closed");
+    public void close() {
+        logger.log(Level.INFO, "Reader closed");
+        this.batchLogService.createOrUpdate(new BatchLog(jobContext.getJobName(), "De ownership reader is gesloten.", jobContext.getExecutionId()));
     }
 
     @Override
-    public Object readItem() throws Exception {
-        this.ownership = null;
-        this.ownership = ownershipService.findById(idCount);
-        if (this.ownership != null) {
-            this.logger.log(Level.INFO, "Reading item");
+    public Object readItem() {
+        Ownership ownership = null;
+        ownership = ownershipService.findById(idCount);
+        if (ownership != null) {
+            logger.log(Level.INFO, "Reading item");
+            this.batchLogService.createOrUpdate(new BatchLog(jobContext.getJobName(), "Bezig met het lezen van ownership met id: " + ownership.getId().toString() , jobContext.getExecutionId()));
             this.idCount = idCount + 1L;
-            return this.ownership;
+            return ownership;
         } else {
-            this.logger.log(Level.INFO, "No items found");
+            logger.log(Level.INFO, "No items found");
             return null;
         }
     }
 
     @Override
-    public Serializable checkpointInfo() throws Exception {
-        this.logger.log(Level.INFO, "Checkpoint Info");
+    public Serializable checkpointInfo() {
+        logger.log(Level.INFO, "Checkpoint Info");
         return checkpoint.getItemNumber();
     }
 }

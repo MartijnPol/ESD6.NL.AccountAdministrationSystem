@@ -95,6 +95,16 @@ input {
 .ui-menu .ui-menuitem-text {
     color: #444;
 }
+.ui-menu.ui-megamenu .ui-menu-parent .ui-menu-child {
+    background-color: #FFFFFF;
+    margin-top: 14px;
+}
+.ui-menubar .ui-widget-header {
+    display: none;
+}
+.ui-menubar .ui-menu-child .ui-menuitem:hover {
+    background-color: #E1E6EA;
+}
 
 /** HEADER **/
 
@@ -120,6 +130,13 @@ input {
     padding: .75rem !important;
 
 }
+.ui-datatable tbody.ui-datatable-data tr:hover {
+    background-color: #F0F2F4;
+
+}
+.actionlink {
+    width: 100%;
+}
 
 /** UTILS **/
 
@@ -128,4 +145,27 @@ input {
     min-height: 100vh; /* These two lines are counted as one :-)       */
     display: flex;
     align-items: center;
+}
+
+/** Dialogs **/
+.ui-dialog {
+    background-color: #FFFFFF;
+}
+.ui-dialog .ui-dialog-buttonpane button {
+    border: 0px;
+    background-color: #F8F9FA;
+}
+.ui-dialog .ui-dialog-buttonpane button:hover {
+    background-color: #E1E6EA;
+}
+.ui-shadow {
+    background-color: #FFFFFF;
+}
+
+/** Dropdownlist **/
+.ui-selectonemenu-panel {
+    background-color: #FFFFFF;
+}
+.ui-selectonemenu-panel .ui-selectonemenu-list-item:hover {
+    background-color: #E1E6EA;
 }

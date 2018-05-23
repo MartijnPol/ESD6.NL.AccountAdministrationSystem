@@ -1,30 +1,23 @@
 package main.service;
 
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.PdfCell;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import main.dao.InvoiceDao;
 import main.dao.JPA;
-import main.domain.Car;
-import main.domain.Invoice;
-import main.domain.Ownership;
-import main.domain.Tariff;
+import main.domain.*;
 import main.utils.StringHelper;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Thom van de Pas on 4-4-2018
@@ -38,6 +31,9 @@ public class InvoiceService {
 
     @Inject
     private TariffService tariffService;
+
+    @Inject
+    private CarService carService;
 
     public Invoice createOrUpdate(Invoice invoice) {
         return this.invoiceDao.createOrUpdate(invoice);
@@ -74,7 +70,7 @@ public class InvoiceService {
         String monthName;
 
         Locale loc = new Locale.Builder().setLanguage("nl").setRegion("NL").build();
-        Format formatter = new SimpleDateFormat("MMMM",loc);
+        Format formatter = new SimpleDateFormat("MMMM", loc);
         monthName = formatter.format(date);
 
         return monthName;
@@ -102,8 +98,40 @@ public class InvoiceService {
         return this.invoiceDao.findFirstInvoice();
     }
 
-    public void setInvoiceDao(InvoiceDao invoiceDao) {
-        this.invoiceDao = invoiceDao;
+    /**
+     * Find last used invoice number.
+     *
+     * @return Long invoice number.
+     */
+    public Long findLastInvoiceNr() {
+        return this.invoiceDao.findLastInvoiceNr();
+    }
+
+    /**
+     * Get the next invoice number that should be used.
+     *
+     * @param lastUsedInvoiceNr Last used invoice number.
+     * @return Next Long invoice number that should be used as identifier.
+     */
+    public Long getNextInvoiceNr(Long lastUsedInvoiceNr) {
+        if (lastUsedInvoiceNr != null) {
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+            String invoiceNrText = Objects.toString(lastUsedInvoiceNr);
+            String currentYearText = Objects.toString(currentYear);
+            String replacedInvoiceNr = invoiceNrText.replace(currentYearText, "");
+            Long subtractedNr = 1L;
+
+            if (!StringHelper.isEmpty(replacedInvoiceNr)) {
+                subtractedNr = Long.valueOf(replacedInvoiceNr) + 1;
+            }
+
+            String nextInvoiceNrText = currentYearText + subtractedNr.toString();
+
+            return Long.valueOf(nextInvoiceNrText);
+
+        }
+        return null;
     }
 
     //<editor-fold defaultstate="collapsed" desc="Invoice amount generation methods">
@@ -120,12 +148,88 @@ public class InvoiceService {
         Car car = ownership.getCar();
         Tariff tariff = tariffService.findById(1L);
 
-        double mainTariff = tariff.getTariffInEuro();
-        double economicalAddition = getEconomicalAddition(car, tariff);
-        double carFuelAddition = getCarFuelAddition(car, tariff);
+        if (tariff != null) {
+            double mainTariff = tariff.getTariffInEuro();
+            double economicalAddition = getEconomicalAddition(car, tariff);
+            double carFuelAddition = getCarFuelAddition(car, tariff);
 
-        BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition));
-        return result.setScale(2, RoundingMode.HALF_UP);
+            BigDecimal result = BigDecimal.valueOf(mainTariff + (mainTariff * economicalAddition) + (mainTariff * carFuelAddition));
+            return preventNegativeAmount(result);
+        }
+
+        return BigDecimal.ZERO;
+    }
+
+    /**
+     * Get the total costs for car movements.
+     * Car movements are retrieved from the DisplacementSystem via REST call.
+     * The response will be sorted by day and after that used for calculations.
+     * When the response does not hold any CarTrackerRules 0.0 is returned.
+     *
+     * @param car Car that should be checked
+     * @param tariff Tariff used for calculation
+     * @return Costs based on the car movements when there is no CarTrackerRules found 0.0 is returned
+     */
+    public double getCarMovementCosts(Car car, Tariff tariff) {
+        CarTrackerResponse carMovements = this.carService.findCarMovements(car.getCurrentCarTracker().getId());
+        HashMap<Date, List<CarTrackerRuleResponse>> sortedMovementsByDay = sortMovementsByDay(carMovements);
+
+
+        double totalCosts = 0.0;
+
+        for (List<CarTrackerRuleResponse> responseList : sortedMovementsByDay.values()) {
+            double carMovementCostsPerDay = getCarMovementCostsPerDay(responseList, tariff);
+            totalCosts = totalCosts + carMovementCostsPerDay;
+        }
+
+        return totalCosts;
+    }
+
+    /**
+     * Calculate car movement costs per day.
+     * Movements are retrieved from the rules parameter.
+     * Various details about the movements are requested from the Google Road API, and later used for calculations.
+     *
+     * @param rules List of CarTrackerResponseRule containing necessary data.
+     * @param tariff Tariff used for calculation
+     * @return Total costs or 0.0 when rules are empty
+     */
+    public double getCarMovementCostsPerDay(List<CarTrackerRuleResponse> rules, Tariff tariff) {
+        if (!rules.isEmpty()) {
+            double totalCosts = 0.0;
+
+            for (CarTrackerRuleResponse carTrackerRule : rules) {
+
+            }
+
+            return totalCosts;
+        }
+
+        return 0.0;
+    }
+
+    /**
+     * Sort data from a CarTrackerResponse object by day.
+     * The sorted data is returned in a HashMap and could be later used for calculations.
+     *
+     * @param carMovements CarTrackerResponse object containing all the data
+     * @return HashMap sorted by day and for each day the car movements
+     */
+    public HashMap<Date, List<CarTrackerRuleResponse>> sortMovementsByDay(CarTrackerResponse carMovements) {
+        HashMap<Date, List<CarTrackerRuleResponse>> sortedCarMovements = new HashMap<>();
+
+        for (CarTrackerRuleResponse carTrackerRule : carMovements.getCarTrackerRuleResponses()) {
+            if(!sortedCarMovements.containsKey(carTrackerRule.getDate())) {
+                List<CarTrackerRuleResponse> carTrackerRules = new ArrayList<>();
+                carTrackerRules.add(carTrackerRule);
+
+                sortedCarMovements.put(carTrackerRule.getDate(), carTrackerRules);
+            } else {
+                sortedCarMovements.get(carTrackerRule.getDate()).add(carTrackerRule);
+            }
+        }
+
+        return sortedCarMovements;
     }
 
     /**
@@ -137,11 +241,11 @@ public class InvoiceService {
      * @param tariff Tariff used for calculation
      * @return Addition based on the economical label of the car when there is no label found 0.0 is returned
      */
-    private double getEconomicalAddition(Car car, Tariff tariff) {
+    public double getEconomicalAddition(Car car, Tariff tariff) {
         String economicalLabel = car.getRdwData().getZuinigheidslabel();
         Double addition = 0.0;
 
-        if (!StringHelper.isEmpty(economicalLabel)) {
+        if (!StringHelper.isEmpty(economicalLabel) && tariff.getCarLabels().get(economicalLabel) != null) {
             addition = tariff.getCarLabels().get(economicalLabel);
         }
 
@@ -153,19 +257,36 @@ public class InvoiceService {
      * The car fuel is retrieved form the RDWFuel data and the matching addition is searched in the tariff entity.
      * When this search return empty a default addition of 0.0 is returned.
      *
-     * @param car Car that should be checked
+     * @param car    Car that should be checked
      * @param tariff Tariff used for calculation
      * @return Addition based on car fuel when there is no fuel found 0.0 is returned
      */
-    private double getCarFuelAddition(Car car, Tariff tariff) {
+    public double getCarFuelAddition(Car car, Tariff tariff) {
         String carFuel = car.getRdwFuelData().getBrandstof_omschrijving();
         Double addition = 0.0;
 
-        if (!StringHelper.isEmpty(carFuel)) {
+        if (!StringHelper.isEmpty(carFuel) && tariff.getCarFuels().get(carFuel) != null) {
             addition = tariff.getCarFuels().get(carFuel);
         }
 
         return addition;
+    }
+
+    /**
+     * Prevent negative invoice amounts.
+     * When amount is evaluated as negative BigDecimal.ZERO is returned.
+     *
+     * @param amount Amount to check for negative value
+     * @return Amount or BigDecimal.ZERO when amount is evaluated as negative
+     */
+    public BigDecimal preventNegativeAmount(BigDecimal amount) {
+        BigDecimal roundedAmount = amount.setScale(2, RoundingMode.HALF_UP);
+
+        if (roundedAmount.compareTo(BigDecimal.ZERO) < 0) {
+            roundedAmount = BigDecimal.ZERO;
+        }
+
+        return roundedAmount;
     }
 
     //</editor-fold>
@@ -178,11 +299,12 @@ public class InvoiceService {
      *
      * @param invoice Invoice containing all the necessary data
      */
-    public void generateInvoicePdf(Invoice invoice) {
+    public ByteArrayOutputStream generateInvoicePdf(Invoice invoice) {
         Document document = new Document();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("C:/Users/Gebruiker/Documents/Development/invoice.pdf"));
+            PdfWriter.getInstance(document, byteArrayOutputStream);
             document.open();
 
             document.addTitle("Factuur" + invoice.getInvoiceNr());
@@ -199,11 +321,12 @@ public class InvoiceService {
             document.add(getTariffTable());
 
             document.add(getTotalAmountTable(invoice));
-        } catch (DocumentException | FileNotFoundException e) {
+        } catch (DocumentException e) {
             e.printStackTrace();
         }
 
         document.close();
+        return byteArrayOutputStream;
     }
 
     /**
@@ -331,11 +454,19 @@ public class InvoiceService {
     }
     //</editor-fold>
 
-
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
 
     public void setTariffService(TariffService tariffService) {
         this.tariffService = tariffService;
+    }
+
+
+    public void setInvoiceDao(InvoiceDao invoiceDao) {
+        this.invoiceDao = invoiceDao;
+    }
+
+    public List<Invoice> findByOwner(Owner foundOwner) {
+        return this.invoiceDao.findByOwner(foundOwner);
     }
 
     //</editor-fold>
