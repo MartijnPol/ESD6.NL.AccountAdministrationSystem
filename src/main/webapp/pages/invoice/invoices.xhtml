@@ -56,11 +56,10 @@
                                       filterMatchMode="exact">
                                 <f:facet name="filter">
                                     <p:selectOneMenu onchange="PF('invoiceOverviewWidgetVar').filter()">
-                                        <f:selectItem itemLabel="Kies" itemValue="#{null}" noSelectionOption="true" />
-                                        <f:selectItems value="#{invoiceOverviewBean.paymentStatuses}"
-                                                       var="paymentStatusEnum"
-                                                       itemValue="#{paymentStatusEnum}"
-                                                       itemLabel="#{paymentStatusEnum.toString()}"/>
+                                        <f:selectItem itemLabel="Kies" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="Betaald" itemValue="PAID"/>
+                                        <f:selectItem itemLabel="Open" itemValue="OPEN"/>
+                                        <f:selectItem itemLabel="Gecanceld" itemValue="CANCELLED"/>
                                     </p:selectOneMenu>
                                 </f:facet>
                                 <h:outputText value="#{invoice.paymentStatus.toString()}"/>
