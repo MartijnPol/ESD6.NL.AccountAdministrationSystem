@@ -169,3 +169,7 @@ input {
 .ui-selectonemenu-panel .ui-selectonemenu-list-item:hover {
     background-color: #E1E6EA;
 }
+
+.breadcrumb-layout {
+    margin-top: 16px;
+}
