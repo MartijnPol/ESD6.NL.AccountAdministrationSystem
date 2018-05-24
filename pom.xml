@@ -151,28 +151,40 @@
             <version>3.1.0</version>
         </dependency>
 
+        <!-- HttpComponents -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.3.6</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpasyncclient</artifactId>
             <version>4.0.2</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
             <version>4.3.6</version>
         </dependency>
 
+        <!-- Org.Json -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20180130</version>
+        </dependency>
+
+        <!-- Google Maps Services -->
+        <dependency>
+            <groupId>com.google.maps</groupId>
+            <artifactId>google-maps-services</artifactId>
+            <version>0.2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.25</version>
         </dependency>
 
     </dependencies>
