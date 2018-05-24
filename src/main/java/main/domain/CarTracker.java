@@ -3,6 +3,7 @@ package main.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -17,17 +18,20 @@ public class CarTracker implements Serializable {
     @Id
     private String id;
 
+    @NotNull
     @Temporal(TemporalType.DATE)
     private Date startDate;
 
     @Temporal(TemporalType.DATE)
     private Date endDate;
 
+    @NotNull
     private String manufacturer;
 
     @ManyToOne
     private Car car;
 
+    @NotNull
     private boolean enabled;
 
     public CarTracker(){

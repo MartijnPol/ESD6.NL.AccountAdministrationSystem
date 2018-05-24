@@ -55,11 +55,11 @@
                             <h:outputText value="#{cartracker.car.currentOwnership.owner.fullName}"/>
                         </p:column>
 
-                        <p:column styleClass="text-align-center" width="20%">
+                        <p:column headerText="Deactiveren" styleClass="text-align-center" width="20%">
                             <p:commandButton action="#{carTrackerOverviewBean.disableCarTracker(cartracker)}"
                                              update="carTrackerDataTable"
                                              value="Deactiveer"
-                                             rendered="#{carTrackerBean.carTracker.car eq null and carTrackerBean.carTracker.enabled  eq 0}"
+                                             rendered="#{cartracker.car eq null and cartracker.enabled}"
                                              styleClass="btn btn-danger actionlink">
                                 <p:confirm header="Weet u het zeker?"
                                            message="Wil u deze cartracker echt deactiveren?"/>
