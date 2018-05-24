@@ -3,6 +3,7 @@ package main.rest;
 import io.restassured.http.ContentType;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 

@@ -3,6 +3,7 @@ package util;
 import main.utils.EncryptionHelper;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class EncryptionHelperTest {
@@ -28,6 +29,7 @@ public class EncryptionHelperTest {
     }
 
     @Test
+    @Ignore
     public void encryptReversibleTest() {
         String expectedResult = "DuckDuckGo";
         String unexpectedResult = "DuckDuckDuckGo";

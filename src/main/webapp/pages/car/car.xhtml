@@ -43,16 +43,16 @@
 
                         <div class="form-control">
                             <p:outputLabel for="selectOneMenu" value="Eigenaar: "/>
-                            <p:selectOneMenu id="selectOneMenu" value="#{carBean.selectedOwnership}" filter="true"
+                            <p:selectOneMenu id="selectOneMenu" value="#{carBean.selectedOwner}" filter="true"
                                              converter="omnifaces.SelectItemsIndexConverter"
                                              filterMatchMode="startsWith">
                                 <f:selectItem itemLabel="#{carBean.car.currentOwnership.owner.fullName}"
                                               itemDisabled="true"/>
-                                <f:selectItems itemLabel="#{ownership.owner.getFullName()}"
-                                               itemValue="#{ownership}"
-                                               value="#{carBean.ownerships}"
-                                               var="ownership"/>
-                                <p:ajax listener="#{carBean.onItemChange(ownership)}"/>
+                                <f:selectItems itemLabel="#{owner.getFullName()}"
+                                               itemValue="#{owner}"
+                                               value="#{carBean.owners}"
+                                               var="owner"/>
+                                <p:ajax listener="#{carBean.onItemChange(owner)}"/>
                             </p:selectOneMenu>
                         </div>
                         <p:commandButton action="#{carBean.update}"

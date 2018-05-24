@@ -1,9 +1,11 @@
 package main.batch;
 
 import main.domain.BatchLog;
+import main.domain.CarTrackerResponse;
 import main.domain.Invoice;
 import main.domain.Ownership;
 import main.service.BatchLogService;
+import main.service.CarService;
 import main.service.InvoiceService;
 
 import javax.batch.api.chunk.ItemWriter;
@@ -26,8 +28,13 @@ public class OwnershipWriter implements ItemWriter {
 
     @Inject
     private JobContext jobContext;
+
     @Inject
     private InvoiceService invoiceService;
+
+    @Inject
+    private CarService carService;
+
     @Inject
     private BatchLogService batchLogService;
 
@@ -46,7 +53,7 @@ public class OwnershipWriter implements ItemWriter {
     @Override
     public void writeItems(List<Object> items) throws Exception {
 
-        this.batchLogService.createOrUpdate(new BatchLog(jobContext.getJobName(), "Bezig met het schrijven van de items." , jobContext.getExecutionId()));
+        this.batchLogService.createOrUpdate(new BatchLog(jobContext.getJobName(), "Bezig met het schrijven van de items.", jobContext.getExecutionId()));
 
 
         for (Object item : items) {
@@ -57,10 +64,14 @@ public class OwnershipWriter implements ItemWriter {
             BigDecimal totalInvoiceAmount = invoiceService.generateTotalInvoiceAmount(ownership);
             Long lastInvoiceNr = invoiceService.findLastInvoiceNr();
             Long nextInvoiceNr = invoiceService.getNextInvoiceNr(lastInvoiceNr);
+            CarTrackerResponse carMovements = carService.findCarMovements(ownership.getCar().getCurrentCarTracker().getId());
+
             Invoice invoice = new Invoice();
             invoice.setInvoiceNr(nextInvoiceNr);
             invoice.setOwnership(ownership);
             invoice.setTotalAmount(totalInvoiceAmount);
+            invoice.setCarTrackerResponse(carMovements);
+
             invoiceService.createOrUpdate(invoice);
         }
     }
