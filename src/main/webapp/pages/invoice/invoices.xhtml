@@ -43,7 +43,7 @@
                                      selection="#{invoiceOverviewBean.selectedInvoice}"
                                      rowKey="#{invoice.id}"
                                      value="#{invoiceOverviewBean.invoices}" var="invoice"
-                                     widgetVar="invoiceOverviewDataTable">
+                                     widgetVar="invoiceOverviewWidgetVar">
 
                             <p:ajax event="rowSelect" listener="#{invoiceOverviewBean.onRowSelect}"/>
 
@@ -53,14 +53,15 @@
                             </p:column>
 
                             <p:column headerText="Betaalstatus" filterBy="#{invoice.paymentStatus}"
-                                      filterMatchMode="equals">
+                                      filterMatchMode="exact">
                                 <f:facet name="filter">
-                                    <p:selectOneButton onchange="PF('invoiceOverviewDataTable').filter()">
+                                    <p:selectOneMenu onchange="PF('invoiceOverviewWidgetVar').filter()">
+                                        <f:selectItem itemLabel="Kies" itemValue="#{null}" noSelectionOption="true" />
                                         <f:selectItems value="#{invoiceOverviewBean.paymentStatuses}"
                                                        var="paymentStatusEnum"
                                                        itemValue="#{paymentStatusEnum}"
                                                        itemLabel="#{paymentStatusEnum.toString()}"/>
-                                    </p:selectOneButton>
+                                    </p:selectOneMenu>
                                 </f:facet>
                                 <h:outputText value="#{invoice.paymentStatus.toString()}"/>
                             </p:column>
