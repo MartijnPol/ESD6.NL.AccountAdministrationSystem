@@ -2,18 +2,90 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/templates/template.xhtml">
 
+
     <ui:define name="title">#{sessionBean.loggedInUser.username}</ui:define>
 
     <ui:define name="username">#{sessionBean.loggedInUser.username}</ui:define>
 
     <ui:define name="content">
 
+        <!-- CONTAINER -->
         <div class="container">
 
-            <div class="row justify-content-center align-items-center vertical-center">
+            <!-- HEADER -->
+            <header class="header">
+                <h1>Rekeningadministratie systeem</h1>
+                <h5 class="text-muted">Welkom terug, #{sessionBean.loggedInUser.username}</h5>
+            </header>
 
-                <h1>Welcome #{sessionBean.loggedInUser.username}!</h1>
+            <!-- ROW -->
+            <div class="row dashboardRow">
 
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <a href="../profile/profiles.xhtml">
+                        <div class="card dashboardCard" id="UserCard">
+                            <div class="card-body">
+                                <h4 class="card-title dashboardCard-title">Gebruikers</h4>
+                                <p class="card-text">Voeg gebruikers aan het RekeningAdministratie Systeem toe.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <a href="../invoice/invoices.xhtml">
+                        <div class="card dashboardCard" id="InvoiceCard">
+                            <div class="card-body">
+                                <h4 class="card-title dashboardCard-title">Factuurs</h4>
+                                <p class="card-text">Beheer factuurs. Zie bestaande factuurs in en wijzig de betaalstatus.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <a href="../car/cars.xhtml">
+                        <div class="card dashboardCard" id="CarCard">
+                            <div class="card-body">
+                                <h4 class="card-title dashboardCard-title">Auto's</h4>
+                                <p class="card-text">Beheer auto's. Voeg auto's toe en schrijf ze over naar een andere eigenaar.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <a href="../cartracker/cartrackers.xhtml">
+                        <div class="card dashboardCard" id="CarTrackersCard">
+                            <div class="card-body">
+                                <h4 class="card-title dashboardCard-title">CarTrackers</h4>
+                                <p class="card-text">Beheer CarTrackers. Voeg nieuwe CarTrackers toe en deactiveer ze.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <a href="../tariff/tariffs.xhtml">
+                        <div class="card dashboardCard" id="TariffCard">
+                            <div class="card-body">
+                                <h4 class="card-title dashboardCard-title">Tarieven</h4>
+                                <p class="card-text">Beheer tarieven. Voeg nieuwe tarieven toe en pas ze aan.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <a href="../invoice/batchDetails.xhtml">
+                        <div class="card dashboardCard" id="BatchJobsCard">
+                            <div class="card-body">
+                                <h4 class="card-title dashboardCard-title">Batch Jobs</h4>
+                                <p class="card-text">Zie de geschiedenis van afgelopen Batch Jobs in.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
 
         </div>
