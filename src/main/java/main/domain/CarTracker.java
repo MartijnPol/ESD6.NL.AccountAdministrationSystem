@@ -10,7 +10,6 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "cartracker.findByCar", query = "SELECT c FROM CarTracker c WHERE c.car = :car"),
         @NamedQuery(name = "carTracker.findById", query = "SELECT c FROM CarTracker  c WHERE c.id = :id")
 })
 public class CarTracker implements Serializable {

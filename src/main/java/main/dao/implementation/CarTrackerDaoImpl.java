@@ -26,13 +26,6 @@ public class CarTrackerDaoImpl extends GenericDaoJPAImpl<CarTracker> implements 
     }
 
     @Override
-    public List<Car> findByCar(Car car) {
-        return getEntityManager().createNamedQuery("cartracker.findByCar", Car.class)
-                .setParameter("car", car)
-                .getResultList();
-    }
-
-    @Override
     public CarTracker create(CarTracker carTracker) {
         this.entityManager.persist(carTracker);
         return carTracker;
