@@ -17,6 +17,15 @@
 
         <div class="container">
 
+            <nav aria-label="breadcrumb" class="breadcrumb-layout">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><h:link outcome="/pages/profile/dashboard.xhtml" value="Home"/>
+                    </li>
+                    <li class="breadcrumb-item"><h:link outcome="/pages/cartracker/cartrackers.xhtml" value="CarTrackers"/></li>
+                    <li class="breadcrumb-item active">#{carTrackerBean.carTracker.id}</li>
+                </ol>
+            </nav>
+
             <header class="header">
                 <h1>Cartrackerdetails</h1>
                 <h5 class="text-muted">Details van de cartracker</h5>
