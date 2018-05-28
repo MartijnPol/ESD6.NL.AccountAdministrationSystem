@@ -11,6 +11,8 @@ public interface CarTrackerDao extends GenericDao<CarTracker> {
 
     CarTracker findById(String id);
 
+    List<CarTracker> findUnusedTrackers ();
+
     CarTracker create(CarTracker carTracker);
 
     CarTracker update(CarTracker carTracker);

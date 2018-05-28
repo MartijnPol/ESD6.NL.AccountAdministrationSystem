@@ -167,6 +167,8 @@ public class CarService {
                 CarTracker pastCartracker = car.getCurrentCarTracker();
                 if (pastCartracker != null) {
                     pastCartracker.setEndDate(new Date());
+                    pastCartracker.setCar(null);
+                    pastCartracker.setEnabled(false);
                     car.addPastCarTracker(pastCartracker);
                 }
                 newCartracker.setStartDate(new Date());

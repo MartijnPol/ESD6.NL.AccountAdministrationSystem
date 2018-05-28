@@ -1,6 +1,7 @@
 package main.rest;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.when;
@@ -17,6 +18,7 @@ public class InvoiceResourceTest {
         setUpRestResource();
     }
 
+    @Ignore
     @Test public void
     invoice_resource_returns_200_with_expected_invoiceNr() {
                 when().
@@ -25,7 +27,7 @@ public class InvoiceResourceTest {
                         statusCode(200).
                         body("invoiceNr", hasItems(20181, 20182));
     }
-
+    @Ignore
     @Test public void
     invoice_resource_returns_404() {
         when().

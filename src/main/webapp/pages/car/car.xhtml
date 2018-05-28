@@ -45,12 +45,6 @@
                         </div>
 
                         <div class="form-control">
-                            <p:outputLabel for="cartrackerid" value="Cartracker: "/>
-                            <h:outputText id="cartrackerid" value="#{carBean.car.currentCarTracker.id}"/>
-                        </div>
-
-
-                        <div class="form-control">
                             <p:outputLabel for="selectOneMenu" value="Eigenaar: "/>
                             <p:selectOneMenu id="selectOneMenu" value="#{carBean.selectedOwner}" filter="true"
                                              converter="omnifaces.SelectItemsIndexConverter"
@@ -61,7 +55,22 @@
                                                itemValue="#{owner}"
                                                value="#{carBean.owners}"
                                                var="owner"/>
-                                <p:ajax listener="#{carBean.onItemChange(owner)}"/>
+                                <p:ajax listener="#{carBean.onOwnerChange(owner)}"/>
+                            </p:selectOneMenu>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="selectCartrackerMenu" value="Cartracker: "/>
+                            <p:selectOneMenu id="selectCartrackerMenu" value="#{carBean.selectedCartracker}" filter="true"
+                                             converter="omnifaces.SelectItemsIndexConverter"
+                                             filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="#{carBean.car.currentCarTracker.id}"
+                                              itemDisabled="true"/>
+                                <f:selectItems itemLabel="#{cartracker.id}"
+                                               itemValue="#{cartracker}"
+                                               value="#{carBean.unusedCarTrackers}"
+                                               var="cartracker"/>
+                                <p:ajax listener="#{carBean.onCartrackerChange(cartracker)}"/>
                             </p:selectOneMenu>
                         </div>
                         <p:commandButton action="#{carBean.update}"
