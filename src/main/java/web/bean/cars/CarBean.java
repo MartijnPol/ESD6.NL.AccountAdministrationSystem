@@ -1,9 +1,11 @@
 package web.bean.cars;
 
 import main.domain.Car;
+import main.domain.CarTracker;
 import main.domain.Owner;
 import main.domain.Ownership;
 import main.service.CarService;
+import main.service.CarTrackerService;
 import main.service.OwnerService;
 import web.bean.BaseBean;
 import web.core.helper.FrontendHelper;
@@ -24,20 +26,29 @@ public class CarBean extends BaseBean {
     private CarService carService;
     @Inject
     private OwnerService ownerService;
+    @Inject
+    private CarTrackerService carTrackerService;
 
     private Long carId;
     private Car car;
     private List<Owner> owners;
     private Owner selectedOwner;
+    private List<CarTracker> unusedCarTrackers;
+    private CarTracker selectedCartracker;
 
     @Override
     public void init() {
         this.owners = this.ownerService.findAll();
         this.car = this.carService.findById(this.carId);
+        this.unusedCarTrackers = this.carTrackerService.findUnusedTrackers();
     }
 
-    public void onItemChange(Owner selectedOwner) {
+    public void onOwnerChange(Owner selectedOwner) {
         this.selectedOwner = selectedOwner;
+    }
+
+    public void onCartrackerChange(CarTracker selectedCartracker) {
+        this.selectedCartracker = selectedCartracker;
     }
 
     public void update() {
@@ -45,6 +56,15 @@ public class CarBean extends BaseBean {
             if (!car.getCurrentOwnership().getOwner().equals(this.selectedOwner)) {
                 Ownership newOwnership = new Ownership(selectedOwner);
                 this.carService.assignToNewOwner(this.car, newOwnership);
+            } else {
+                this.carService.createOrUpdate(this.car);
+            }
+            FrontendHelper.displaySuccessSmallMessage("De auto is succesvol geüpdatet.");
+        }
+
+        if (this.car != null && this.selectedCartracker != null) {
+            if (!car.getCurrentCarTracker().equals(this.selectedCartracker)) {
+                this.carService.assignNewCarTracker(this.car, selectedCartracker);
             } else {
                 this.carService.createOrUpdate(this.car);
             }
@@ -84,5 +104,22 @@ public class CarBean extends BaseBean {
     public void setSelectedOwner(Owner selectedOwner) {
         this.selectedOwner = selectedOwner;
     }
-//</editor-fold>
+
+    public List<CarTracker> getUnusedCarTrackers() {
+        return unusedCarTrackers;
+    }
+
+    public void setUnusedCarTrackers(List<CarTracker> unusedCarTrackers) {
+        this.unusedCarTrackers = unusedCarTrackers;
+    }
+
+    public CarTracker getSelectedCartracker() {
+        return selectedCartracker;
+    }
+
+    public void setSelectedCartracker(CarTracker selectedCartracker) {
+        this.selectedCartracker = selectedCartracker;
+    }
+
+    //</editor-fold>
 }

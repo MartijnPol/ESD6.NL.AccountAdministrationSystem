@@ -72,6 +72,10 @@ public class CarTrackerService {
         return this.carTrackerDao.findAll();
     }
 
+    public List<CarTracker> findUnusedTrackers() {
+        return this.carTrackerDao.findUnusedTrackers();
+    }
+
     public void setCarTrackerDao(CarTrackerDao carTrackerDao) {
         this.carTrackerDao = carTrackerDao;
     }

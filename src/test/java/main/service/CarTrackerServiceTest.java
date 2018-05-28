@@ -1,8 +1,5 @@
 package main.service;
 
-import main.dao.RDWFuelDao;
-import main.dao.implementation.CarDaoImpl;
-import main.dao.implementation.RDWDaoImpl;
 import main.domain.*;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,21 +20,11 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class CarTrackerServiceTest {
 
-    private CarService carService;
     private Car car;
-    private Ownership newOwnership;
-    private Ownership currentOwnership;
     private Owner owner;
     private CarTracker carTracker;
+    private CarTracker carTrackerUnused;
 
-    @Mock
-    private CarDaoImpl carDao;
-    @Mock
-    private RDWDaoImpl rdwDao;
-    @Mock
-    private RDWFuelDao rdwFuelDao;
-    @Mock
-    private CarService carServiceMock;
     @Mock
     private CarTrackerService carTrackerService;
 
@@ -50,16 +37,15 @@ public class CarTrackerServiceTest {
         Ownership ownership = new Ownership();
         owner = new Owner();
         carTracker = new CarTracker("1", "Apple");
+        carTrackerUnused = new CarTracker("2", "Test");
 
         owner.setFirstName("Jens");
         ownership.setOwner(owner);
         car.setCurrentOwnership(ownership);
         car.setLicensePlate("08-SK-PX");
         car.setCurrentCarTracker(carTracker);
-    }
 
-    @Test
-    public void createOrUpdateTest() {
+
 
     }
 
@@ -85,6 +71,18 @@ public class CarTrackerServiceTest {
         when(this.carTrackerService.findAll()).thenReturn(expectedResult);
 
         assertEquals(1, expectedResult.size());
+    }
+
+    @Test
+    public void findUnusedTrackerTest()
+    {
+        List<CarTracker> expectedResult = new ArrayList<>();
+        expectedResult.add(carTrackerUnused);
+
+        when(this.carTrackerService.findUnusedTrackers()).thenReturn(expectedResult);
+
+        assertEquals(1, expectedResult.size());
+
     }
 
 }
