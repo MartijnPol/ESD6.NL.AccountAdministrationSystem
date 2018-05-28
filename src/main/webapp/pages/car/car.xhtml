@@ -39,45 +39,83 @@
                 <div class="col-lg-12">
                     <h:form rendered="#{not empty carBean.car}">
 
-                        <div class="form-control">
-                            <p:outputLabel for="licensePlateText" value="Kenteken: "/>
-                            <h:outputText id="licensePlateText" value="#{carBean.car.licensePlate}"/>
+                        <div class="ui-g-4">
+                            <div class="form-control">
+                                <p:outputLabel for="licensePlateText" value="Kenteken: "/>
+                                <h:outputText id="licensePlateText" value="#{carBean.car.licensePlate}"/>
+                            </div>
+
+                            <div class="form-control">
+                                <p:outputLabel for="selectOneMenu" value="Eigenaar: "/>
+                                <p:selectOneMenu id="selectOneMenu" value="#{carBean.selectedOwner}" filter="true"
+                                                 converter="omnifaces.SelectItemsIndexConverter"
+                                                 filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="#{carBean.car.currentOwnership.owner.fullName}"
+                                                  itemDisabled="true"/>
+                                    <f:selectItems itemLabel="#{owner.getFullName()}"
+                                                   itemValue="#{owner}"
+                                                   value="#{carBean.owners}"
+                                                   var="owner"/>
+                                    <p:ajax listener="#{carBean.onOwnerChange(owner)}"/>
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="form-control">
+                                <p:outputLabel for="selectCartrackerMenu" value="Cartracker: "/>
+                                <p:selectOneMenu id="selectCartrackerMenu" value="#{carBean.selectedCartracker}"
+                                                 filter="true"
+                                                 converter="omnifaces.SelectItemsIndexConverter"
+                                                 filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="#{carBean.car.currentCarTracker.id}"
+                                                  itemDisabled="true"/>
+                                    <f:selectItems itemLabel="#{cartracker.id}"
+                                                   itemValue="#{cartracker}"
+                                                   value="#{carBean.unusedCarTrackers}"
+                                                   var="cartracker"/>
+                                    <p:ajax listener="#{carBean.onCartrackerChange(cartracker)}"/>
+                                </p:selectOneMenu>
+                            </div>
+
+                            <p:commandButton action="#{carBean.update}"
+                                             ajax="true"
+                                             id="update"
+                                             styleClass="btn btn-success"
+                                             value="Update"/>
                         </div>
 
-                        <div class="form-control">
-                            <p:outputLabel for="selectOneMenu" value="Eigenaar: "/>
-                            <p:selectOneMenu id="selectOneMenu" value="#{carBean.selectedOwner}" filter="true"
-                                             converter="omnifaces.SelectItemsIndexConverter"
-                                             filterMatchMode="startsWith">
-                                <f:selectItem itemLabel="#{carBean.car.currentOwnership.owner.fullName}"
-                                              itemDisabled="true"/>
-                                <f:selectItems itemLabel="#{owner.getFullName()}"
-                                               itemValue="#{owner}"
-                                               value="#{carBean.owners}"
-                                               var="owner"/>
-                                <p:ajax listener="#{carBean.onOwnerChange(owner)}"/>
-                            </p:selectOneMenu>
-                        </div>
+                        <div class="ui-g-8">
+                            <p:dataTable id="carHistoryDataTable"
+                                         paginator="true"
+                                         tableStyleClass="table"
+                                         paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rows="3"
+                                         rowsPerPageTemplate="3"
+                                         emptyMessage="Er is nog geen eigenaarsgeschiedenis voor de geselecteerde auto."
+                                         var="item"
+                                         value="#{carBean.pastOwnerships}">
+                                <f:facet name="header">
+                                    Geschiedenis van eigenaren van de auto
+                                </f:facet>
 
-                        <div class="form-control">
-                            <p:outputLabel for="selectCartrackerMenu" value="Cartracker: "/>
-                            <p:selectOneMenu id="selectCartrackerMenu" value="#{carBean.selectedCartracker}" filter="true"
-                                             converter="omnifaces.SelectItemsIndexConverter"
-                                             filterMatchMode="startsWith">
-                                <f:selectItem itemLabel="#{carBean.car.currentCarTracker.id}"
-                                              itemDisabled="true"/>
-                                <f:selectItems itemLabel="#{cartracker.id}"
-                                               itemValue="#{cartracker}"
-                                               value="#{carBean.unusedCarTrackers}"
-                                               var="cartracker"/>
-                                <p:ajax listener="#{carBean.onCartrackerChange(cartracker)}"/>
-                            </p:selectOneMenu>
+                                <p:column headerText="Naam">
+                                    <h:outputText value="#{item.owner.fullName}"/>
+                                </p:column>
+
+                                <p:column headerText="Begindatum">
+                                    <h:outputText id="startDateOutput" value="#{item.startDate}">
+                                        <f:convertDateTime for="startDateOutput" pattern="dd-MM-yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Einddatum">
+                                    <h:outputText id="endDateOutput" value="#{item.endDate}">
+                                        <f:convertDateTime for="endDateOutput" pattern="dd-MM-yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+
+                            </p:dataTable>
                         </div>
-                        <p:commandButton action="#{carBean.update}"
-                                         ajax="true"
-                                         id="update"
-                                         styleClass="btn btn-success"
-                                         value="Update"/>
 
                     </h:form>
                 </div>
