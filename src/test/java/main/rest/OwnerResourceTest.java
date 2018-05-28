@@ -17,6 +17,7 @@ public class OwnerResourceTest {
         setUpRestResource();
     }
 
+    @Ignore
     @Test
     public void getOwner() {
         JSONObject jsonObject = new JSONObject()
