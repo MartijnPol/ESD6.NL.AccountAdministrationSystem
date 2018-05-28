@@ -1,33 +1,35 @@
 package main.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "cartracker.findByCar", query = "SELECT c FROM CarTracker c WHERE c.car = :car"),
-        @NamedQuery(name = "carTracker.findById", query = "SELECT c FROM CarTracker  c WHERE c.id = :id")
+        @NamedQuery(name = "carTracker.findById", query = "SELECT c FROM CarTracker  c WHERE c.id = :id"),
+        @NamedQuery(name = "carTracker.findUnusedTrackers", query = "SELECT c FROM CarTracker c WHERE c.car is null and c.enabled = true")
 })
 public class CarTracker implements Serializable {
 
     @Id
     private String id;
 
+    @NotNull
     @Temporal(TemporalType.DATE)
     private Date startDate;
 
     @Temporal(TemporalType.DATE)
     private Date endDate;
 
+    @NotNull
     private String manufacturer;
 
     @ManyToOne
     private Car car;
 
+    @NotNull
     private boolean enabled;
 
     public CarTracker(){

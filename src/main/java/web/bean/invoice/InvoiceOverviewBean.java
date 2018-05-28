@@ -1,7 +1,6 @@
 package web.bean.invoice;
 
 import main.domain.Invoice;
-import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
 import org.primefaces.event.SelectEvent;
 import web.bean.BaseBean;
@@ -41,10 +40,6 @@ public class InvoiceOverviewBean extends BaseBean {
 
     public List<Invoice> getInvoices() {
         return invoices;
-    }
-
-    public PaymentStatus[] getPaymentStatuses() {
-        return PaymentStatus.values();
     }
 
     public void setInvoices(List<Invoice> invoices) {

@@ -3,7 +3,6 @@ package main.service;
 import main.dao.CarTrackerDao;
 import main.dao.JPA;
 import main.domain.CarTracker;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.List;
@@ -15,7 +14,6 @@ public class CarTrackerService {
     @Inject
     @JPA
     public CarTrackerDao carTrackerDao;
-
 
     /**
      * Empty constructor
@@ -35,7 +33,6 @@ public class CarTrackerService {
         } else {
             return this.update(carTracker);
         }
-
     }
 
     /**
@@ -62,10 +59,6 @@ public class CarTrackerService {
      * @param id is the given Id that belongs to a CarTracker data object
      * @return the found object belonging to the given Id
      */
-    public CarTracker findById(Long id) {
-        return this.carTrackerDao.findById(id);
-    }
-
     public CarTracker findById(String id) {
         return this.carTrackerDao.findById(id);
     }
@@ -75,12 +68,12 @@ public class CarTrackerService {
      *
      * @return A list of all CarTrackerData stored in the database
      */
-    public List<CarTracker> getCarTrackers() {
-        return carTrackerDao.findAll();
-    }
-
     public List<CarTracker> findAll() {
         return this.carTrackerDao.findAll();
+    }
+
+    public List<CarTracker> findUnusedTrackers() {
+        return this.carTrackerDao.findUnusedTrackers();
     }
 
     public void setCarTrackerDao(CarTrackerDao carTrackerDao) {

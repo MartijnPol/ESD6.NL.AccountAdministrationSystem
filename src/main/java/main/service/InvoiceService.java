@@ -11,6 +11,7 @@ import main.utils.StringHelper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.json.JsonObject;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -58,6 +59,14 @@ public class InvoiceService {
             return this.invoiceDao.findById(id);
         }
         return null;
+    }
+
+    public List<JsonObject> multipleToJson(List<Invoice> invoices) {
+        List<JsonObject> jsonObjects = new ArrayList<>();
+        for (Invoice invoice : invoices) {
+            jsonObjects.add(invoice.toJson());
+        }
+        return jsonObjects;
     }
 
     /**
@@ -199,6 +208,9 @@ public class InvoiceService {
             double totalCosts = 0.0;
 
             for (CarTrackerRuleResponse carTrackerRule : rules) {
+                double lat = carTrackerRule.getLat();
+                double lon = carTrackerRule.getLon();
+
 
             }
 
@@ -206,6 +218,10 @@ public class InvoiceService {
         }
 
         return 0.0;
+    }
+
+    public void getPlaceByLatAndLon(double lat, double lon) {
+
     }
 
     /**

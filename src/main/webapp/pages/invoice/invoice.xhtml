@@ -17,6 +17,15 @@
 
         <div class="container">
 
+            <nav aria-label="breadcrumb" class="breadcrumb-layout">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><h:link outcome="/pages/profile/dashboard.xhtml" value="Home"/>
+                    </li>
+                    <li class="breadcrumb-item"><h:link outcome="/pages/invoice/invoices.xhtml" value="Factuurs"/></li>
+                    <li class="breadcrumb-item active">#{invoiceBean.invoice.invoiceNr}</li>
+                </ol>
+            </nav>
+
             <div class="row">
                 <div class="col-lg-12">
                     <header class="header">

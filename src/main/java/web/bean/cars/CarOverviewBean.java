@@ -54,7 +54,7 @@ public class CarOverviewBean implements Serializable {
     @PostConstruct
     public void init() {
         this.cars = this.carService.findAll();
-        this.carTrackers = this.carTrackerService.findAll();
+        this.carTrackers = this.carTrackerService.findUnusedTrackers();
         this.ownerships = this.ownershipService.findAll();
         this.owners = this.ownerService.findAll();
     }

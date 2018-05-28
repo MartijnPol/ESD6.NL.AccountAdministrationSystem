@@ -18,7 +18,6 @@ public class OwnerResourceTest {
     }
 
     @Test
-    @Ignore
     public void getOwner() {
         JSONObject jsonObject = new JSONObject()
                 .put("firstName", "Henk")
