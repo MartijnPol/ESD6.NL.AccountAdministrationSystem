@@ -100,6 +100,7 @@
 
                 <h:form id="newTariffForm">
                     <div class="form-group">
+                        <p:outputLabel for="selectOneMenu" value="Wegtype: "/>
                         <p:selectOneMenu id="selectOneMenu" value="#{tariffOverviewBean.selectedRoadType}" filter="true"
                                          converter="omnifaces.SelectItemsIndexConverter"
                                          filterMatchMode="startsWith">
@@ -111,6 +112,7 @@
                     </div>
 
                     <div class="form-group">
+                        <p:outputLabel for="tariff" value="Tarief: "/>
                         <p:inputText id="tariff"
                                      placeholder="0,00"
                                      required="true"
@@ -120,8 +122,9 @@
                     </div>
 
                     <div>
-                        <h:selectBooleanCheckbox value="#{tariffOverviewBean.ridingDuringRushHour}"/>
-                        <h:outputText value="Geldt dit tarief tijdens spits uren?"/>
+                        <p:outputLabel for="rushHourBoolean" value="Geldt dit tarief tijdens spits uren?"/>
+                        <h:selectBooleanCheckbox id="rushHourBoolean"
+                                                 value="#{tariffOverviewBean.ridingDuringRushHour}"/>
                     </div>
                     <div>
                         <p:commandButton action="#{tariffOverviewBean.create}"
