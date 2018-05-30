@@ -2,6 +2,7 @@
 //
 //import main.domain.*;
 //import main.domain.enums.PaymentStatus;
+//import main.domain.enums.RoadType;
 //
 //import javax.annotation.PostConstruct;
 //import javax.ejb.Singleton;
@@ -118,7 +119,7 @@
 //        invoice3.setOwnership(ownership2);
 //        this.invoiceService.createOrUpdate(invoice3);
 //
-//        Tariff tariff1 = new Tariff(0.07, false);
+//        Tariff tariff1 = new Tariff(RoadType.A, 0.07, false);
 //
 //        Map<String, Double> carLabels = new HashMap<>();
 //        carLabels.put("A", -20.0);

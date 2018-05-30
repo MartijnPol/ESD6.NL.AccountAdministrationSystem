@@ -1,6 +1,7 @@
 package web.bean.tariff;
 
 import main.domain.Tariff;
+import main.domain.enums.RoadType;
 import main.service.TariffService;
 import org.primefaces.event.SelectEvent;
 import web.core.helper.FrontendHelper;
@@ -11,6 +12,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 @Named
@@ -23,12 +25,15 @@ public class TariffOverviewBean implements Serializable {
     private List<Tariff> tariffs;
     private List<Tariff> filteredTariffs;
     private Tariff selectedTariff;
+    private List<RoadType> roadTypes;
+    private RoadType selectedRoadType;
 
     private double tariffInEuro;
     private boolean ridingDuringRushHour;
 
     @PostConstruct
     public void init() {
+        this.roadTypes = Arrays.asList(RoadType.values());
         this.tariffs = this.tariffService.findAll();
     }
 
@@ -46,7 +51,7 @@ public class TariffOverviewBean implements Serializable {
 
     public void create() {
         if (tariffInEuro != 0) {
-            Tariff newTariff = new Tariff(this.tariffInEuro, this.ridingDuringRushHour);
+            Tariff newTariff = new Tariff(this.selectedRoadType, this.tariffInEuro, this.ridingDuringRushHour);
             tariffService.createOrUpdate(newTariff);
             this.tariffs = tariffService.findAll();
             FrontendHelper.displaySuccessSmallMessage("Het tarief is succesvol toegevoegd!");
@@ -111,5 +116,22 @@ public class TariffOverviewBean implements Serializable {
     public void setSelectedTariff(Tariff selectedTariff) {
         this.selectedTariff = selectedTariff;
     }
+
+    public List<RoadType> getRoadTypes() {
+        return roadTypes;
+    }
+
+    public void setRoadTypes(List<RoadType> roadTypes) {
+        this.roadTypes = roadTypes;
+    }
+
+    public RoadType getSelectedRoadType() {
+        return selectedRoadType;
+    }
+
+    public void setSelectedRoadType(RoadType selectedRoadType) {
+        this.selectedRoadType = selectedRoadType;
+    }
+
     //</editor-fold>
 }

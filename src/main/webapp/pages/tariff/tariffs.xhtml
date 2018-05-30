@@ -49,6 +49,10 @@
                                 update=":defaultForm:growl"/>
                         <p:ajax event="rowSelect" listener="#{tariffOverviewBean.onRowSelect}"/>
 
+                        <p:column headerText="Wegtype">
+                            <h:outputText value="#{tariff.roadType.toString()}"/>
+                        </p:column>
+
                         <p:column headerText="Tarief" filterBy="#{tariff.tariffInEuro}" filterMatchMode="contains">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{tariff.tariffInEuro}"/> </f:facet>
@@ -95,6 +99,17 @@
             <div class="content-container">
 
                 <h:form id="newTariffForm">
+                    <div class="form-group">
+                        <p:selectOneMenu id="selectOneMenu" value="#{tariffOverviewBean.selectedRoadType}" filter="true"
+                                         converter="omnifaces.SelectItemsIndexConverter"
+                                         filterMatchMode="startsWith">
+                            <f:selectItems itemLabel="#{roadType.toString()}"
+                                           itemValue="#{roadType}"
+                                           value="#{tariffOverviewBean.roadTypes}"
+                                           var="roadType"/>
+                        </p:selectOneMenu>
+                    </div>
+
                     <div class="form-group">
                         <p:inputText id="tariff"
                                      placeholder="0,00"
