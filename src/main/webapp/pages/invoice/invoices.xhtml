@@ -90,13 +90,6 @@
                             </p:column>
 
                             <p:column styleClass="text-align-center" width="20%">
-                                <p:commandButton action="#{invoiceOverviewBean.deleteInvoice(invoice)}"
-                                                 update="invoiceOverviewDataTable"
-                                                 value="Delete"
-                                                 styleClass="btn btn-danger actionlink">
-                                    <p:confirm header="Weet u het zeker?"
-                                               message="Wil u deze factuur echt verwijderen?"/>
-                                </p:commandButton>
                                 <h:commandLink action="#{invoiceOverviewBean.generateInvoicePdf(invoice)}"
                                                value="Download"
                                                styleClass="btn btn-primary actionlink">
