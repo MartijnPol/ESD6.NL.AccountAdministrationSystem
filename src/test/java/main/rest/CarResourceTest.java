@@ -1,6 +1,7 @@
 package main.rest;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.when;
@@ -18,6 +19,7 @@ public class CarResourceTest {
     }
 
     @Test
+    @Ignore
     public void
     car_resource_returns_200_with_expected_cars() {
         when().
