@@ -37,6 +37,9 @@
                                  paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10, 20, 50"
+                                 selectionMode="single"
+                                 selection="#{tariffOverviewBean.selectedTariff}"
+                                 rowKey="#{tariff.id}"
                                  value="#{tariffOverviewBean.tariffs}"
                                  var="tariff"
                                  tableStyle="table-layout: auto"
@@ -44,6 +47,7 @@
 
                         <p:ajax event="cellEdit" listener="#{tariffOverviewBean.onCellEdit(tariff)}"
                                 update=":defaultForm:growl"/>
+                        <p:ajax event="rowSelect" listener="#{tariffOverviewBean.onRowSelect}"/>
 
                         <p:column headerText="Tarief" filterBy="#{tariff.tariffInEuro}" filterMatchMode="contains">
                             <p:cellEditor>
@@ -117,7 +121,6 @@
             </div>
 
         </div>
-
 
     </ui:define>
 </ui:composition>

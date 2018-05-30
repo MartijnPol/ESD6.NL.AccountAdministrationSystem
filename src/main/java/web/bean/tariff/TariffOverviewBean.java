@@ -2,6 +2,7 @@ package web.bean.tariff;
 
 import main.domain.Tariff;
 import main.service.TariffService;
+import org.primefaces.event.SelectEvent;
 import web.core.helper.FrontendHelper;
 import web.core.helper.RedirectHelper;
 
@@ -21,6 +22,7 @@ public class TariffOverviewBean implements Serializable {
 
     private List<Tariff> tariffs;
     private List<Tariff> filteredTariffs;
+    private Tariff selectedTariff;
 
     private double tariffInEuro;
     private boolean ridingDuringRushHour;
@@ -63,6 +65,12 @@ public class TariffOverviewBean implements Serializable {
         }
     }
 
+
+    public void onRowSelect(SelectEvent event) {
+        Tariff selectedTariff = (Tariff) event.getObject();
+        RedirectHelper.redirect("/pages/tariff/tariff.xhtml?id=" + selectedTariff.getId());
+    }
+
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
     public List<Tariff> getTariffs() {
         return tariffs;
@@ -94,6 +102,14 @@ public class TariffOverviewBean implements Serializable {
 
     public void setRidingDuringRushHour(boolean ridingDuringRushHour) {
         this.ridingDuringRushHour = ridingDuringRushHour;
+    }
+
+    public Tariff getSelectedTariff() {
+        return selectedTariff;
+    }
+
+    public void setSelectedTariff(Tariff selectedTariff) {
+        this.selectedTariff = selectedTariff;
     }
     //</editor-fold>
 }
