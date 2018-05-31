@@ -83,7 +83,9 @@
                         <h:outputText id="lastName" value="#{carTrackerBean.carTracker.car.currentOwnership.owner.lastName}"/>
                         <br/>
                         <p:outputLabel for="birthDay" value="Geboortedatum: "/>
-                        <h:outputText id="birthDay" value="#{carTrackerBean.carTracker.car.currentOwnership.owner.birthDay}"/>
+                        <h:outputText id="birthDay" value="#{carTrackerBean.carTracker.car.currentOwnership.owner.birthDay}">
+                            <f:convertDateTime for="birthDay" pattern="dd-MM-yyyy"/>
+                        </h:outputText>
                         <br/>
                         <p:outputLabel for="country" value="Land: "/>
                         <h:outputText id="country" value="#{carTrackerBean.carTracker.car.currentOwnership.owner.address.country}"/>

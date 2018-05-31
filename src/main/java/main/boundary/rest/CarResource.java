@@ -49,25 +49,6 @@ public class CarResource {
         return Response.ok(this.carService.replaceObjects(cars)).build();
     }
 
-    //TODO-Thom: Vraag aan mevrouw van Sogeti hoe dit zit.
-//    /**
-//     * Gets a car based on the carTrackerId.
-//     *
-//     * @param carTrackerId is the Id of the carTracker.
-//     * @returns the car.
-//     */
-//    @GET
-//    @Path("{car}")
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public Response getCarByCarTrackerId(@QueryParam("id") Long carTrackerId) {
-//        Car car = carService.findByCarTrackerId(carTrackerId);
-//        if (car == null) {
-//            throw new WebApplicationException(Response.Status.NOT_FOUND);
-//        }
-//
-//        return Response.ok(car.toJson()).build();
-//    }
-
     /**
      * Gets the cars of an cartracker.
      *
@@ -75,10 +56,10 @@ public class CarResource {
      * @returns a List of cars.
      */
     @GET
-    @Path("{owner}")
+    @Path("{citizenServiceNumber}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getCarsByOwner(@QueryParam("ownerId") Long ownerId) {
-        Owner owner = ownerService.findById(ownerId);
+    public Response getCarsByOwner(@PathParam("citizenServiceNumber") Long citizenServiceNumber) {
+        Owner owner = ownerService.findByCSN(citizenServiceNumber);
         List<Car> cars;
         if (owner != null) {
             cars = carService.findByOwner(owner);

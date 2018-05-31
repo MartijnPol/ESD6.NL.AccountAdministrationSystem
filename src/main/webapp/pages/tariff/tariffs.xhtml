@@ -37,6 +37,9 @@
                                  paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10, 20, 50"
+                                 selectionMode="single"
+                                 selection="#{tariffOverviewBean.selectedTariff}"
+                                 rowKey="#{tariff.id}"
                                  value="#{tariffOverviewBean.tariffs}"
                                  var="tariff"
                                  tableStyle="table-layout: auto"
@@ -44,6 +47,11 @@
 
                         <p:ajax event="cellEdit" listener="#{tariffOverviewBean.onCellEdit(tariff)}"
                                 update=":defaultForm:growl"/>
+                        <p:ajax event="rowSelect" listener="#{tariffOverviewBean.onRowSelect}"/>
+
+                        <p:column headerText="Wegtype">
+                            <h:outputText value="#{tariff.roadType.toString()}"/>
+                        </p:column>
 
                         <p:column headerText="Tarief" filterBy="#{tariff.tariffInEuro}" filterMatchMode="contains">
                             <p:cellEditor>
@@ -92,6 +100,19 @@
 
                 <h:form id="newTariffForm">
                     <div class="form-group">
+                        <p:outputLabel for="selectOneMenu" value="Wegtype: "/>
+                        <p:selectOneMenu id="selectOneMenu" value="#{tariffOverviewBean.selectedRoadType}" filter="true"
+                                         converter="omnifaces.SelectItemsIndexConverter"
+                                         filterMatchMode="startsWith">
+                            <f:selectItems itemLabel="#{roadType.toString()}"
+                                           itemValue="#{roadType}"
+                                           value="#{tariffOverviewBean.roadTypes}"
+                                           var="roadType"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel for="tariff" value="Tarief: "/>
                         <p:inputText id="tariff"
                                      placeholder="0,00"
                                      required="true"
@@ -101,8 +122,9 @@
                     </div>
 
                     <div>
-                        <h:selectBooleanCheckbox value="#{tariffOverviewBean.ridingDuringRushHour}"/>
-                        <h:outputText value="Geldt dit tarief tijdens spits uren?"/>
+                        <p:outputLabel for="rushHourBoolean" value="Geldt dit tarief tijdens spits uren?"/>
+                        <h:selectBooleanCheckbox id="rushHourBoolean"
+                                                 value="#{tariffOverviewBean.ridingDuringRushHour}"/>
                     </div>
                     <div>
                         <p:commandButton action="#{tariffOverviewBean.create}"
@@ -117,7 +139,6 @@
             </div>
 
         </div>
-
 
     </ui:define>
 </ui:composition>

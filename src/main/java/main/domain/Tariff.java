@@ -1,8 +1,8 @@
 package main.domain;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import main.domain.enums.RoadType;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,13 +21,16 @@ public class Tariff extends BaseEntity {
 
     private boolean ridingDuringRushHour;
 
+    private RoadType roadType;
+
     public Tariff() {
         this.ridingDuringRushHour = false;
         this.carLabels = new HashMap<>();
         this.carFuels = new HashMap<>();
     }
 
-    public Tariff(double tariffInEuro, boolean ridingDuringRushHour) {
+    public Tariff(RoadType roadType, double tariffInEuro, boolean ridingDuringRushHour) {
+        this.roadType = roadType;
         this.tariffInEuro = tariffInEuro;
         this.ridingDuringRushHour = ridingDuringRushHour;
     }
@@ -79,6 +82,14 @@ public class Tariff extends BaseEntity {
 
     public void addCarFuels(Map<String, Double> carFuels) {
         this.carFuels.putAll(carFuels);
+    }
+
+    public RoadType getRoadType() {
+        return roadType;
+    }
+
+    public void setRoadType(RoadType roadType) {
+        this.roadType = roadType;
     }
 
     //</editor-fold>
