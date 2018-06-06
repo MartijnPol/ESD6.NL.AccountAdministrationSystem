@@ -5,14 +5,12 @@ import main.domain.Owner;
 import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
 import main.service.OwnerService;
-import org.apache.http.client.utils.DateUtils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +25,12 @@ public class InvoiceResource {
     @Inject
     private OwnerService ownerService;
 
+    /**
+     * Gets the data of an Owner by its CSN.
+     *
+     * @param citizenServiceNumber is the CSN of the Owner.
+     * @return the found Owner with all the data.
+     */
     @GET
     @Path("{citizenServiceNumber}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -66,6 +70,12 @@ public class InvoiceResource {
         return Response.ok().build();
     }
 
+    /**
+     * Update an InvoiceStatus when the Invoice is paid or cancelled.
+     *
+     * @param invoice is the Invoice to be updated.
+     * @return the Status.
+     */
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
