@@ -34,10 +34,12 @@ public class Ownership extends BaseEntity {
     private Owner owner;
 
     public Ownership() {
+        this.startDate = new Date();
         this.invoices = new ArrayList<>();
     }
 
     public Ownership(Owner owner) {
+        this();
         this.owner = owner;
     }
 
@@ -45,6 +47,21 @@ public class Ownership extends BaseEntity {
         if (!this.invoices.contains(invoice)) {
             this.invoices.add(invoice);
         }
+    }
+
+    public JsonObject toJsonForCarToJson() {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String ownerSince = dateFormat.format(this.startDate);
+        String ownerTill = null;
+        if (this.getEndDate() != null) {
+            ownerTill = dateFormat.format(this.endDate);
+        }
+
+        return Json.createObjectBuilder()
+                .add("fullName", this.getOwner().getFullName())
+                .add("ownerSince", ownerSince)
+                .add("ownerTill", ownerTill == null ? "" : ownerTill)
+                .build();
     }
 
     public JsonObject toJsonSimple() {

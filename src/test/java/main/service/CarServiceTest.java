@@ -113,4 +113,11 @@ public class CarServiceTest {
         Ownership newOwnership = this.car.getCurrentOwnership();
         Assert.assertEquals(this.newOwnership, newOwnership);
     }
+
+    @Test public void
+    findByLicensePlate() {
+        when(carServiceMock.findByLicensePlate(car.getLicensePlate())).thenReturn(car);
+        Car foundCar = carServiceMock.findByLicensePlate("FF-01-RK");
+        assertThat(foundCar, is(car));
+    }
 }

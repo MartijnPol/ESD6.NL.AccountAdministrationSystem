@@ -41,6 +41,10 @@ public class OwnerResource {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
 
+        if (!foundOwner.isRekeningRijder()) {
+            foundOwner.setRekeningRijder(true);
+            this.ownerService.createOrUpdate(foundOwner);
+        }
 
         return Response.ok(foundOwner.toJson()).header("Access-Control-Allow-Origin", "*").build();
 

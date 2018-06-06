@@ -10,7 +10,6 @@ import main.service.CarService;
 import main.service.OwnerService;
 import org.json.JSONArray;
 
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -74,6 +73,28 @@ public class CarResource {
     }
 
     /**
+     * Find a Car by its LicensePlate
+     *
+     * @param licensePlate is the LicensePlate of the Car
+     * @return the Car or Response.Status.NOT_FOUND
+     */
+    @GET
+    @Path("/find/{licensePlate}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getCarByLicensePlate(@PathParam("licensePlate") String licensePlate) {
+        if (licensePlate == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        Car foundCar = this.carService.findByLicensePlate(licensePlate);
+
+        if (foundCar == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+
+        return Response.ok(foundCar.toJson()).build();
+    }
+
+    /**
      * Updates a car.
      *
      * @param car the car that has to be updated.
@@ -116,8 +137,7 @@ public class CarResource {
      */
     @DELETE
     @Path("{licensePlate}")
-    public Response deleteCar(String licensePlate)
-    {
+    public Response deleteCar(String licensePlate) {
         carService.deleteByLicensePlate(licensePlate);
         return Response.noContent().build();
     }
