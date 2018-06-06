@@ -187,7 +187,7 @@ public class InvoiceService {
      * @param tariff Tariff used for calculation
      * @return Costs based on the car movements when there is no CarTrackerRules found 0.0 is returned
      */
-    public double getCarMovementCosts(Car car, Tariff tariff) {
+    public double getCarMovementCosts(Car car, Tariff tariff) throws UnsupportedEncodingException, UnirestException {
         CarTrackerResponse carMovements = this.carService.findCarMovements(car.getCurrentCarTracker().getId());
         HashMap<Date, List<CarTrackerRuleResponse>> sortedMovementsByDay = sortMovementsByDay(carMovements);
 
@@ -211,12 +211,21 @@ public class InvoiceService {
      * @param tariff Tariff used for calculation
      * @return Total costs or 0.0 when rules are empty
      */
-    public double getCarMovementCostsPerDay(List<CarTrackerRuleResponse> rules, Tariff tariff) {
+    public double getCarMovementCostsPerDay(List<CarTrackerRuleResponse> rules, Tariff tariff) throws UnsupportedEncodingException, UnirestException {
         if (!rules.isEmpty()) {
             double totalCosts = 0.0;
 
             String latLonPath = getLatLonPath(rules);
+            JSONArray placesForLatLonPath = getPlacesForLatLonPath(latLonPath);
+            List<String> placesByLatAndLon = getPlacesByLatAndLon(placesForLatLonPath);
 
+            for (String roadName : placesByLatAndLon) {
+                String roadType = extractRoadType(roadName);
+
+                if (!StringHelper.isEmpty(roadType) && tariff().get(carFuel) != null) {
+                    addition = tariff.getCarFuels().get(carFuel);
+                }
+            }
 
             return totalCosts;
         }
@@ -268,14 +277,37 @@ public class InvoiceService {
             String url = "https://roads.googleapis.com/v1/snapToRoads?path=" + encodedURL + "&interpolate=true&key=AIzaSyBECZDHHuxDsGezIfvZG2vEtAdLBz1B10I";
 
             JSONObject jsonResponseObject = Unirest.get(url).asJson().getBody().getObject();
-            return snappedPoints = jsonResponseObject.getJSONArray("snappedPoints");
+            return jsonResponseObject.getJSONArray("snappedPoints");
         }
 
         return new JSONArray();
     }
 
-    public void getPlaceByLatAndLon(double lat, double lon) {
-        
+    /**
+     * Retrieve road names from the Google API.
+     * Results are returned in a list, that later could be used for calculations purposes.
+     * When there are no places available an empty list is returned
+     *
+     * @param placesForLatLonPath Array containing all places.
+     * @return List of all road names when there are no places available an empty list is returned
+     * @throws UnsupportedEncodingException When something goes wrong during encoding the URL.
+     * @throws UnirestException When something goes wrong when requesting the data.
+     */
+    public List<String> getPlacesByLatAndLon(JSONArray placesForLatLonPath) throws UnsupportedEncodingException, UnirestException {
+        List<String> roadNames = new ArrayList<>();
+
+        for (int i = 0; i < placesForLatLonPath.length(); i++) {
+            JSONObject placeJSONObject = placesForLatLonPath.getJSONObject(i);
+            String placeId = placeJSONObject.getString("placeId");
+
+            String encodedURL = URLEncoder.encode(placeId, "UTF-8");
+            String url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + encodedURL + "&key=AIzaSyBECZDHHuxDsGezIfvZG2vEtAdLBz1B10I";
+
+            JSONObject jsonResponseObject = Unirest.get(url).asJson().getBody().getObject();
+            roadNames.add(jsonResponseObject.getJSONArray("result").getJSONArray(0).getJSONArray(0).getString(1));
+        }
+
+        return roadNames;
     }
 
     /**
@@ -357,6 +389,22 @@ public class InvoiceService {
         }
 
         return roundedAmount;
+    }
+
+    /**
+     * Extract road type from road name.
+     * When road name is null or empty, an empty string is returned.
+     * For example A2 is returned as A.
+     *
+     * @param roadName Road name used for extracting
+     * @return Extracted road type or an empty string when road name is null or empty
+     */
+    public String extractRoadType(String roadName) {
+        if(!StringHelper.isEmpty(roadName)) {
+            return roadName.substring(0, 1);
+        }
+
+        return "";
     }
 
     //</editor-fold>
