@@ -16,12 +16,12 @@
     <ui:define name="content">
 
         <div class="container">
-
             <nav aria-label="breadcrumb" class="breadcrumb-layout">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><h:link outcome="/pages/profile/dashboard.xhtml" value="Home"/>
                     </li>
-                    <li class="breadcrumb-item"><h:link outcome="/pages/tariff/tariffs.xhtml" value="Tarieven"/></li>
+                    <li class="breadcrumb-item"><h:link outcome="/pages/tariff/tariffs.xhtml" value="Tarieven"/>
+                    </li>
                     <li class="breadcrumb-item active">Toevoegingen</li>
                 </ol>
             </nav>
@@ -32,7 +32,9 @@
             </header>
 
             <div class="content-container">
-                <h:form id="tariffCarLabelForm">
+
+                <h:form id="tariffCarLabelsForm">
+
                     <p:dataTable editable="true"
                                  editMode="cell"
                                  emptyMessage="Er zijn geen labels gevonden die voldoen aan de criteria"
@@ -52,7 +54,7 @@
                         <p:column headerText="Opslagpercentage">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{carLabel.value}"/></f:facet>
-                                <f:facet name="input"><p:inputText value="#{carLabel.value}"/></f:facet>
+                                <f:facet name="input"><p:inputText value="#{tariffAdditionsBean.carLabels[carLabel.key]}"/></f:facet>
                             </p:cellEditor>
                         </p:column>
                     </p:dataTable>
@@ -66,6 +68,7 @@
 
             <div class="content-container">
                 <h:form id="tariffCarFuelsForm">
+
                     <p:dataTable editable="true"
                                  editMode="cell"
                                  emptyMessage="Er zijn geen labels gevonden die voldoen aan de criteria"
@@ -75,7 +78,7 @@
                                  tableStyle="table-layout: auto"
                                  widgetVar="tariffCarFuelsDataTable">
 
-                        <p:ajax event="cellEdit" listener="#{tariffAdditionsBean.onCarFuelCellEdit}"
+                        <p:ajax event="cellEdit" listener="#{tariffAdditionsBean.onCarFuelCellEdit(carFuel)}"
                                 update=":defaultForm:growl"/>
 
                         <p:column headerText="Label">
@@ -85,13 +88,14 @@
                         <p:column headerText="Opslagpercentage">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{carFuel.value}"/></f:facet>
-                                <f:facet name="input"><p:inputText value="#{carFuel.value}"/></f:facet>
+                                <f:facet name="input"><p:inputText value="#{tariffAdditionsBean.carFuels[carFuel.key]}"/></f:facet>
                             </p:cellEditor>
                         </p:column>
                     </p:dataTable>
+
                 </h:form>
             </div>
-
         </div>
+
     </ui:define>
 </ui:composition>

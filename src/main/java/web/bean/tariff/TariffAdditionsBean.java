@@ -45,16 +45,12 @@ public class TariffAdditionsBean extends BaseBean {
         }
     }
 
-    public void onCarFuelCellEdit(CellEditEvent cellEditEvent) {
-        Map.Entry<String, Double> oldValue = (Map.Entry<String, Double>) cellEditEvent.getOldValue();
-        Map.Entry<String, Double> newValue = (Map.Entry<String, Double>) cellEditEvent.getNewValue();
-
-        if (!oldValue.equals(newValue)) {
-            if (!newValue.getKey().isEmpty() && newValue.getValue() != null) {
-                this.carFuels.replace(newValue.getKey(), oldValue.getValue(), newValue.getValue());
+    public void onCarFuelCellEdit(Map.Entry<String, Double> entry) {
+            if (!entry.getKey().isEmpty() && entry.getValue() != null) {
+                this.carFuels.replace(entry.getKey(), entry.getValue());
                 this.tariff.setCarFuels(this.carFuels);
                 this.tariffService.createOrUpdate(this.tariff);
-            }
+                FrontendHelper.displaySuccessSmallMessage("U heeft het opslagpercentage van dit brandstoftype succesvol gewijzigd.");
         }
     }
 

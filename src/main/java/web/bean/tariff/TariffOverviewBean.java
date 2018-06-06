@@ -13,7 +13,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Named
 @ViewScoped
@@ -52,6 +54,25 @@ public class TariffOverviewBean implements Serializable {
     public void create() {
         if (tariffInEuro != 0) {
             Tariff newTariff = new Tariff(this.selectedRoadType, this.tariffInEuro, this.ridingDuringRushHour);
+            Map<String, Double> carLabels = new HashMap<>();
+            carLabels.put("A", -20.0);
+            carLabels.put("B", -15.0);
+            carLabels.put("C", -10.0);
+            carLabels.put("D", 0.0);
+            carLabels.put("E", 10.0);
+            carLabels.put("F", 20.0);
+            carLabels.put("G", 30.0);
+
+            Map<String, Double> carFuels = new HashMap<>();
+            carFuels.put("Diesel", 20.0);
+            carFuels.put("Benzine", 10.0);
+            carFuels.put("LPG", 0.0);
+            carFuels.put("Electric", 10.0);
+            carFuels.put("Waterstof", 20.0);
+
+            newTariff.setCarLabels(carLabels);
+            newTariff.setCarFuels(carFuels);
+
             tariffService.createOrUpdate(newTariff);
             this.tariffs = tariffService.findAll();
             FrontendHelper.displaySuccessSmallMessage("Het tarief is succesvol toegevoegd!");
