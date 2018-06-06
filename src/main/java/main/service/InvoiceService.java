@@ -4,17 +4,25 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.dao.InvoiceDao;
 import main.dao.JPA;
 import main.domain.*;
 import main.utils.StringHelper;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URLEncoder;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -175,7 +183,7 @@ public class InvoiceService {
      * The response will be sorted by day and after that used for calculations.
      * When the response does not hold any CarTrackerRules 0.0 is returned.
      *
-     * @param car Car that should be checked
+     * @param car    Car that should be checked
      * @param tariff Tariff used for calculation
      * @return Costs based on the car movements when there is no CarTrackerRules found 0.0 is returned
      */
@@ -199,7 +207,7 @@ public class InvoiceService {
      * Movements are retrieved from the rules parameter.
      * Various details about the movements are requested from the Google Road API, and later used for calculations.
      *
-     * @param rules List of CarTrackerResponseRule containing necessary data.
+     * @param rules  List of CarTrackerResponseRule containing necessary data.
      * @param tariff Tariff used for calculation
      * @return Total costs or 0.0 when rules are empty
      */
@@ -207,12 +215,8 @@ public class InvoiceService {
         if (!rules.isEmpty()) {
             double totalCosts = 0.0;
 
-            for (CarTrackerRuleResponse carTrackerRule : rules) {
-                double lat = carTrackerRule.getLat();
-                double lon = carTrackerRule.getLon();
+            String latLonPath = getLatLonPath(rules);
 
-
-            }
 
             return totalCosts;
         }
@@ -220,8 +224,58 @@ public class InvoiceService {
         return 0.0;
     }
 
-    public void getPlaceByLatAndLon(double lat, double lon) {
+    /**
+     * Format latitude longitude values so they can be used by the Google Roads API.
+     * For example -35.27801,149.12958|-35.28032,149.12907
+     * When no rules are available an empty string will be returned.
+     *
+     * @param rules CarTrackerRuleResponse list containing the necessary
+     * @return Formatted lat and lon path when no rules are available empty string is returned
+     */
+    public String getLatLonPath(List<CarTrackerRuleResponse> rules) {
+        if (!rules.isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder();
 
+            for (CarTrackerRuleResponse carTrackerRule : rules) {
+                double lat = carTrackerRule.getLat();
+                double lon = carTrackerRule.getLon();
+
+                stringBuilder.append(lat + "," + lon + "|");
+            }
+
+            stringBuilder.setLength(stringBuilder.length() - 1);
+
+            return stringBuilder.toString();
+        }
+
+        return "";
+    }
+
+    /**
+     * Retrieve places from the Google API.
+     * Results are returned in a JSONArray, that later could be used for determining roads.
+     * Latitude longitude path should be correctly formatted for example -35.27801,149.12958|-35.28032,149.12907
+     * When the latitude longitude path is null or empty an empty JSONArray is returned.
+     *
+     * @param latLonPath
+     * @return JSONArray containing places or an empty JSONArray when the path is null or empty.
+     * @throws UnirestException When something goes wrong when requesting the data.
+     * @throws UnsupportedEncodingException When something goes wrong during encoding the URL.
+     */
+    public JSONArray getPlacesForLatLonPath(String latLonPath) throws UnirestException, UnsupportedEncodingException {
+        if (!StringHelper.isEmpty(latLonPath)) {
+            String encodedURL = URLEncoder.encode(latLonPath, "UTF-8");
+            String url = "https://roads.googleapis.com/v1/snapToRoads?path=" + encodedURL + "&interpolate=true&key=AIzaSyBECZDHHuxDsGezIfvZG2vEtAdLBz1B10I";
+
+            JSONObject jsonResponseObject = Unirest.get(url).asJson().getBody().getObject();
+            return snappedPoints = jsonResponseObject.getJSONArray("snappedPoints");
+        }
+
+        return new JSONArray();
+    }
+
+    public void getPlaceByLatAndLon(double lat, double lon) {
+        
     }
 
     /**
@@ -235,7 +289,7 @@ public class InvoiceService {
         HashMap<Date, List<CarTrackerRuleResponse>> sortedCarMovements = new HashMap<>();
 
         for (CarTrackerRuleResponse carTrackerRule : carMovements.getCarTrackerRuleResponses()) {
-            if(!sortedCarMovements.containsKey(carTrackerRule.getDate())) {
+            if (!sortedCarMovements.containsKey(carTrackerRule.getDate())) {
                 List<CarTrackerRuleResponse> carTrackerRules = new ArrayList<>();
                 carTrackerRules.add(carTrackerRule);
 
