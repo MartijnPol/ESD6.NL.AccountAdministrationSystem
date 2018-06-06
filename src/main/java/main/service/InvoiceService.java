@@ -268,7 +268,7 @@ public class InvoiceService {
             String url = "https://roads.googleapis.com/v1/snapToRoads?path=" + encodedURL + "&interpolate=true&key=AIzaSyBECZDHHuxDsGezIfvZG2vEtAdLBz1B10I";
 
             JSONObject jsonResponseObject = Unirest.get(url).asJson().getBody().getObject();
-            return snappedPoints = jsonResponseObject.getJSONArray("snappedPoints");
+            return jsonResponseObject.getJSONArray("snappedPoints");
         }
 
         return new JSONArray();

@@ -16,4 +16,6 @@ public interface CarDao extends GenericDao<Car> {
     Car findByCarTrackerId(String carTrackerId);
 
     void deleteByLicensePlate(String licensePlate);
+
+    Car findByLicensePlate(String licensePlate);
 }
