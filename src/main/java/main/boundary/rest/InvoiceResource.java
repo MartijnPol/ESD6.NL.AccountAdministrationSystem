@@ -2,6 +2,7 @@ package main.boundary.rest;
 
 import main.domain.Invoice;
 import main.domain.Owner;
+import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
 import main.service.OwnerService;
 import org.apache.http.client.utils.DateUtils;
@@ -61,6 +62,30 @@ public class InvoiceResource {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
 
+
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response updateInvoicePaymentStatus(Invoice invoice) {
+        if (invoice == null || invoice.getInvoiceNr() == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        if (invoice.getPaymentStatus() == PaymentStatus.OPEN) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
+
+        Invoice foundInvoice = this.invoiceService.findByInvoiceNr(invoice.getInvoiceNr());
+
+        if (foundInvoice == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+
+        foundInvoice.setPaymentStatus(invoice.getPaymentStatus());
+
+        this.invoiceService.createOrUpdate(foundInvoice);
 
         return Response.ok().build();
     }
