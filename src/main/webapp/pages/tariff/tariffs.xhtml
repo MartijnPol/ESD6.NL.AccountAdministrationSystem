@@ -51,7 +51,9 @@
                     </div>
 
                     <div class="ui-g-8">
-                        <p:dataTable id="tariffOthersDataTable"
+                        <p:dataTable editable="true"
+                                     editMode="cell"
+                                     id="tariffOthersDataTable"
                                      var="tariffRushHourAddition"
                                      value="#{tariffOverviewBean.rushHourAdditions.entrySet()}"
                                      widgetVar="tariffRushHourAdditionsDataTable">
@@ -136,7 +138,7 @@
                         <p:ajax event="cellEdit" listener="#{tariffOverviewBean.onCarFuelCellEdit(carFuel)}"
                                 update=":defaultForm:growl"/>
 
-                        <p:column headerText="Label" width="20%">
+                        <p:column headerText="Brandstoftype" width="20%">
                             <h:outputText value="#{carFuel.key.toString()}"/>
                         </p:column>
 

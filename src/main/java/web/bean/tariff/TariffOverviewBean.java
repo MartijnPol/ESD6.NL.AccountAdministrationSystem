@@ -73,7 +73,7 @@ public class TariffOverviewBean implements Serializable {
             this.rushHourAdditions.replace(entry.getKey(), entry.getValue());
             this.tariff.setRushHourAdditions(this.rushHourAdditions);
             this.tariffService.createOrUpdate(this.tariff);
-            FrontendHelper.displaySuccessSmallMessage("U heeft het opslagpercentage van dit brandstoftype succesvol gewijzigd.");
+            FrontendHelper.displaySuccessSmallMessage("U heeft het opslagpercentage van dit wegtype succesvol gewijzigd.");
         }
     }
 
