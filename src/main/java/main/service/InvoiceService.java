@@ -217,13 +217,14 @@ public class InvoiceService {
 
             String latLonPath = getLatLonPath(rules);
             JSONArray placesForLatLonPath = getPlacesForLatLonPath(latLonPath);
+
             List<String> placesByLatAndLon = getPlacesByLatAndLon(placesForLatLonPath);
 
             for (String roadName : placesByLatAndLon) {
                 String roadType = extractRoadType(roadName);
 
-                if (!StringHelper.isEmpty(roadType) && tariff().get(carFuel) != null) {
-                    addition = tariff.getCarFuels().get(carFuel);
+                if (!StringHelper.isEmpty(roadType)) {
+                    //addition = tariff.getCarFuels().get(carFuel);
                 }
             }
 
