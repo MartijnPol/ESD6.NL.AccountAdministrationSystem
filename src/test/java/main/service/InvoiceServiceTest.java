@@ -348,4 +348,18 @@ public class InvoiceServiceTest {
         assertThat(latLonPath, is(expectedResult));
         assertThat(latLonPathEmpty, is(expectedResultEmpty));
     }
+
+    @Test
+    public void extractRoadTypeTest() {
+        String expectedResult = "A";
+        String expectedResultEmpty = "";
+
+        String roadType = this.invoiceService.extractRoadType("A2");
+        String roadTypeEmpty = this.invoiceService.extractRoadType("");
+        String roadTypeStrangeInput = this.invoiceService.extractRoadType("A22A");
+
+        assertThat(roadType, is(expectedResult));
+        assertThat(roadTypeEmpty, is(expectedResultEmpty));
+        assertThat(roadTypeStrangeInput, is(expectedResult));
+    }
 }
