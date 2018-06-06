@@ -3,9 +3,7 @@ package web.bean.tariff;
 import main.domain.Tariff;
 import main.domain.enums.RoadType;
 import main.service.TariffService;
-import org.primefaces.event.SelectEvent;
 import web.core.helper.FrontendHelper;
-import web.core.helper.RedirectHelper;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -33,68 +31,61 @@ public class TariffOverviewBean implements Serializable {
     private double tariffInEuro;
     private boolean ridingDuringRushHour;
 
+    private Tariff tariff;
+    private Long id;
+    private Map<String, Double> carLabels;
+    private Map<String, Double> carFuels;
+    private Map<String, Double> rushHourAdditions;
+
     @PostConstruct
     public void init() {
         this.roadTypes = Arrays.asList(RoadType.values());
         this.tariffs = this.tariffService.findAll();
+        this.carLabels = new HashMap<>();
+        this.carFuels = new HashMap<>();
+        this.rushHourAdditions = new HashMap<>();
+        this.tariff = this.tariffs.get(0);
+        this.carLabels.putAll(this.tariff.getCarLabels());
+        this.carFuels.putAll(this.tariff.getCarFuels());
+        this.rushHourAdditions.putAll(this.tariff.getRushHourAdditions());
+    }
+
+    public void onCarLabelCellEdit(Map.Entry<String, Double> entry) {
+        if (!entry.getKey().isEmpty() && entry.getValue() != null) {
+            this.carLabels.replace(entry.getKey(), entry.getValue());
+            this.tariff.setCarLabels(this.carLabels);
+            this.tariffService.createOrUpdate(this.tariff);
+            FrontendHelper.displaySuccessSmallMessage("U heeft het opslagpercentage van dit label succesvol aangepast!");
+        }
+    }
+
+    public void onCarFuelCellEdit(Map.Entry<String, Double> entry) {
+        if (!entry.getKey().isEmpty() && entry.getValue() != null) {
+            this.carFuels.replace(entry.getKey(), entry.getValue());
+            this.tariff.setCarFuels(this.carFuels);
+            this.tariffService.createOrUpdate(this.tariff);
+            FrontendHelper.displaySuccessSmallMessage("U heeft het opslagpercentage van dit brandstoftype succesvol gewijzigd.");
+        }
+    }
+
+    public void onRushHourAdditionsCellEdit(Map.Entry<String, Double> entry) {
+        if (!entry.getKey().isEmpty() && entry.getValue() != null) {
+            this.rushHourAdditions.replace(entry.getKey(), entry.getValue());
+            this.tariff.setRushHourAdditions(this.rushHourAdditions);
+            this.tariffService.createOrUpdate(this.tariff);
+            FrontendHelper.displaySuccessSmallMessage("U heeft het opslagpercentage van dit brandstoftype succesvol gewijzigd.");
+        }
     }
 
     public void onCellEdit(Tariff tariff) {
         if (tariff.getTariffInEuro() >= 0) {
             Tariff foundTariff = tariffService.findById(tariff.getId());
-            foundTariff.setRidingDuringRushHour(tariff.getRidingDuringRushHour());
             foundTariff.setTariffInEuro(tariff.getTariffInEuro());
             tariffService.createOrUpdate(foundTariff);
         } else {
             FrontendHelper.displayErrorSmallMessage("Helaas", "Vul een positief tarief in.");
         }
         FrontendHelper.displaySuccessSmallMessage("Succes!", "Tarief is succesvol gewijzigd.");
-    }
-
-    public void create() {
-        if (tariffInEuro != 0) {
-            Tariff newTariff = new Tariff(this.selectedRoadType, this.tariffInEuro, this.ridingDuringRushHour);
-            Map<String, Double> carLabels = new HashMap<>();
-            carLabels.put("A", -20.0);
-            carLabels.put("B", -15.0);
-            carLabels.put("C", -10.0);
-            carLabels.put("D", 0.0);
-            carLabels.put("E", 10.0);
-            carLabels.put("F", 20.0);
-            carLabels.put("G", 30.0);
-
-            Map<String, Double> carFuels = new HashMap<>();
-            carFuels.put("Diesel", 20.0);
-            carFuels.put("Benzine", 10.0);
-            carFuels.put("LPG", 0.0);
-            carFuels.put("Electric", 10.0);
-            carFuels.put("Waterstof", 20.0);
-
-            newTariff.setCarLabels(carLabels);
-            newTariff.setCarFuels(carFuels);
-
-            tariffService.createOrUpdate(newTariff);
-            this.tariffs = tariffService.findAll();
-            FrontendHelper.displaySuccessSmallMessage("Het tarief is succesvol toegevoegd!");
-        } else {
-            FrontendHelper.displayErrorSmallMessage("Vul alstublieft een tarief in.");
-        }
-    }
-
-    public void remove(Tariff tariff) {
-        if (tariff != null) {
-            tariffService.delete(tariff);
-            this.tariffs = tariffService.findAll();
-            FrontendHelper.displaySuccessSmallMessage("Het tarief is succesvol verwijderd!");
-        } else {
-            FrontendHelper.displayErrorSmallMessage("Er ging iets mis.", "Probeer het opnieuw.");
-        }
-    }
-
-
-    public void onRowSelect(SelectEvent event) {
-        Tariff selectedTariff = (Tariff) event.getObject();
-        RedirectHelper.redirect("/pages/tariff/tariff.xhtml?id=" + selectedTariff.getId());
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
@@ -154,5 +145,46 @@ public class TariffOverviewBean implements Serializable {
         this.selectedRoadType = selectedRoadType;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Tariff getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(Tariff tariff) {
+        this.tariff = tariff;
+    }
+
+    public Map<String, Double> getCarLabels() {
+        return carLabels;
+    }
+
+    public void setCarLabels(Map<String, Double> carLabels) {
+        this.carLabels = carLabels;
+    }
+
+    public Map<String, Double> getCarFuels() {
+        return carFuels;
+    }
+
+    public void setCarFuels(Map<String, Double> carFuels) {
+        this.carFuels = carFuels;
+    }
+
+    public Map<String, Double> getRushHourAdditions() {
+        return rushHourAdditions;
+    }
+
+    public void setRushHourAdditions(Map<String, Double> rushHourAdditions) {
+        this.rushHourAdditions = rushHourAdditions;
+    }
+
     //</editor-fold>
+
 }

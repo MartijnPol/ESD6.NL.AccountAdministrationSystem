@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/templates/template.xhtml">
 
     <ui:define name="title">Tarieven</ui:define>
@@ -28,114 +28,127 @@
 
                 <h:form id="tariffOverviewForm">
 
-                    <p:dataTable editable="true"
-                                 editMode="cell"
-                                 emptyMessage="Er zijn geen tarieven gevonden die voldoen aan de criteria"
-                                 filteredValue="#{tariffOverviewBean.filteredTariffs}"
-                                 id="tariffDataTable"
-                                 paginator="true"
-                                 paginatorPosition="bottom"
-                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="10, 20, 50"
-                                 selectionMode="single"
-                                 selection="#{tariffOverviewBean.selectedTariff}"
-                                 rowKey="#{tariff.id}"
-                                 value="#{tariffOverviewBean.tariffs}"
-                                 var="tariff"
-                                 tableStyle="table-layout: auto"
-                                 widgetVar="tariffOverviewDataTable">
+                    <div class="ui-g-4">
+                        <p:dataTable editable="true"
+                                     editMode="cell"
+                                     emptyMessage="Er zijn geen tarieven gevonden die voldoen aan de criteria"
+                                     id="tariffDataTable"
+                                     value="#{tariffOverviewBean.tariffs}"
+                                     var="tariff"
+                                     tableStyle="table-layout: auto"
+                                     widgetVar="tariffOverviewDataTable">
 
-                        <p:ajax event="cellEdit" listener="#{tariffOverviewBean.onCellEdit(tariff)}"
-                                update=":defaultForm:growl"/>
-                        <p:ajax event="rowSelect" listener="#{tariffOverviewBean.onRowSelect}"/>
+                            <p:ajax event="cellEdit" listener="#{tariffOverviewBean.onCellEdit(tariff)}"
+                                    update=":defaultForm:growl"/>
 
-                        <p:column headerText="Wegtype">
-                            <h:outputText value="#{tariff.roadType.toString()}"/>
-                        </p:column>
+                            <p:column headerText="Basistarief">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{tariff.tariffInEuro}"/> </f:facet>
+                                    <f:facet name="input"><p:inputText value="#{tariff.tariffInEuro}"/> </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
 
-                        <p:column headerText="Tarief" filterBy="#{tariff.tariffInEuro}" filterMatchMode="contains">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{tariff.tariffInEuro}"/> </f:facet>
-                                <f:facet name="input"><p:inputText value="#{tariff.tariffInEuro}"/> </f:facet>
-                            </p:cellEditor>
-                        </p:column>
+                    <div class="ui-g-8">
+                        <p:dataTable id="tariffOthersDataTable"
+                                     var="tariffRushHourAddition"
+                                     value="#{tariffOverviewBean.rushHourAdditions.entrySet()}"
+                                     widgetVar="tariffRushHourAdditionsDataTable">
 
-                        <p:column headerText="Spitstarief" filterBy="#{tariff.ridingDuringRushHour}"
-                                  filterMatchMode="equals">
-                            <f:facet name="filter">
-                                <p:selectOneButton onchange="PF('tariffOverviewDataTable').filter()">
-                                    <f:converter converterId="javax.faces.Boolean"/>
-                                    <f:selectItem itemLabel="Alle" itemValue=""/>
-                                    <f:selectItem itemLabel="Ja" itemValue="true"/>
-                                    <f:selectItem itemLabel="Nee" itemValue="false"/>
-                                </p:selectOneButton>
-                            </f:facet>
-                            <h:outputText value="#{tariff.ridingDuringRushHour ? 'Ja' : 'Nee'}"/>
-                        </p:column>
+                            <p:ajax event="cellEdit"
+                                    listener="#{tariffOverviewBean.onRushHourAdditionsCellEdit(tariffRushHourAddition)}"
+                                    update=":defaultForm:growl"/>
 
-                        <p:column styleClass="text-align-center" width="10%">
-                            <p:commandButton action="#{tariffOverviewBean.remove(tariff)}"
-                                             id="remove"
-                                             update="tariffDataTable"
-                                             value="Delete"
-                                             styleClass="btn btn-danger">
-                                <p:confirm header="Weet u het zeker?" message="Wil u dit tarief echt verwijderen?"/>
-                            </p:commandButton>
-                        </p:column>
+                            <p:column headerText="Label" width="20%">
+                                <h:outputText value="#{tariffRushHourAddition.key.toString()}"/>
+                            </p:column>
 
-                    </p:dataTable>
+                            <p:column headerText="Opslagpercentage">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{tariffRushHourAddition.value}"/>
+                                    </f:facet>
+                                    <f:facet name="input"><p:inputText
+                                            value="#{tariffOverviewBean.rushHourAdditions[tariffRushHourAddition.key]}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+
 
                 </h:form>
             </div>
 
-        </div>
-        <div class="container">
-
             <header class="header">
-                <h1>Toevoegen</h1>
-                <h5 class="text-muted">Voeg een nieuw tarief toe</h5>
+                <h1>Tarief autolabels</h1>
+                <h5 class="text-muted">Overzicht van alle labels op dit tarief</h5>
             </header>
 
             <div class="content-container">
 
-                <h:form id="newTariffForm">
-                    <div class="form-group">
-                        <p:outputLabel for="selectOneMenu" value="Wegtype: "/>
-                        <p:selectOneMenu id="selectOneMenu" value="#{tariffOverviewBean.selectedRoadType}" filter="true"
-                                         converter="omnifaces.SelectItemsIndexConverter"
-                                         filterMatchMode="startsWith">
-                            <f:selectItems itemLabel="#{roadType.toString()}"
-                                           itemValue="#{roadType}"
-                                           value="#{tariffOverviewBean.roadTypes}"
-                                           var="roadType"/>
-                        </p:selectOneMenu>
-                    </div>
+                <h:form id="tariffCarLabelsForm">
 
-                    <div class="form-group">
-                        <p:outputLabel for="tariff" value="Tarief: "/>
-                        <p:inputText id="tariff"
-                                     placeholder="0,00"
-                                     required="true"
-                                     requiredMessage="Vul het tarief in Euro's in."
-                                     styleClass="form-control"
-                                     value="#{tariffOverviewBean.tariffInEuro}"/>
-                    </div>
+                    <p:dataTable editable="true"
+                                 editMode="cell"
+                                 emptyMessage="Er zijn geen labels gevonden die voldoen aan de criteria"
+                                 id="tariffCarLabelsDataTable"
+                                 value="#{tariffOverviewBean.carLabels.entrySet()}"
+                                 var="carLabel"
+                                 tableStyle="table-layout: auto"
+                                 widgetVar="tariffCarLabelDataTable">
 
-                    <div>
-                        <p:outputLabel for="rushHourBoolean" value="Geldt dit tarief tijdens spits uren?"/>
-                        <h:selectBooleanCheckbox id="rushHourBoolean"
-                                                 value="#{tariffOverviewBean.ridingDuringRushHour}"/>
-                    </div>
-                    <div>
-                        <p:commandButton action="#{tariffOverviewBean.create}"
-                                         id="create"
-                                         value="Nieuw"
-                                         process="newTariffForm"
-                                         update="tariffOverviewForm:tariffDataTable"
-                                         styleClass="btn btn-success"/>
-                    </div>
+                        <p:ajax event="cellEdit" listener="#{tariffOverviewBean.onCarLabelCellEdit(carLabel)}"
+                                update=":defaultForm:growl"/>
+
+                        <p:column headerText="Label" width="20%">
+                            <h:outputText value="#{carLabel.key.toString()}"/>
+                        </p:column>
+
+                        <p:column headerText="Opslagpercentage">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{carLabel.value}"/></f:facet>
+                                <f:facet name="input"><p:inputText
+                                        value="#{tariffOverviewBean.carLabels[carLabel.key]}"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                    </p:dataTable>
                 </h:form>
+            </div>
 
+            <header class="header">
+                <h1>Tarief brandstoftypes</h1>
+                <h5 class="text-muted">Overzicht van alle brandstoftypes op dit tarief</h5>
+            </header>
+
+            <div class="content-container">
+                <h:form id="tariffCarFuelsForm">
+
+                    <p:dataTable editable="true"
+                                 editMode="cell"
+                                 emptyMessage="Er zijn geen labels gevonden die voldoen aan de criteria"
+                                 id="tariffCarFuelsDataTable"
+                                 value="#{tariffOverviewBean.carFuels.entrySet()}"
+                                 var="carFuel"
+                                 tableStyle="table-layout: auto"
+                                 widgetVar="tariffCarFuelsDataTable">
+
+                        <p:ajax event="cellEdit" listener="#{tariffOverviewBean.onCarFuelCellEdit(carFuel)}"
+                                update=":defaultForm:growl"/>
+
+                        <p:column headerText="Label" width="20%">
+                            <h:outputText value="#{carFuel.key.toString()}"/>
+                        </p:column>
+
+                        <p:column headerText="Opslagpercentage">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{carFuel.value}"/></f:facet>
+                                <f:facet name="input"><p:inputText value="#{tariffOverviewBean.carFuels[carFuel.key]}"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                    </p:dataTable>
+
+                </h:form>
             </div>
 
         </div>

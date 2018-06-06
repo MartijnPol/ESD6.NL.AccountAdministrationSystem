@@ -19,20 +19,17 @@ public class Tariff extends BaseEntity {
     @ElementCollection(fetch = FetchType.LAZY)
     private Map<String, Double> carFuels;
 
-    private boolean ridingDuringRushHour;
-
-    private RoadType roadType;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Map<String, Double> rushHourAdditions;
 
     public Tariff() {
-        this.ridingDuringRushHour = false;
+        this.rushHourAdditions = new HashMap<>();
         this.carLabels = new HashMap<>();
         this.carFuels = new HashMap<>();
     }
 
-    public Tariff(RoadType roadType, double tariffInEuro, boolean ridingDuringRushHour) {
-        this.roadType = roadType;
+    public Tariff(double tariffInEuro) {
         this.tariffInEuro = tariffInEuro;
-        this.ridingDuringRushHour = ridingDuringRushHour;
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
@@ -42,14 +39,6 @@ public class Tariff extends BaseEntity {
 
     public void setTariffInEuro(double tariffInEuro) {
         this.tariffInEuro = tariffInEuro;
-    }
-
-    public boolean getRidingDuringRushHour() {
-        return ridingDuringRushHour;
-    }
-
-    public void setRidingDuringRushHour(boolean ridingDuringRushHour) {
-        this.ridingDuringRushHour = ridingDuringRushHour;
     }
 
     public Map<String, Double> getCarLabels() {
@@ -84,12 +73,12 @@ public class Tariff extends BaseEntity {
         this.carFuels.putAll(carFuels);
     }
 
-    public RoadType getRoadType() {
-        return roadType;
+    public Map<String, Double> getRushHourAdditions() {
+        return rushHourAdditions;
     }
 
-    public void setRoadType(RoadType roadType) {
-        this.roadType = roadType;
+    public void setRushHourAdditions(Map<String, Double> rushHourAdditions) {
+        this.rushHourAdditions = rushHourAdditions;
     }
 
     //</editor-fold>

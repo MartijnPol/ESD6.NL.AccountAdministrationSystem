@@ -119,7 +119,7 @@
 //        invoice3.setOwnership(ownership2);
 //        this.invoiceService.createOrUpdate(invoice3);
 //
-//        Tariff tariff1 = new Tariff(RoadType.A, 0.07, false);
+//        Tariff tariff1 = new Tariff(0.07);
 //
 //        Map<String, Double> carLabels = new HashMap<>();
 //        carLabels.put("A", -20.0);
@@ -137,8 +137,15 @@
 //        carFuels.put("Electric", 10.0);
 //        carFuels.put("Waterstof", 20.0);
 //
+//        Map<String, Double> rushHourAdditions = new HashMap<>();
+//        rushHourAdditions.put("A-spits", 10.0);
+//        rushHourAdditions.put("A", 5.0);
+//        rushHourAdditions.put("N-spits", 7.5);
+//        rushHourAdditions.put("N", 2.5);
+//
 //        tariff1.setCarLabels(carLabels);
 //        tariff1.setCarFuels(carFuels);
+//        tariff1.setRushHourAdditions(rushHourAdditions);
 //
 //        this.tariffService.createOrUpdate(tariff1);
 //    }
