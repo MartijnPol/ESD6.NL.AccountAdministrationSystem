@@ -321,7 +321,7 @@ public class InvoiceService {
     public HashMap<Date, List<CarTrackerRuleResponse>> sortMovementsByDay(CarTrackerResponse carMovements) {
         HashMap<Date, List<CarTrackerRuleResponse>> sortedCarMovements = new HashMap<>();
 
-        for (CarTrackerRuleResponse carTrackerRule : carMovements.getCarTrackerRuleResponses()) {
+        for (CarTrackerRuleResponse carTrackerRule : carMovements.getCarTrackerRules()) {
             if (!sortedCarMovements.containsKey(carTrackerRule.getDate())) {
                 List<CarTrackerRuleResponse> carTrackerRules = new ArrayList<>();
                 carTrackerRules.add(carTrackerRule);

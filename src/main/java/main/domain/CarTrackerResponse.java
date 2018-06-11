@@ -1,26 +1,37 @@
 package main.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 import java.util.List;
 
 public class CarTrackerResponse {
 
-    private String CarTrackerId;
+    private String id;
 
     private Long totalRules;
 
-    private List<CarTrackerRuleResponse> carTrackerRuleResponses;
+    private List<CarTrackerRuleResponse> CarTrackerRules;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    private Date startDate;
+
+    private String manufacturer;
 
     public CarTrackerResponse() {
     }
 
     //<editor-fold desc="Getters/Setters">
 
-    public String getCarTrackerId() {
-        return CarTrackerId;
+    public String getId() {
+        return id;
     }
 
-    public void setCarTrackerId(String carTrackerId) {
-        CarTrackerId = carTrackerId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Long getTotalRules() {
@@ -31,14 +42,29 @@ public class CarTrackerResponse {
         this.totalRules = totalRules;
     }
 
-    public List<CarTrackerRuleResponse> getCarTrackerRuleResponses() {
-        return carTrackerRuleResponses;
+    public List<CarTrackerRuleResponse> getCarTrackerRules() {
+        return CarTrackerRules;
     }
 
-    public void setCarTrackerRuleResponses(List<CarTrackerRuleResponse> carTrackerRuleResponses) {
-        this.carTrackerRuleResponses = carTrackerRuleResponses;
+    public void setCarTrackerRules(List<CarTrackerRuleResponse> carTrackerRules) {
+        this.CarTrackerRules = carTrackerRules;
     }
 
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
     //</editor-fold>
 }
