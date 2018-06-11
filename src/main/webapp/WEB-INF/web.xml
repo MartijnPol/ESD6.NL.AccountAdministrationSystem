@@ -62,7 +62,18 @@
         </web-resource-collection>
         <auth-constraint>
             <role-name>KmPrijsRole</role-name>
-            <role-name>AdminRole</role-name>
+            <role-name>AdministratorRole</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Secure pages</web-resource-name>
+            <url-pattern>/pages/profile/profile.xhtml</url-pattern>
+            <url-pattern>/pages/profile/profiles.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>AdministratorRole</role-name>
         </auth-constraint>
     </security-constraint>
 

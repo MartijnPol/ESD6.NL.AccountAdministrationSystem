@@ -10,7 +10,7 @@ public class CarTrackerRuleResponse {
 
     private Long id;
 
-    private Long kmDriven;
+    private Long metersDriven;
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
@@ -19,8 +19,6 @@ public class CarTrackerRuleResponse {
     private double lat;
 
     private double lon;
-
-    private boolean driven;
 
     public CarTrackerRuleResponse() {
     }
@@ -35,12 +33,12 @@ public class CarTrackerRuleResponse {
         this.id = id;
     }
 
-    public Long getKmDriven() {
-        return kmDriven;
+    public Long getMetersDriven() {
+        return metersDriven;
     }
 
-    public void setKmDriven(Long kmDriven) {
-        this.kmDriven = kmDriven;
+    public void setMetersDriven(Long metersDriven) {
+        this.metersDriven = metersDriven;
     }
 
     public Date getDate() {
@@ -66,15 +64,6 @@ public class CarTrackerRuleResponse {
     public void setLon(double lon) {
         this.lon = lon;
     }
-
-    public boolean isDriven() {
-        return driven;
-    }
-
-    public void setDriven(boolean driven) {
-        this.driven = driven;
-    }
-
 
     //</editor-fold>
 }
