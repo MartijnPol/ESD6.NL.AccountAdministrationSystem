@@ -95,7 +95,7 @@ public class CarTrackerOverviewBean implements Serializable {
     }
 
     public List<CarTracker> getAllCartrackers() throws UnirestException {
-        HttpResponse<JsonNode> getResponse = Unirest.get("http://localhost:8080/DisplacementSystem/api/CarTrackers").asJson();
+        HttpResponse<JsonNode> getResponse = Unirest.get("http://192.168.25.122:77/DisplacementSystem/api/CarTrackers").asJson();
         JSONArray array = getResponse.getBody().getArray();
         List<CarTracker> carTrackers = null;
         ObjectMapper mapper = new ObjectMapper();
