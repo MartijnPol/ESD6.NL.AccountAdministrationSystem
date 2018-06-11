@@ -16,7 +16,7 @@
 
                         <p:menuitem value="Dashboard" url="/pages/profile/dashboard.xhtml"/>
 
-                        <p:menuitem value="Gebruikers" url="/pages/profile/profiles.xhtml"/>
+                        <p:menuitem value="Gebruikers" url="/pages/profile/profiles.xhtml" rendered="#{sessionBean.loggedInUser.userGroups.get(0).groupName.toString() eq 'Administrator'}"/>
 
                         <p:submenu label="Factuur">
                             <p:column>
@@ -31,7 +31,7 @@
 
                         <p:menuitem value="CarTrackers" url="/pages/cartracker/cartrackers.xhtml"/>
 
-                        <p:menuitem value="Tarieven" url="/pages/tariff/tariffs.xhtml"/>
+                        <p:menuitem value="Tarieven" url="/pages/tariff/tariffs.xhtml" rendered="#{sessionBean.loggedInUser.userGroups.get(0).groupName.toString() eq 'Administrator' or 'KmPrijs'}"/>
 
                         <p:menuitem value="Uitloggen" action="#{sessionBean.logout()}"/>
 
