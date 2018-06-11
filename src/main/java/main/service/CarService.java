@@ -1,6 +1,7 @@
 package main.service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -11,12 +12,14 @@ import main.dao.JPA;
 import main.dao.RDWDao;
 import main.dao.RDWFuelDao;
 import main.domain.*;
+import main.utils.GsonDateAdapter;
 import main.utils.StringHelper;
 import org.jasypt.commons.CommonUtils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.JsonObject;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -194,7 +197,7 @@ public class CarService {
             GetRequest getRequest = Unirest.get("http://localhost:55790/DisplacementSystem/api/CarTrackers/" + carTrackerId);
             try {
                 HttpResponse<JsonNode> jsonNodeHttpResponse = getRequest.asJson();
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new GsonDateAdapter()).create();
                 String jsonString = jsonNodeHttpResponse.getBody().toString();
 
                 return gson.fromJson(jsonString, CarTrackerResponse.class);

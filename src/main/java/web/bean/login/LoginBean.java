@@ -55,10 +55,10 @@ public class LoginBean implements Serializable {
         this.sessionBean.setLoggedInUser(loggedInUser);
 
         boolean isRegular = request.isUserInRole("RegularRole");
+        boolean isKmPrijs = request.isUserInRole("KmPrijsRole");
+        boolean isAdmin = isAdmin();
 
-        if (isAdmin() && isRegular) {
-            RedirectHelper.redirect("/pages/admin/dashboard.xhtml");
-        } else if (isRegular) {
+        if (isAdmin || isRegular || isKmPrijs) {
             RedirectHelper.redirect("/pages/profile/dashboard.xhtml");
         }
         return "";
@@ -66,7 +66,7 @@ public class LoginBean implements Serializable {
 
     private boolean isAdmin() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        return facesContext.getExternalContext().isUserInRole("Admin");
+        return facesContext.getExternalContext().isUserInRole("AdministratorRole");
     }
 
     //<editor-fold desc="Getters/Setters">
