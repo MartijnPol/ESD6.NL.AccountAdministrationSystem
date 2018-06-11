@@ -1,12 +1,16 @@
-package web.bean.register;
+package web.bean.profile;
 
+import main.domain.Car;
+import main.domain.CarTracker;
 import main.domain.User;
 import main.domain.UserGroup;
 import main.service.UserGroupService;
 import main.service.UserService;
+import org.primefaces.event.SelectEvent;
 import web.core.helper.FrontendHelper;
 import web.core.helper.RedirectHelper;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -16,9 +20,9 @@ import java.util.List;
 /**
  * @author Thom van de Pas on 29-3-2018
  */
-@Named("registrationBean")
+@Named
 @ViewScoped
-public class RegistrationBean implements Serializable {
+public class ProfileOverviewBean implements Serializable {
 
     @Inject
     private UserService userService;
@@ -29,7 +33,19 @@ public class RegistrationBean implements Serializable {
     private String password;
     private String emailAddress;
     private List<UserGroup> userGroups;
+    private List<User> users;
+    private List<User> filteredUsers;
+    private User selectedUser;
 
+    @PostConstruct
+    public void init() {
+        users = userService.findAll();
+    }
+
+    public void onRowSelect(SelectEvent event) {
+        User selectedUser = (User) event.getObject();
+        RedirectHelper.redirect("/pages/profile/profile.xhtml?userId=" + selectedUser.getId());
+    }
 
     public void register() {
         if (!this.username.isEmpty() && !this.password.isEmpty() && !this.emailAddress.isEmpty()) {
@@ -87,8 +103,28 @@ public class RegistrationBean implements Serializable {
         this.userGroups = userGroups;
     }
 
-    public List<UserGroup> getAllUserGroups() {
-        return this.userGroupService.getAllUserGroups();
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<User> getFilteredUsers() {
+        return filteredUsers;
+    }
+
+    public void setFilteredUsers(List<User> filteredUsers) {
+        this.filteredUsers = filteredUsers;
+    }
+
+    public User getSelectedUser() {
+        return selectedUser;
+    }
+
+    public void setSelectedUser(User selectedUser) {
+        this.selectedUser = selectedUser;
     }
 
     //</editor-fold>

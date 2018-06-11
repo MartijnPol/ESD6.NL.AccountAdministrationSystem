@@ -3,7 +3,6 @@ package main.service;
 import main.dao.JPA;
 import main.dao.TariffDao;
 import main.domain.Tariff;
-import org.jasypt.commons.CommonUtils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

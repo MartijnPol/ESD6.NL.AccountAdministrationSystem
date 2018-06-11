@@ -39,8 +39,11 @@ public class Owner extends BaseEntity {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Ownership> ownerships;
 
+    private boolean isRekeningRijder;
+
     public Owner() {
         this.ownerships = new ArrayList<>();
+        this.isRekeningRijder = false;
     }
 
     public Owner(String firstName, String lastName, Date birthDay, Address address) {
@@ -128,6 +131,14 @@ public class Owner extends BaseEntity {
 
     public void setOwnerships(List<Ownership> ownerships) {
         this.ownerships = ownerships;
+    }
+
+    public boolean isRekeningRijder() {
+        return isRekeningRijder;
+    }
+
+    public void setRekeningRijder(boolean rekeningRijder) {
+        isRekeningRijder = rekeningRijder;
     }
 
     //</editor-fold>

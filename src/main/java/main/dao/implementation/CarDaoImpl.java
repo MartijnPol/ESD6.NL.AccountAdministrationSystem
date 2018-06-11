@@ -41,4 +41,11 @@ public class CarDaoImpl extends GenericDaoJPAImpl<Car> implements CarDao {
         getEntityManager().createNamedQuery("car.deleteByLicencePlate", Car.class)
                 .setParameter("licensePlate", licensePlate);
     }
+
+    public Car findByLicensePlate(String licensePlate) {
+        TypedQuery<Car> query = getEntityManager().createNamedQuery("car.findByLicensePlate", Car.class)
+                .setParameter("licensePlate", licensePlate);
+
+        return oneResult(query);
+    }
 }

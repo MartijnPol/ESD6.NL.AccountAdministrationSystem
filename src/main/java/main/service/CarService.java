@@ -6,13 +6,13 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.GetRequest;
-import main.boundary.rest.CarResource;
 import main.dao.CarDao;
 import main.dao.JPA;
 import main.dao.RDWDao;
 import main.dao.RDWFuelDao;
 import main.domain.*;
 import main.utils.StringHelper;
+import org.jasypt.commons.CommonUtils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -206,6 +206,18 @@ public class CarService {
         return null;
     }
 
+    /**
+     * Finds a Car by its licensePlate
+     *
+     * @param licensePlate is the licensePlate of the Car to be found.
+     * @return the found Car or null
+     */
+    public Car findByLicensePlate(String licensePlate) {
+        if (CommonUtils.isNotEmpty(licensePlate)) {
+            return this.carDao.findByLicensePlate(licensePlate);
+        }
+        return null;
+    }
 
     public void setCarDao(CarDao carDao) {
         this.carDao = carDao;

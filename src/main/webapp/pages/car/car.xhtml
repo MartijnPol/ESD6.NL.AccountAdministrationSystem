@@ -76,6 +76,11 @@
                                 </p:selectOneMenu>
                             </div>
 
+                            <div class="form-control">
+                                <p:outputLabel for="isRekeningRijder" value="Is RekeningRijder: "/>
+                                <h:outputText id="isRekeningRijder" value="#{carBean.car.currentOwnership.owner.rekeningRijder}"/>
+                            </div>
+
                             <p:commandButton action="#{carBean.update}"
                                              ajax="true"
                                              id="update"

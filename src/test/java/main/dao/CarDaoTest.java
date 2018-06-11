@@ -102,4 +102,17 @@ public class CarDaoTest {
         Car emptyCar = carDao.findById(1L);
         assertThat(emptyCar, is(nullValue()));
     }
+
+    @Test public void
+    findCarByLicensePlate() {
+
+        carDao.createOrUpdate(car);
+
+        when(this.carDao.findByLicensePlate("08-SK-PX")).thenReturn(car);
+        Car foundCar = carDao.findByLicensePlate("08-SK-PX");
+        Car emptyCar = carDao.findByCarTrackerId("00-00-00");
+
+        assertThat(car, is(foundCar));
+        assertThat(emptyCar, is(nullValue()));
+    }
 }

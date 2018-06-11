@@ -20,7 +20,7 @@ public class OwnerResource {
     private OwnerService ownerService;
 
     /**
-     * When an user wants to register it posts it's first name, last name and its citizen service number.
+     * When an user wants to profile it posts it's first name, last name and its citizen service number.
      * The user object gets returned.
      *
      * @param owner is the owner that registers.
@@ -41,6 +41,10 @@ public class OwnerResource {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
 
+        if (!foundOwner.isRekeningRijder()) {
+            foundOwner.setRekeningRijder(true);
+            this.ownerService.createOrUpdate(foundOwner);
+        }
 
         return Response.ok(foundOwner.toJson()).header("Access-Control-Allow-Origin", "*").build();
 

@@ -1,5 +1,6 @@
 package main.service;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.dao.InvoiceDao;
 import main.domain.*;
 import org.hamcrest.CoreMatchers;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -319,5 +321,45 @@ public class InvoiceServiceTest {
         assertThat(sortedMovementsByDay.get(calendarMay22.getTime()).get(0).getId(), is(1L));
         assertThat(sortedMovementsByDay.get(calendarMay21.getTime()).get(0).getId(), is(2L));
         assertThat(sortedMovementsByDay.get(calendarMay22.getTime()).get(1).getId(), is(3L));
+    }
+
+    @Test
+    public void getLatLonPathTest() {
+        String expectedResult = "-35.27801,149.12958|-35.28032,149.12907";
+        String expectedResultEmpty = "";
+
+        List<CarTrackerRuleResponse> rulesFilled = new ArrayList<>();
+        List<CarTrackerRuleResponse> rulesEmpty = new ArrayList<>();
+        CarTrackerRuleResponse carTrackerRuleResponseFirst = new CarTrackerRuleResponse();
+        CarTrackerRuleResponse carTrackerRuleResponseSecond = new CarTrackerRuleResponse();
+
+        carTrackerRuleResponseFirst.setLat(-35.27801);
+        carTrackerRuleResponseFirst.setLon(149.12958);
+
+        carTrackerRuleResponseSecond.setLat(-35.28032);
+        carTrackerRuleResponseSecond.setLon(149.12907);
+
+        rulesFilled.add(carTrackerRuleResponseFirst);
+        rulesFilled.add(carTrackerRuleResponseSecond);
+
+        String latLonPath = this.invoiceService.getLatLonPath(rulesFilled);
+        String latLonPathEmpty = this.invoiceService.getLatLonPath(rulesEmpty);
+
+        assertThat(latLonPath, is(expectedResult));
+        assertThat(latLonPathEmpty, is(expectedResultEmpty));
+    }
+
+    @Test
+    public void extractRoadTypeTest() {
+        String expectedResult = "A";
+        String expectedResultEmpty = "";
+
+        String roadType = this.invoiceService.extractRoadType("A2");
+        String roadTypeEmpty = this.invoiceService.extractRoadType("");
+        String roadTypeStrangeInput = this.invoiceService.extractRoadType("A22A");
+
+        assertThat(roadType, is(expectedResult));
+        assertThat(roadTypeEmpty, is(expectedResultEmpty));
+        assertThat(roadTypeStrangeInput, is(expectedResult));
     }
 }

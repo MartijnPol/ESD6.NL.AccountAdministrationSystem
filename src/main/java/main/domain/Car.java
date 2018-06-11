@@ -1,6 +1,7 @@
 package main.domain;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -17,7 +18,8 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "car.findByOwner", query = "SELECT c FROM Car c WHERE c.currentOwnership.owner = :owner"),
         @NamedQuery(name = "car.findByCarTrackerId", query = "SELECT c FROM Car c WHERE c.currentCarTracker.id = :carTrackerId"),
-        @NamedQuery(name = "car.deleteByLicencePlate", query = "DELETE FROM Car c WHERE c.licensePlate = :licensePlate")
+        @NamedQuery(name = "car.deleteByLicencePlate", query = "DELETE FROM Car c WHERE c.licensePlate = :licensePlate"),
+        @NamedQuery(name = "car.findByLicensePlate", query = "SELECT c FROM Car c WHERE c.licensePlate = :licensePlate")
 })
 public class Car extends BaseEntity {
 
@@ -69,12 +71,22 @@ public class Car extends BaseEntity {
     public JsonObject toJson() {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String date = dateFormat.format(this.getCurrentOwnership().getOwner().getBirthDay());
+        String ownerSince = dateFormat.format(this.getCurrentOwnership().getStartDate());
+
+        JsonArrayBuilder previousOwners = Json.createArrayBuilder();
+
+        for (Ownership pastOwnership : this.pastOwnerships) {
+            previousOwners.add(pastOwnership.toJsonForCarToJson());
+        }
+
         return Json.createObjectBuilder()
                 .add("carTrackerId", this.currentCarTracker.getId())
                 .add("licensePlate", this.licensePlate)
                 .add("owner", Json.createObjectBuilder()
                         .add("fullName", this.getCurrentOwnership().getOwner().getFullName())
-                        .add("birthday", date).build())
+                        .add("birthday", date)
+                        .add("ownerSince", ownerSince).build())
+                .add("previousOwners", previousOwners)
                 .build();
     }
 
