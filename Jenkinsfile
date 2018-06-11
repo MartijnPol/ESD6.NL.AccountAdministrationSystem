@@ -46,6 +46,7 @@ pipeline{
 				withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'dockerPassword', usernameVariable: 'dockerUser')]) {
 					sh "docker login -u ${env.dockerUser} -p ${env.dockerPassword}"
 					sh 'docker push esd6nl/aas'
+
 			}
 			}
 		}
@@ -61,7 +62,7 @@ pipeline{
                 branch 'master'
             }
             steps{
-                sh 'mvn clean package -B'
+					sh 'sshpass -p \'student\' ssh -o StrictHostKeyChecking=no student@192.168.25.122 "./updateAas.sh"'
             }
         }
         stage('Deploy release'){
@@ -69,7 +70,7 @@ pipeline{
                 branch 'release'
             }
             steps{
-                sh 'mvn clean package -B'
+					sh 'sshpass -p \'student\' ssh -o StrictHostKeyChecking=no student@192.168.25.122 "./updateAas.sh"'
             }
         }
     }
