@@ -34,6 +34,7 @@ body
 
 .dashboardCard
 {
+    height: 180px !important;
     border: none !important;
     padding: 24px !important;
     margin-bottom: 24px !important;
