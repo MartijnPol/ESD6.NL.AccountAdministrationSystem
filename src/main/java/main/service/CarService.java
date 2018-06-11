@@ -194,7 +194,7 @@ public class CarService {
      */
     public CarTrackerResponse findCarMovements(String carTrackerId) {
         if (!StringHelper.isEmpty(carTrackerId)) {
-            GetRequest getRequest = Unirest.get("http://localhost:55790/DisplacementSystem/api/CarTrackers/" + carTrackerId);
+            GetRequest getRequest = Unirest.get("http://192.168.25.122:77/DisplacementSystem/api/CarTrackers/" + carTrackerId);
             try {
                 HttpResponse<JsonNode> jsonNodeHttpResponse = getRequest.asJson();
                 Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new GsonDateAdapter()).create();
