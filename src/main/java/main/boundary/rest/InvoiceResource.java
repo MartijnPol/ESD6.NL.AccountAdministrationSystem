@@ -67,7 +67,7 @@ public class InvoiceResource {
         }
 
 
-        return Response.ok().build();
+        return Response.ok(foundInvoice.toJson()).header("Access-Control-Allow-Origin", "*").build();
     }
 
     /**
@@ -97,6 +97,6 @@ public class InvoiceResource {
 
         this.invoiceService.createOrUpdate(foundInvoice);
 
-        return Response.ok().build();
+        return Response.ok(foundInvoice.toJson()).header("Access-Control-Allow-Origin", "*").build();
     }
 }
