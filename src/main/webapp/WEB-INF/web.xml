@@ -51,7 +51,7 @@
         <auth-constraint>
             <role-name>RegularRole</role-name>
             <role-name>KmPrijsRole</role-name>
-            <role-name>AdministratorRole</role-name>
+            <role-name>AdminRole</role-name>
         </auth-constraint>
     </security-constraint>
 
@@ -87,7 +87,7 @@
 
     <security-role>
         <description/>
-        <role-name>AdministratorRole</role-name>
+        <role-name>AdminRole</role-name>
     </security-role>
 
 </web-app>

@@ -43,6 +43,7 @@ public class ProfileBean extends BaseBean {
                         usergroup.getUsers().remove(this.user);
                         user.getUserGroups().remove(usergroup);
                         this.userGroupService.update(usergroup);
+                        this.userService.createOrUpdate(user);
                     }
                 }
 
