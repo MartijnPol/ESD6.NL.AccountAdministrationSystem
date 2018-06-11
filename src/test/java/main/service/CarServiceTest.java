@@ -4,6 +4,7 @@ import main.dao.RDWFuelDao;
 import main.dao.implementation.CarDaoImpl;
 import main.dao.implementation.RDWDaoImpl;
 import main.domain.*;
+import org.hamcrest.core.IsNull;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -114,10 +116,22 @@ public class CarServiceTest {
         Assert.assertEquals(this.newOwnership, newOwnership);
     }
 
-    @Test public void
-    findByLicensePlate() {
+    @Test
+    public void findByLicensePlate() {
         when(carServiceMock.findByLicensePlate(car.getLicensePlate())).thenReturn(car);
         Car foundCar = carServiceMock.findByLicensePlate("FF-01-RK");
         assertThat(foundCar, is(car));
+    }
+
+    @Test
+    public void findCarMovementsTest() {
+        CarTrackerResponse carTrackerResponseEmpty = carService.findCarMovements("");
+        CarTrackerResponse carTrackerResponse = carService.findCarMovements("NLD1");
+
+        assertThat(carTrackerResponseEmpty, is(IsNull.nullValue()));
+        assertThat(carTrackerResponse.getId(), is("NLD1"));
+        assertThat(carTrackerResponse.getManufacturer(), is("ASUS"));
+        assertThat(carTrackerResponse.getTotalRules(), is(155L));
+        assertThat(carTrackerResponse.getCarTrackerRules().size(), is(155));
     }
 }

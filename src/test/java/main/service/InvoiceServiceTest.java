@@ -287,7 +287,7 @@ public class InvoiceServiceTest {
     @Test
     public void sortMovementsByDayTest() {
         CarTrackerResponse carTrackerResponse = new CarTrackerResponse();
-        carTrackerResponse.setCarTrackerId("NLD1");
+        carTrackerResponse.setId("NLD1");
         carTrackerResponse.setTotalRules(3L);
 
         Calendar calendarMay21 = Calendar.getInstance();
@@ -312,7 +312,7 @@ public class InvoiceServiceTest {
         carTrackerRuleResponseSecond.setId(2L);
         carTrackerRuleResponseThird.setId(3L);
 
-        carTrackerResponse.setCarTrackerRuleResponses(Arrays.asList(carTrackerRuleResponseFirst, carTrackerRuleResponseSecond, carTrackerRuleResponseThird));
+        carTrackerResponse.setCarTrackerRules(Arrays.asList(carTrackerRuleResponseFirst, carTrackerRuleResponseSecond, carTrackerRuleResponseThird));
 
         HashMap<Date, List<CarTrackerRuleResponse>> sortedMovementsByDay = this.invoiceService.sortMovementsByDay(carTrackerResponse);
 
