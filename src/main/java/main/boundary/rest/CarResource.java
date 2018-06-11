@@ -10,7 +10,6 @@ import main.service.CarService;
 import main.service.OwnerService;
 import org.json.JSONArray;
 
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -49,25 +48,6 @@ public class CarResource {
         return Response.ok(this.carService.replaceObjects(cars)).build();
     }
 
-    //TODO-Thom: Vraag aan mevrouw van Sogeti hoe dit zit.
-//    /**
-//     * Gets a car based on the carTrackerId.
-//     *
-//     * @param carTrackerId is the Id of the carTracker.
-//     * @returns the car.
-//     */
-//    @GET
-//    @Path("{car}")
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public Response getCarByCarTrackerId(@QueryParam("id") Long carTrackerId) {
-//        Car car = carService.findByCarTrackerId(carTrackerId);
-//        if (car == null) {
-//            throw new WebApplicationException(Response.Status.NOT_FOUND);
-//        }
-//
-//        return Response.ok(car.toJson()).build();
-//    }
-
     /**
      * Gets the cars of an cartracker.
      *
@@ -75,10 +55,10 @@ public class CarResource {
      * @returns a List of cars.
      */
     @GET
-    @Path("{owner}")
+    @Path("{citizenServiceNumber}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getCarsByOwner(@QueryParam("ownerId") Long ownerId) {
-        Owner owner = ownerService.findById(ownerId);
+    public Response getCarsByOwner(@PathParam("citizenServiceNumber") Long citizenServiceNumber) {
+        Owner owner = ownerService.findByCSN(citizenServiceNumber);
         List<Car> cars;
         if (owner != null) {
             cars = carService.findByOwner(owner);
@@ -90,6 +70,28 @@ public class CarResource {
         }
 
         return Response.ok(this.carService.replaceObjects(cars)).build();
+    }
+
+    /**
+     * Find a Car by its LicensePlate
+     *
+     * @param licensePlate is the LicensePlate of the Car
+     * @return the Car or Response.Status.NOT_FOUND
+     */
+    @GET
+    @Path("/find/{licensePlate}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getCarByLicensePlate(@PathParam("licensePlate") String licensePlate) {
+        if (licensePlate == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        Car foundCar = this.carService.findByLicensePlate(licensePlate);
+
+        if (foundCar == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+
+        return Response.ok(foundCar.toJson()).build();
     }
 
     /**
@@ -135,8 +137,7 @@ public class CarResource {
      */
     @DELETE
     @Path("{licensePlate}")
-    public Response deleteCar(String licensePlate)
-    {
+    public Response deleteCar(String licensePlate) {
         carService.deleteByLicensePlate(licensePlate);
         return Response.noContent().build();
     }

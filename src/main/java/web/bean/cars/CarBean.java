@@ -32,14 +32,17 @@ public class CarBean extends BaseBean {
     private Long carId;
     private Car car;
     private List<Owner> owners;
+    private boolean showPastOwners;
     private Owner selectedOwner;
     private List<CarTracker> unusedCarTrackers;
     private CarTracker selectedCartracker;
+    private List<Ownership> pastOwnerships;
 
     @Override
     public void init() {
         this.owners = this.ownerService.findAll();
         this.car = this.carService.findById(this.carId);
+        this.pastOwnerships = this.car.getPastOwnerships();
         this.unusedCarTrackers = this.carTrackerService.findUnusedTrackers();
     }
 
@@ -121,5 +124,21 @@ public class CarBean extends BaseBean {
         this.selectedCartracker = selectedCartracker;
     }
 
-    //</editor-fold>
+    public boolean isShowPastOwners() {
+        return showPastOwners;
+    }
+
+    public void setShowPastOwners(boolean showPastOwners) {
+        this.showPastOwners = showPastOwners;
+    }
+
+    public List<Ownership> getPastOwnerships() {
+        return pastOwnerships;
+    }
+
+    public void setPastOwnerships(List<Ownership> pastOwnerships) {
+        this.pastOwnerships = pastOwnerships;
+    }
+
+//</editor-fold>
 }

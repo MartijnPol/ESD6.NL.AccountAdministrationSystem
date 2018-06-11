@@ -17,6 +17,7 @@ public class TariffService {
 
     /**
      * Create or update a tariff
+     *
      * @param tariff
      * @return the new or updated tariff
      */
@@ -26,22 +27,37 @@ public class TariffService {
 
     /**
      * Delete a tariff from the database
+     *
      * @param tariff
      */
-    public void delete(Tariff tariff) { this.tariffDao.delete(tariff); }
+    public void delete(Tariff tariff) {
+        this.tariffDao.delete(tariff);
+    }
 
     /**
      * Delete a tariff from the database using an id
+     *
      * @param id
      */
-    public void deleteById(Long id) { this.tariffDao.deleteById(id); }
+    public void deleteById(Long id) {
+        this.tariffDao.deleteById(id);
+    }
 
     /**
      * Get a list of all the tariffs that exist in the database.
+     *
      * @return the list of all the tariffs found
      */
-    public List<Tariff> findAll() { return this.tariffDao.findAll(); }
+    public List<Tariff> findAll() {
+        return this.tariffDao.findAll();
+    }
 
+    /**
+     * Finds a Tariff by its id
+     *
+     * @param id
+     * @return the found Tariff or null
+     */
     public Tariff findById(Long id) {
         return this.tariffDao.findById(id);
     }

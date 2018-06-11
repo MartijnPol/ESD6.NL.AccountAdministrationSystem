@@ -10,7 +10,7 @@ import javax.ejb.Stateless;
 @JPA
 public class TariffDaoImpl extends GenericDaoJPAImpl<Tariff> implements TariffDao {
 
-    public TariffDaoImpl(){
+    public TariffDaoImpl() {
 
     }
 }

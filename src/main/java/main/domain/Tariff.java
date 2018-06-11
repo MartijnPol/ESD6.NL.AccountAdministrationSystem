@@ -1,8 +1,8 @@
 package main.domain;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import main.domain.enums.RoadType;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,17 +19,17 @@ public class Tariff extends BaseEntity {
     @ElementCollection(fetch = FetchType.LAZY)
     private Map<String, Double> carFuels;
 
-    private boolean ridingDuringRushHour;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Map<String, Double> rushHourAdditions;
 
     public Tariff() {
-        this.ridingDuringRushHour = false;
+        this.rushHourAdditions = new HashMap<>();
         this.carLabels = new HashMap<>();
         this.carFuels = new HashMap<>();
     }
 
-    public Tariff(double tariffInEuro, boolean ridingDuringRushHour) {
+    public Tariff(double tariffInEuro) {
         this.tariffInEuro = tariffInEuro;
-        this.ridingDuringRushHour = ridingDuringRushHour;
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
@@ -39,14 +39,6 @@ public class Tariff extends BaseEntity {
 
     public void setTariffInEuro(double tariffInEuro) {
         this.tariffInEuro = tariffInEuro;
-    }
-
-    public boolean getRidingDuringRushHour() {
-        return ridingDuringRushHour;
-    }
-
-    public void setRidingDuringRushHour(boolean ridingDuringRushHour) {
-        this.ridingDuringRushHour = ridingDuringRushHour;
     }
 
     public Map<String, Double> getCarLabels() {
@@ -79,6 +71,14 @@ public class Tariff extends BaseEntity {
 
     public void addCarFuels(Map<String, Double> carFuels) {
         this.carFuels.putAll(carFuels);
+    }
+
+    public Map<String, Double> getRushHourAdditions() {
+        return rushHourAdditions;
+    }
+
+    public void setRushHourAdditions(Map<String, Double> rushHourAdditions) {
+        this.rushHourAdditions = rushHourAdditions;
     }
 
     //</editor-fold>
