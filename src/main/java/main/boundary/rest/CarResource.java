@@ -4,8 +4,10 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import main.boundary.rest.jwt.Secured;
 import main.domain.Car;
 import main.domain.Owner;
+import main.domain.enums.AuthorizedApplications;
 import main.service.CarService;
 import main.service.OwnerService;
 import org.json.JSONArray;
@@ -39,6 +41,7 @@ public class CarResource {
      * @returns all the cars.
      */
     @GET
+    @Secured(AuthorizedApplications.DRIVER)
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAll() {
         List<Car> cars = carService.findAll();
@@ -56,6 +59,7 @@ public class CarResource {
      */
     @GET
     @Path("{citizenServiceNumber}")
+    @Secured(AuthorizedApplications.DRIVER)
     @Produces({MediaType.APPLICATION_JSON})
     public Response getCarsByOwner(@PathParam("citizenServiceNumber") Long citizenServiceNumber) {
         Owner owner = ownerService.findByCSN(citizenServiceNumber);
@@ -80,6 +84,7 @@ public class CarResource {
      */
     @GET
     @Path("/find/{licensePlate}")
+    @Secured(AuthorizedApplications.DRIVER)
     @Produces({MediaType.APPLICATION_JSON})
     public Response getCarByLicensePlate(@PathParam("licensePlate") String licensePlate) {
         if (licensePlate == null) {
