@@ -16,6 +16,7 @@ import org.omnifaces.util.Ajax;
 import org.primefaces.event.SelectEvent;
 import web.core.helper.FrontendHelper;
 import web.core.helper.RedirectHelper;
+import web.core.helper.RestHelper;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -64,7 +65,6 @@ public class CarTrackerOverviewBean implements Serializable {
 
         this.cars = carService.findAll();
         this.carTrackers = carTrackerService.findAll();
-
     }
 
     public void createCarTracker(){
@@ -95,6 +95,7 @@ public class CarTrackerOverviewBean implements Serializable {
     }
 
     public List<CarTracker> getAllCartrackers() throws UnirestException {
+        Unirest.setDefaultHeader("Authorization","Bearer"+RestHelper.getDsJwtToken());
         HttpResponse<JsonNode> getResponse = Unirest.get("http://192.168.25.122:77/DisplacementSystem/api/CarTrackers").asJson();
         JSONArray array = getResponse.getBody().getArray();
         List<CarTracker> carTrackers = null;

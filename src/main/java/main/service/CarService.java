@@ -15,6 +15,7 @@ import main.domain.*;
 import main.utils.GsonDateAdapter;
 import main.utils.StringHelper;
 import org.jasypt.commons.CommonUtils;
+import web.core.helper.RestHelper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -192,8 +193,9 @@ public class CarService {
      * @param carTrackerId CarTracker id used for requesting data.
      * @return CarTrackerResponse object containing all the available data, when the request return empty null will be returned.
      */
-    public CarTrackerResponse findCarMovements(String carTrackerId) {
+    public CarTrackerResponse findCarMovements(String carTrackerId) throws UnirestException {
         if (!StringHelper.isEmpty(carTrackerId)) {
+            Unirest.setDefaultHeader("Authorization","Bearer"+RestHelper.getDsJwtToken());
             GetRequest getRequest = Unirest.get("http://192.168.25.122:77/DisplacementSystem/api/CarTrackers/" + carTrackerId);
             try {
                 HttpResponse<JsonNode> jsonNodeHttpResponse = getRequest.asJson();
