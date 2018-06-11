@@ -1,6 +1,8 @@
 package main.boundary.rest;
 
+import main.boundary.rest.jwt.Secured;
 import main.domain.Owner;
+import main.domain.enums.AuthorizedApplications;
 import main.service.OwnerService;
 
 import javax.ejb.Stateless;
@@ -29,6 +31,7 @@ public class OwnerResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    @Secured(AuthorizedApplications.DRIVER)
     public Response getOwner(Owner owner) {
         if (owner == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);

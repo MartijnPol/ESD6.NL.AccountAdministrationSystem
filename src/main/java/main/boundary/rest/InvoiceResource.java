@@ -1,7 +1,9 @@
 package main.boundary.rest;
 
+import main.boundary.rest.jwt.Secured;
 import main.domain.Invoice;
 import main.domain.Owner;
+import main.domain.enums.AuthorizedApplications;
 import main.domain.enums.PaymentStatus;
 import main.service.InvoiceService;
 import main.service.OwnerService;
@@ -34,6 +36,7 @@ public class InvoiceResource {
     @GET
     @Path("{citizenServiceNumber}")
     @Produces({MediaType.APPLICATION_JSON})
+    @Secured(AuthorizedApplications.DRIVER)
     public Response getInvoicesForOwner(@PathParam("citizenServiceNumber") Long citizenServiceNumber) {
 
         if (citizenServiceNumber == null) {
@@ -79,6 +82,7 @@ public class InvoiceResource {
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    @Secured(AuthorizedApplications.DRIVER)
     public Response updateInvoicePaymentStatus(Invoice invoice) {
         if (invoice == null || invoice.getInvoiceNr() == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
