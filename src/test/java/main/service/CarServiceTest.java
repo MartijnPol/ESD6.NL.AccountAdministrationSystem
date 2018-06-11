@@ -131,7 +131,5 @@ public class CarServiceTest {
         assertThat(carTrackerResponseEmpty, is(IsNull.nullValue()));
         assertThat(carTrackerResponse.getId(), is("NLD1"));
         assertThat(carTrackerResponse.getManufacturer(), is("ASUS"));
-        assertThat(carTrackerResponse.getTotalRules(), is(155L));
-        assertThat(carTrackerResponse.getCarTrackerRules().size(), is(155));
     }
 }
