@@ -15,7 +15,7 @@
 
     <security-role-mapping>
         <role-name>AdminRole</role-name>
-        <group-name>Admin</group-name>
+        <group-name>Administrator</group-name>
     </security-role-mapping>
 
     <class-loader delegate="true"/>
