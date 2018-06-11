@@ -1,5 +1,6 @@
 package main.service;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.dao.RDWFuelDao;
 import main.dao.implementation.CarDaoImpl;
 import main.dao.implementation.RDWDaoImpl;
@@ -124,7 +125,7 @@ public class CarServiceTest {
     }
 
     @Test
-    public void findCarMovementsTest() {
+    public void findCarMovementsTest() throws UnirestException {
         CarTrackerResponse carTrackerResponseEmpty = carService.findCarMovements("");
         CarTrackerResponse carTrackerResponse = carService.findCarMovements("NLD1");
 
