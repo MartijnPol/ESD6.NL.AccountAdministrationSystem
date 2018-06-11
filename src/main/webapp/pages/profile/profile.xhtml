@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/template.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="userId" value="#{profileBean.userId}"/>
+
+        <f:event type="preRenderView" listener="#{profileBean.init}"/>
+    </f:metadata>
+
+    <ui:define name="title">Gebruiker Detail</ui:define>
+
+    <ui:define name="content">
+
+        <div class="container">
+
+            <nav aria-label="breadcrumb" class="breadcrumb-layout">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><h:link outcome="/pages/profile/dashboard.xhtml" value="Home"/>
+                    </li>
+                    <li class="breadcrumb-item"><h:link outcome="/pages/profile/profiles.xhtml" value="Gebruikers"/></li>
+                    <li class="breadcrumb-item active">#{profileBean.user.username}</li>
+                </ol>
+            </nav>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <header class="header">
+                        <h1>Gebruikerdetails</h1>
+                        <h5 class="text-muted">Details van de gebruiker</h5>
+                    </header>
+                </div>
+            </div>
+
+            <div class="row content-container">
+                <div class="col-lg-12">
+                    <h:form rendered="#{not empty profileBean.user}">
+
+                        <div class="form-control">
+                            <p:outputLabel for="idText" value="ID: "/>
+                            <h:outputText id="idText" value="#{profileBean.user.id}"/>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="mailText" value="Email: "/>
+                            <h:outputText id="mailText" value="#{profileBean.user.mailAddress}"/>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="userText" value="Gebruikersnaam: "/>
+                            <h:outputText id="userText" value="#{profileBean.user.username}"/>
+                        </div>
+
+                        <div class="form-control">
+                            <p:outputLabel for="selectRoleMenu" value="Rechten: "/>
+                            <p:selectOneMenu id="selectRoleMenu" value="#{profileBean.selectedUserGroup}" filter="true"
+                                             converter="omnifaces.SelectItemsIndexConverter"
+                                             filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="#{profileBean.user.userGroups.get(0).groupName}"
+                                              itemDisabled="true"/>
+                                <f:selectItems itemLabel="#{userGroup.groupName}"
+                                               itemValue="#{userGroup}"
+                                               value="#{profileBean.userGroups}"
+                                               var="userGroup"/>
+                                <p:ajax listener="#{profileBean.onRoleChange(userGroup)}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <p:commandButton action="#{profileBean.update}"
+                                         ajax="true"
+                                         id="update"
+                                         styleClass="btn btn-success"
+                                         value="Update"/>
+
+                    </h:form>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="content-container">
+                    <h:form id="emptyForm" rendered="#{empty profileBean.user}">
+                        <p:outputLabel id="mistake" value="Er is iets mis gegaan."/>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

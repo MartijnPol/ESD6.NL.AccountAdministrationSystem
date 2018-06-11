@@ -2,6 +2,7 @@ package main.service;
 
 import main.dao.JPA;
 import main.dao.UserGroupDao;
+import main.domain.User;
 import main.domain.UserGroup;
 
 import javax.ejb.Stateless;
@@ -70,7 +71,7 @@ public class UserGroupService {
      * Finds all the UserGroups.
      * @returns a List of UserGroups.
      */
-    public List<UserGroup> getAllUserGroups() {
+    public List<UserGroup> findAll() {
         return this.userGroupDao.findAll();
     }
 }
