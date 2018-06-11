@@ -55,6 +55,17 @@
         </auth-constraint>
     </security-constraint>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Secure pages</web-resource-name>
+            <url-pattern>/pages/tariff/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>KmPrijsRole</role-name>
+            <role-name>AdminRole</role-name>
+        </auth-constraint>
+    </security-constraint>
+
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>security_realm</realm-name>
