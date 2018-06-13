@@ -12,6 +12,13 @@ public final class RestHelper {
 
 	private static String Identity = "uUQYP0AjSmFJ5rMAYoK5";
 
+	/**
+	 * Get dsJwtToken.
+	 * In case that the jwtToken is not currently set ,a authenticate request is send to the Displacement System.
+	 *
+	 * @return dsJwtToken is String format.
+	 * @throws UnirestException Exception that is thrown when something goes wrong during the request.
+	 */
 	public static String getDsJwtToken() throws UnirestException {
 		if(dsJwtToken == null){
 			HttpResponse<JsonNode> response = Unirest.get("http://192.168.25.122:77/DisplacementSystem/api/authenticate/"+Identity).asJson();
