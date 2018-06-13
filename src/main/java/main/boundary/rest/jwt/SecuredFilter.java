@@ -60,6 +60,13 @@ public class SecuredFilter implements ContainerRequestFilter {
 
 	}
 
+	/**
+	 * Retrieve all secured roles.
+	 * Roles are returned as a list of AuthorizedApplications objects.
+	 *
+	 * @param annotatedElement AnnotatedElement object containing the necessary data
+	 * @return List of AuthorizedApplications objects, when no secured elements are found an empty list is returned
+	 */
 	private List<AuthorizedApplications> extractRoles(AnnotatedElement annotatedElement) {
 		if (annotatedElement == null) {
 			return new ArrayList<>();
@@ -74,6 +81,13 @@ public class SecuredFilter implements ContainerRequestFilter {
 		}
 	}
 
+	/**
+	 * Check if application has permissions for excising resources.
+	 *
+	 * @param allowedRoles List of AuthorizedApplications objects.
+	 * @param appName Application name
+	 * @return True when the application has permissions otherwise false
+	 */
 	private boolean checkPermissions(List<AuthorizedApplications> allowedRoles, String appName) {
 		for (AuthorizedApplications allowedRole : allowedRoles) {
 			if(allowedRole.App().equals(appName)){

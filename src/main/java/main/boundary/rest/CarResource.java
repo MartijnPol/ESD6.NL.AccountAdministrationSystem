@@ -84,7 +84,7 @@ public class CarResource {
      */
     @GET
     @Path("/find/{licensePlate}")
-    @Secured(AuthorizedApplications.DRIVER)
+    @Secured({AuthorizedApplications.DRIVER,AuthorizedApplications.POL})
     @Produces({MediaType.APPLICATION_JSON})
     public Response getCarByLicensePlate(@PathParam("licensePlate") String licensePlate) {
         if (licensePlate == null) {
