@@ -20,6 +20,8 @@ public class CarTrackerRuleResponse {
 
     private double lon;
 
+    private String roadType;
+
     public CarTrackerRuleResponse() {
     }
 
@@ -65,5 +67,12 @@ public class CarTrackerRuleResponse {
         this.lon = lon;
     }
 
+    public String getRoadType() {
+        return roadType;
+    }
+
+    public void setRoadType(String roadType) {
+        this.roadType = roadType;
+    }
     //</editor-fold>
 }
