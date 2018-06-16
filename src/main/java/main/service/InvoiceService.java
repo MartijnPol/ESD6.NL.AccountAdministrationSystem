@@ -189,7 +189,7 @@ public class InvoiceService {
         double totalCosts = 0.0;
 
         for (List<CarTrackerRuleResponse> responseList : sortedMovementsByDay.values()) {
-            double carMovementCostsPerDay = getCarMovementCostsPerDay(responseList, tariff, car);
+            double carMovementCostsPerDay = getCarMovementCostsPerDay(responseList, tariff);
             totalCosts = totalCosts + carMovementCostsPerDay;
         }
 
@@ -205,7 +205,7 @@ public class InvoiceService {
      * @param tariff Tariff used for calculation
      * @return Total costs or 0.0 when rules are empty
      */
-    public double getCarMovementCostsPerDay(List<CarTrackerRuleResponse> rules, Tariff tariff, Car car) throws UnsupportedEncodingException, UnirestException {
+    public double getCarMovementCostsPerDay(List<CarTrackerRuleResponse> rules, Tariff tariff) throws UnsupportedEncodingException, UnirestException {
         if (!rules.isEmpty()) {
             double totalCosts = 0.0;
 
