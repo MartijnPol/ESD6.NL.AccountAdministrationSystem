@@ -213,7 +213,7 @@ public class InvoiceService {
             for (CarTrackerRuleResponse carTrackerRuleResponse : rules) {
                 String roadType = carTrackerRuleResponse.getRoadType();
                 if (!StringHelper.isEmpty(roadType)) {
-                    if (roadType.equals("A") || roadType.equals("E")) {
+                    if (roadType.equals("A") || roadType.equals("N")) {
                         double rushHourAddition = tariff.getRushHourAdditions().get(roadType);
                     }
 
@@ -224,6 +224,22 @@ public class InvoiceService {
         }
 
         return 0.0;
+    }
+
+    /**
+     * Returns true or false based on the time the rule came in.
+     * If the rule came in between 07:00 and 09:00 or between 16:00 and 19:00 it returns true
+     * So then the rush hour addition comes on.
+     *
+     * @param carTrackerRuleResponse is the CarTrackerRuleResponse from which the time is calculated.
+     * @return true when its time is between the given hours or false if not.
+     */
+    public boolean isRidingDuringRushHours(CarTrackerRuleResponse carTrackerRuleResponse) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(carTrackerRuleResponse.getDate());
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+
+        return hours >= 7 && hours < 9 || hours >= 16 && hours < 19;
     }
 
     /**
