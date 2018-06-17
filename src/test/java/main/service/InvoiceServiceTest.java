@@ -324,42 +324,19 @@ public class InvoiceServiceTest {
     }
 
     @Test
-    public void getLatLonPathTest() {
-        String expectedResult = "-35.27801,149.12958|-35.28032,149.12907";
-        String expectedResultEmpty = "";
+    public void getRidingDuringRushHourTest() {
 
-        List<CarTrackerRuleResponse> rulesFilled = new ArrayList<>();
-        List<CarTrackerRuleResponse> rulesEmpty = new ArrayList<>();
-        CarTrackerRuleResponse carTrackerRuleResponseFirst = new CarTrackerRuleResponse();
-        CarTrackerRuleResponse carTrackerRuleResponseSecond = new CarTrackerRuleResponse();
+        boolean ridingDuringRushHours;
+        CarTrackerRuleResponse carTrackerRuleResponse = new CarTrackerRuleResponse();
+        carTrackerRuleResponse.setDate(new Date(2018, 6, 17, 16, 10));
 
-        carTrackerRuleResponseFirst.setLat(-35.27801);
-        carTrackerRuleResponseFirst.setLon(149.12958);
+        ridingDuringRushHours = this.invoiceService.isRidingDuringRushHours(carTrackerRuleResponse);
 
-        carTrackerRuleResponseSecond.setLat(-35.28032);
-        carTrackerRuleResponseSecond.setLon(149.12907);
+        assertThat(ridingDuringRushHours, is(true));
+        carTrackerRuleResponse.setDate(new Date(2018, 6, 17, 12, 10));
 
-        rulesFilled.add(carTrackerRuleResponseFirst);
-        rulesFilled.add(carTrackerRuleResponseSecond);
+        ridingDuringRushHours = this.invoiceService.isRidingDuringRushHours(carTrackerRuleResponse);
 
-        String latLonPath = this.invoiceService.getLatLonPath(rulesFilled);
-        String latLonPathEmpty = this.invoiceService.getLatLonPath(rulesEmpty);
-
-        assertThat(latLonPath, is(expectedResult));
-        assertThat(latLonPathEmpty, is(expectedResultEmpty));
-    }
-
-    @Test
-    public void extractRoadTypeTest() {
-        String expectedResult = "A";
-        String expectedResultEmpty = "";
-
-        String roadType = this.invoiceService.extractRoadType("A2");
-        String roadTypeEmpty = this.invoiceService.extractRoadType("");
-        String roadTypeStrangeInput = this.invoiceService.extractRoadType("A22A");
-
-        assertThat(roadType, is(expectedResult));
-        assertThat(roadTypeEmpty, is(expectedResultEmpty));
-        assertThat(roadTypeStrangeInput, is(expectedResult));
+        assertThat(ridingDuringRushHours, is(false));
     }
 }

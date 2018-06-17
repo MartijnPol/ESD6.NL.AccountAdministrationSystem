@@ -1,14 +1,20 @@
 package main.service;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import main.dao.InvoiceDao;
 import main.dao.JPA;
 import main.domain.*;
 import main.utils.StringHelper;
+import org.json.JSONArray;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -37,6 +43,12 @@ public class InvoiceService {
 
     @Inject
     private CarService carService;
+
+    @Inject
+    private RDWService rdwService;
+
+    @Inject
+    private CarTrackerService carTrackerService;
 
     public Invoice createOrUpdate(Invoice invoice) {
         return this.invoiceDao.createOrUpdate(invoice);
@@ -178,10 +190,9 @@ public class InvoiceService {
      * When the response does not hold any CarTrackerRules 0.0 is returned.
      *
      * @param car    Car that should be checked
-     * @param tariff Tariff used for calculation
      * @return Costs based on the car movements when there is no CarTrackerRules found 0.0 is returned
      */
-    public double getCarMovementCosts(Car car, Tariff tariff) throws UnsupportedEncodingException, UnirestException {
+    public double getCarMovementCosts(Car car) throws UnsupportedEncodingException, UnirestException {
         CarTrackerResponse carMovements = this.carService.findCarMovements(car.getCurrentCarTracker().getId());
         HashMap<Date, List<CarTrackerRuleResponse>> sortedMovementsByDay = sortMovementsByDay(carMovements);
 
@@ -189,7 +200,8 @@ public class InvoiceService {
         double totalCosts = 0.0;
 
         for (List<CarTrackerRuleResponse> responseList : sortedMovementsByDay.values()) {
-            double carMovementCostsPerDay = getCarMovementCostsPerDay(responseList, tariff);
+
+            double carMovementCostsPerDay = getCarMovementCostsPerDay(responseList, car);
             totalCosts = totalCosts + carMovementCostsPerDay;
         }
 
@@ -202,28 +214,92 @@ public class InvoiceService {
      * Various details about the movements are requested from the Google Road API, and later used for calculations.
      *
      * @param rules  List of CarTrackerResponseRule containing necessary data.
-     * @param tariff Tariff used for calculation
      * @return Total costs or 0.0 when rules are empty
      */
-    public double getCarMovementCostsPerDay(List<CarTrackerRuleResponse> rules, Tariff tariff) throws UnsupportedEncodingException, UnirestException {
+    public double getCarMovementCostsPerDay(List<CarTrackerRuleResponse> rules , Car car) throws UnsupportedEncodingException, UnirestException {
+
         if (!rules.isEmpty()) {
             double totalCosts = 0.0;
 
+            Date date = rules.get(0).getDate();
 
-            for (CarTrackerRuleResponse carTrackerRuleResponse : rules) {
-                String roadType = carTrackerRuleResponse.getRoadType();
-                if (!StringHelper.isEmpty(roadType)) {
-                    if (roadType.equals("A") || roadType.equals("E")) {
-                        double rushHourAddition = tariff.getRushHourAdditions().get(roadType);
-                    }
+            HttpResponse<JsonNode> response = Unirest.get("http://192.168.25.122/DisplacementSystem/api/carTrackerRules/CarTrackerIdByRuleId/")
+                    .queryString("id", rules.get(0).getId())
+                    .asJson();
 
-                }
-            }
+            List<CarTrackerRuleResponse> aRules = getCarTrackerRules(response.getBody().getObject().toString(), "A", date);
+            List<CarTrackerRuleResponse> nRules = getCarTrackerRules(response.getBody().getObject().toString(), "N", date);
+            List<CarTrackerRuleResponse> oRules = getCarTrackerRules(response.getBody().getObject().toString(), "O", date);
+
+            double totalCostByRoadtypeA = getTotalCostByRoadType(aRules,car,"A");
+            double totalCostByRoadtypeN = getTotalCostByRoadType(nRules,car,"N");
+            double totalCostByRoadtypeO = getTotalCostByRoadType(oRules,car,"O");
+
+            totalCosts = totalCostByRoadtypeA + totalCostByRoadtypeN + totalCostByRoadtypeO;
 
             return totalCosts;
         }
 
         return 0.0;
+    }
+
+    public double getTotalCostByRoadType(List<CarTrackerRuleResponse> rules , Car car , String roadType) {
+        long totalRushHourMeter = 0L;
+        long totalNonRushHourMeter = 0L;
+        long totalMeters = 0L;
+        String carFuel = car.getRdwFuelData().getBrandstof_omschrijving();
+        String carLabel = car.getRdwData().getZuinigheidslabel();
+
+        for (CarTrackerRuleResponse carTrackerRuleResponse : rules) {
+
+            if (isRidingDuringRushHours(carTrackerRuleResponse)) {
+                totalRushHourMeter += carTrackerRuleResponse.getMetersDriven();
+            } else {
+                totalNonRushHourMeter += carTrackerRuleResponse.getMetersDriven();
+            }
+        }
+
+        long kmNonRushHour =  Math.round(totalNonRushHourMeter / 1000);
+        long kmRushHour =  Math.round(totalRushHourMeter / 1000);
+        long kmTotal = Math.round(totalMeters / 1000);
+
+        Tariff tariff = tariffService.findById(1L);
+        double baseTariff = tariff.getTariffInEuro();
+
+        double rushTariff = tariff.getRushHourAdditions().get(roadType + "-spits");
+        double rushAddition = baseTariff * (1 +(rushTariff / 100));
+        double rushTotal = kmRushHour * rushAddition;
+
+        double nonRushTariff = tariff.getRushHourAdditions().get(roadType);
+        double nonRushAddition = baseTariff * (1 +(nonRushTariff / 100));
+        double nonRushTotal = kmNonRushHour * nonRushAddition;
+
+
+        double fuelTariff = tariff.getCarFuels().get(carFuel);
+        double fuelAddition = baseTariff * (1 +(fuelTariff / 100));
+        double fuelTotal = kmTotal * fuelAddition;
+
+        double labelTariff = tariff.getCarLabels().get(carLabel);
+        double labelAddition = baseTariff * (1 +(labelTariff / 100));
+        double labelTotal = kmTotal * labelAddition;
+
+        return rushTotal + nonRushTotal + labelTotal + fuelTotal;
+    }
+
+    /**
+     * Returns true or false based on the time the rule came in.
+     * If the rule came in between 07:00 and 09:00 or between 16:00 and 19:00 it returns true
+     * So then the rush hour addition comes on.
+     *
+     * @param carTrackerRuleResponse is the CarTrackerRuleResponse from which the time is calculated.
+     * @return true when its time is between the given hours or false if not.
+     */
+    public boolean isRidingDuringRushHours(CarTrackerRuleResponse carTrackerRuleResponse) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(carTrackerRuleResponse.getDate());
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+
+        return hours >= 7 && hours < 9 || hours >= 16 && hours < 19;
     }
 
     /**
@@ -249,6 +325,7 @@ public class InvoiceService {
 
         return sortedCarMovements;
     }
+
 
     /**
      * Get the economical addition for a given car.
@@ -305,6 +382,21 @@ public class InvoiceService {
         }
 
         return roundedAmount;
+    }
+
+    public List<CarTrackerRuleResponse> getCarTrackerRules(String carTrackerId, String roadType, Date date) throws UnirestException {
+
+        HttpResponse<JsonNode> jsonNodeHttpResponse = Unirest.get("http://192.168.25.122:77/DisplacementSystem/api/carTrackerRules/carTrackerIdRoadTypeAndDate/")
+                .queryString("id", carTrackerId)
+                .queryString("roadType", roadType)
+                .queryString("date", date)
+                .asJson();
+
+        JSONArray jsonArray = new JSONArray(jsonNodeHttpResponse);
+        Gson gson = new Gson();
+        TypeToken<List<CarTrackerRuleResponse>> token = new TypeToken<List<CarTrackerRuleResponse>>() {
+        };
+        return gson.fromJson(jsonArray.toString(), token.getType());
     }
 
     //</editor-fold>
