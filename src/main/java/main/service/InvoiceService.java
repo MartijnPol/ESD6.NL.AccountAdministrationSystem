@@ -200,7 +200,7 @@ public class InvoiceService {
         double totalCosts = 0.0;
 
         for (List<CarTrackerRuleResponse> responseList : sortedMovementsByDay.values()) {
-            double carMovementCostsPerDay = getCarMovementCostsPerDay(responseList, tariff);
+            double carMovementCostsPerDay = getCarMovementCostsPerDay(responseList, car);
             totalCosts = totalCosts + carMovementCostsPerDay;
         }
 
