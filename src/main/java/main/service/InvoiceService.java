@@ -200,8 +200,7 @@ public class InvoiceService {
         double totalCosts = 0.0;
 
         for (List<CarTrackerRuleResponse> responseList : sortedMovementsByDay.values()) {
-
-            double carMovementCostsPerDay = getCarMovementCostsPerDay(responseList, car);
+            double carMovementCostsPerDay = getCarMovementCostsPerDay(responseList, tariff);
             totalCosts = totalCosts + carMovementCostsPerDay;
         }
 
@@ -325,7 +324,6 @@ public class InvoiceService {
 
         return sortedCarMovements;
     }
-
 
     /**
      * Get the economical addition for a given car.
